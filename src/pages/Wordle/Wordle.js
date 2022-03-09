@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Container, Row } from 'react-bootstrap'
 
 import Header from '../../components/Header/Header'
@@ -9,17 +9,9 @@ import { ScrollTrigger } from 'react-gsap'
 import { gsap } from 'gsap'
 
 import './Wordle.css'
-import { useHistory } from 'react-router-dom'
-
 
 const Wordle = () => {
 	const items = [1, 2, 3, 4, 5, 6]
-	const history = useHistory()
-
-	const gameConfig = (i) => {
-		console.log(i)
-		history.push("/wordle/config")
-	}
 
 	gsap.registerPlugin(ScrollTrigger);
 	let sections = gsap.utils.toArray(".contest_card");
@@ -56,7 +48,7 @@ const Wordle = () => {
 				</div>
 				<div>
 					<div className='contest'>
-						{items.map((i) => <ContestCard key={i} gameConfig={gameConfig}></ContestCard>)}
+						{items.map((i) => <ContestCard key={i} gameConfig={i}></ContestCard>)}
 					</div>
 				</div>
 			</Row>

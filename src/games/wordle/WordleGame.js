@@ -37,7 +37,7 @@ import { default as GraphemeSplitter } from 'grapheme-splitter'
 import './App.css'
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { useAlert } from './context/AlertContext'
-import { Navbar } from './components/navbar/Navbar'
+// import { Navbar } from './components/navbar/Navbar'
 
 function WorldleGame() {
   // const prefersDarkMode = window.matchMedia(
