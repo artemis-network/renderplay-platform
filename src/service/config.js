@@ -1,4 +1,4 @@
-export const config = {
+const config = {
     mbc: "0x34aa94EBe5e5CEFdD6d76ce0dE43056c861FCB10",
     url: "https://api.bscscan.com",
     api: "ND3TZ457ETV9SREATN1RY6E4BGKTJUZYTI",

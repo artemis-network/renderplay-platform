@@ -1,0 +1,46 @@
+.side_bar_fonts {
+  font-family: "Public Sans", sans-serif;
+}
+
+.main__text {
+  color: #919eab;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 2.5rem;
+}
+
+Link,
+a {
+  text-decoration: none;
+}
+
+.sub__text {
+  font-size: 1.5rem;
+  color: #919eab;
+  font-weight: 500;
+  line-height: 3rem;
+}
+
+.sub__text_item {
+  font-size: 1.35rem;
+  color: #919eab;
+  font-weight: 500;
+}
+
+.custom__icon {
+  display: flex;
+  flex-direction: column;
+  padding-left: 2rem;
+}
+
+@media screen and (max-width: 1100px) {
+  .custom__icon_text {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 572px) {
+  .side_bar_fonts {
+    display: none;
+  }
+}

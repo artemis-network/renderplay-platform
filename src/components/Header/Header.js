@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import './Header.css'
 
 const logout = () => {
 	localStorage.removeItem("username")
@@ -42,6 +43,7 @@ const Header = () => {
 					<Button>Connect Wallet</Button>
 				</div>
 			</div>
+
 		</header>
 	)
 }

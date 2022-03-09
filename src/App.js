@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import "./App.css";
-import Wordle from "./pages/Wordle";
+import Wordle from "./pages/Wordle/Wordle";
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
