@@ -6,9 +6,26 @@ import TimerIcon from '../../../assets/icons/timer.svg'
 import CoinIcon from '../../../assets/coin.png'
 import { Button } from 'react-bootstrap'
 
+import { useHistory } from 'react-router-dom'
+
+
 import './ContestCard.css'
 
 const ContestCard = (props) => {
+
+	const history = useHistory()
+
+	const gameConfig = (i) => {
+		console.log(i)
+		const username = localStorage.getItem("username")
+		if (username !== null) {
+			history.push("/wordle/game")
+		} else {
+			history.push("/login")
+		}
+	}
+
+
 
 	const Completion = () => <span>Open now</span>
 
@@ -48,7 +65,7 @@ const ContestCard = (props) => {
 				</div>
 			</div>
 			<div className='contest_card__action'>
-				<Button onClick={props.isCheck}>Play Now</Button>
+				<Button onClick={() => gameConfig(props.gameConfig)}>Play Now</Button>
 			</div>
 		</div>
 

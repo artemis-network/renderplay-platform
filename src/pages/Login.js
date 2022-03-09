@@ -23,7 +23,7 @@ const Login = () => {
     }
     loginGoogle(data_c).then((res => {
       createSession(res.data);
-      history.push("/")
+      history.push("/wordle")
       window.location.reload()
     })).catch(err => console.log(err))
 
@@ -50,7 +50,7 @@ const Login = () => {
               message: res.data.message,
             });
           } else {
-            history.push("/");
+            history.push("/wordle");
             window.location.reload();
           }
         })
