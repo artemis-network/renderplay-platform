@@ -61,13 +61,13 @@ const Wordle = () => {
 					<div style={{ padding: "1rem", background: "#1B1A17" }}>
 						<ul class="nav justify-content-center">
 							<li class="nav-item">
-								<a class="nav-link active" aria-current="page" href="#">Wordle</a>
+								<button class="nav-link active" aria-current="page">Wordle</button>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="#">Scavanger Hunt</a>
+								<button class="nav-link">Scavanger Hunt</button>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="#">Pictography</a>
+								<button class="nav-link">Pictography</button>
 							</li>
 						</ul>
 					</div>
