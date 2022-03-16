@@ -9,7 +9,6 @@ import {
   GAME_COPIED_MESSAGE,
   NOT_ENOUGH_LETTERS_MESSAGE,
   WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE,
-  HARD_MODE_ALERT_MESSAGE,
 } from './constants/strings'
 import {
   MAX_WORD_LENGTH,
@@ -22,28 +21,27 @@ import {
   isWordInWordList,
   isWinningWord,
   solution,
-  findFirstUnusedReveal,
   unicodeLength,
 } from './lib/words'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
 import {
   loadGameStateFromLocalStorage,
   saveGameStateToLocalStorage,
-  setStoredIsHighContrastMode,
-  getStoredIsHighContrastMode,
 } from './lib/localStorage'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
 import './App.css'
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { useAlert } from './context/AlertContext'
-// import { Navbar } from './components/navbar/Navbar'
+import Countdown from 'react-countdown'
+import { useHistory } from 'react-router-dom'
+
+import { post_winner } from '../../service/game.service'
+
 
 function WorldleGame() {
-  // const prefersDarkMode = window.matchMedia(
-  //   '(prefers-color-scheme: dark)'
-  // ).matches
 
+  const history = useHistory()
 
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert()
@@ -54,17 +52,7 @@ function WorldleGame() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [currentRowClass, setCurrentRowClass] = useState('')
   const [isGameLost, setIsGameLost] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(
-    false
-    // localStorage.getItem('theme')
-    //   ? localStorage.getItem('theme') === 'dark'
-    //   : prefersDarkMode
-    //     ? true
-    //     : false
-  )
-  const [isHighContrastMode, setIsHighContrastMode] = useState(
-    getStoredIsHighContrastMode()
-  )
+
   const [isRevealing, setIsRevealing] = useState(false)
   const [guesses, setGuesses] = useState(() => {
     const loaded = loadGameStateFromLocalStorage()
@@ -86,59 +74,13 @@ function WorldleGame() {
 
   const [stats, setStats] = useState(() => loadStats())
 
-  const [isHardMode, setIsHardMode] = useState(
-    localStorage.getItem('gameMode')
-      ? localStorage.getItem('gameMode') === 'hard'
-      : false
-  )
-
-
   useEffect(() => {
-
-    // if no game state on load,
-    // show the user the how-to info modal
-    // Define a specific context namespace
-    // Add an observer subscribing to new events on this observable
     if (!loadGameStateFromLocalStorage()) {
       setTimeout(() => {
         setIsInfoModalOpen(true)
       }, WELCOME_INFO_MODAL_MS)
     }
   }, [])
-
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-
-    if (isHighContrastMode) {
-      document.documentElement.classList.add('high-contrast')
-    } else {
-      document.documentElement.classList.remove('high-contrast')
-    }
-  }, [isDarkMode, isHighContrastMode])
-
-  const handleDarkMode = (isDark) => {
-    setIsDarkMode(isDark)
-    localStorage.setItem('theme', isDark ? 'dark' : 'light')
-  }
-
-  const handleHardMode = (isHard) => {
-    if (guesses.length === 0 || localStorage.getItem('gameMode') === 'hard') {
-      setIsHardMode(isHard)
-      localStorage.setItem('gameMode', isHard ? 'hard' : 'normal')
-    } else {
-      showErrorAlert(HARD_MODE_ALERT_MESSAGE)
-    }
-  }
-
-  const handleHighContrastMode = (isHighContrast) => {
-    setIsHighContrastMode(isHighContrast)
-    setStoredIsHighContrastMode(isHighContrast)
-  }
 
   const clearCurrentRowClass = () => {
     setCurrentRowClass('')
@@ -153,19 +95,53 @@ function WorldleGame() {
       const winMessage =
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
       const delayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH
-
       showSuccessAlert(winMessage, {
         delayMs,
         onClose: () => setIsStatsModalOpen(true),
       })
+      const isPosted = JSON.parse(localStorage.getItem("isResultPosted"))
+      if (!isPosted || isPosted === null) {
+        let guesses = JSON.parse(localStorage.getItem("gameState"))
+        let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
+        guesses = guesses.guesses.length
+        const data = {
+          username: localStorage.getItem("username"),
+          chances: guesses,
+          game_type: gameConfig.game_type,
+          began_at: gameConfig.starts_on,
+          is_won: true
+        }
+        post_winner(data).then(res => console.log(res)).catch(err => console.log(err))
+        localStorage.setItem("isResultPosted", true)
+      } else {
+        history.push("/wordle")
+      }
     }
-
     if (isGameLost) {
+      const isPosted = JSON.parse(localStorage.getItem("isResultPosted"))
+      if (!isPosted || isPosted === null) {
+        let guesses = JSON.parse(localStorage.getItem("gameState"))
+        let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
+        guesses = guesses.guesses.length
+        const data = {
+          username: localStorage.getItem("username"),
+          chances: guesses,
+          game_type: gameConfig.game_type,
+          began_at: gameConfig.starts_on,
+          is_won: false
+        }
+        post_winner(data).then(res => console.log(res)).catch(err => console.log(err))
+        localStorage.setItem("isResultPosted", true)
+      } else {
+        history.push("/wordle")
+      }
+
       setTimeout(() => {
         setIsStatsModalOpen(true)
       }, GAME_LOST_INFO_DELAY)
+
     }
-  }, [isGameWon, isGameLost, showSuccessAlert])
+  }, [isGameWon, isGameLost, showSuccessAlert, history])
 
   const onChar = (value) => {
     if (
@@ -187,32 +163,18 @@ function WorldleGame() {
     if (isGameWon || isGameLost) {
       return
     }
-
     if (!(unicodeLength(currentGuess) === MAX_WORD_LENGTH)) {
       setCurrentRowClass('jiggle')
       return showErrorAlert(NOT_ENOUGH_LETTERS_MESSAGE, {
         onClose: clearCurrentRowClass,
       })
     }
-
     if (!isWordInWordList(currentGuess)) {
       setCurrentRowClass('jiggle')
       return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
         onClose: clearCurrentRowClass,
       })
     }
-
-    // enforce hard mode - all guesses must contain all previously revealed letters
-    if (isHardMode) {
-      const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses)
-      if (firstMissingReveal) {
-        setCurrentRowClass('jiggle')
-        return showErrorAlert(firstMissingReveal, {
-          onClose: clearCurrentRowClass,
-        })
-      }
-    }
-
     setIsRevealing(true)
     // turn this back off after all
     // chars have been revealed
@@ -221,7 +183,6 @@ function WorldleGame() {
     }, REVEAL_TIME_MS * MAX_WORD_LENGTH)
 
     const winningWord = isWinningWord(currentGuess)
-
     if (
       unicodeLength(currentGuess) === MAX_WORD_LENGTH &&
       guesses.length < MAX_CHALLENGES &&
@@ -229,12 +190,10 @@ function WorldleGame() {
     ) {
       setGuesses([...guesses, currentGuess])
       setCurrentGuess('')
-
       if (winningWord) {
         setStats(addStatsForCompletedGame(stats, guesses.length))
         return setIsGameWon(true)
       }
-
       if (guesses.length === MAX_CHALLENGES - 1) {
         setStats(addStatsForCompletedGame(stats, guesses.length + 1))
         setIsGameLost(true)
@@ -245,14 +204,40 @@ function WorldleGame() {
       }
     }
   }
+  const [timer_out, set_timer_out] = useState(1000 * 30)
+
+  useEffect(() => {
+    let data = localStorage.getItem("gameConfig")
+    console.log(data)
+    if (data !== null || data !== undefined) {
+      data = JSON.parse(data)
+      let time = new Date(data.starts_on).getTime() + (1000 * 60 * 30) - (1000 * 60 * 60 * 5) - (1000 * 60 * 30)
+      const now = new Date(Date.now()).getTime()
+      const exp = time - now
+      set_timer_out(exp)
+    } else {
+      return history.push("/wordle")
+    }
+  }, [history])
+
+
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (!completed) {
+      return <div style={{ display: "flex" }}>
+        <div style={{ color: "white", background: "#05595B", padding: "1rem", borderRadius: "2vh", fontSize: "2rem", fontWeight: "bold" }}>
+          {minutes}m:{seconds}s
+        </div>
+      </div>
+    } else {
+      history.push("/wordle")
+    }
+
+  }
 
   return (
     <div style={{ background: "#0b1118", padding: "2rem" }} className="h-screen flex flex-col">
-      {/* <Navbar
-        setIsInfoModalOpen={setIsInfoModalOpen}
-        setIsStatsModalOpen={setIsStatsModalOpen}
-        setIsSettingsModalOpen={setIsSettingsModalOpen}
-      /> */}
+      <Countdown date={Date.now() + timer_out} renderer={renderer} />
+
       <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
         <div className="pb-6 grow">
           <Grid
@@ -281,19 +266,10 @@ function WorldleGame() {
           isGameLost={isGameLost}
           isGameWon={isGameWon}
           handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
-          isHardMode={isHardMode}
-          isDarkMode={isDarkMode}
-          isHighContrastMode={isHighContrastMode}
         />
         <SettingsModal
           isOpen={isSettingsModalOpen}
           handleClose={() => setIsSettingsModalOpen(false)}
-          isHardMode={isHardMode}
-          handleHardMode={handleHardMode}
-          isDarkMode={isDarkMode}
-          handleDarkMode={handleDarkMode}
-          isHighContrastMode={isHighContrastMode}
-          handleHighContrastMode={handleHighContrastMode}
         />
         <AlertContainer />
       </div>
@@ -301,4 +277,4 @@ function WorldleGame() {
   )
 }
 
-export default WorldleGame 
+export default WorldleGame

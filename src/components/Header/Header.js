@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import './Header.css'
@@ -8,15 +7,13 @@ const logout = () => {
 	localStorage.removeItem("publicToken")
 	localStorage.removeItem('accessToken')
 	localStorage.removeItem('gameState')
+	localStorage.removeItem('gameConfig')
+	localStorage.removeItem('isResultPosted')
+	localStorage.removeItem('gameStats')
 	window.location.reload()
 }
 
 const Header = () => {
-
-	useEffect(() => {
-		console.log(localStorage.getItem('username'))
-	}, [])
-
 	return (
 		<header className="navbar_shadow">
 			<div className="navbar_contents">

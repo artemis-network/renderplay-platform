@@ -1,60 +1,60 @@
-import React from 'react'
-import { Container, Row } from 'react-bootstrap'
-
+import Glide from '@glidejs/glide'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header/Header'
-
-
+import { get_types } from '../../service/game.service'
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/outline'
 import ContestCard from '../../components/wordle/ContestCard/ContestCard'
-import { ScrollTrigger } from 'react-gsap'
-import { gsap } from 'gsap'
+import Bar from '../../components/wordle/Bar/Bar'
+
 
 import './Wordle.css'
 
 const Wordle = () => {
-	const items = [1, 2, 3, 4, 5, 6]
 
-	gsap.registerPlugin(ScrollTrigger);
-	let sections = gsap.utils.toArray(".contest_card");
-	gsap.to(sections, {
-		// xPercent: -100 * (sections.length - 1),
-		// ease: "none",
-		// scrollTrigger: {
-		// 	trigger: ".contest",
-		// 	pin: true,
-		// 	scrub: 1,
-		// 	snap: 1 / (sections.length - 1),
-		// 	end: "+=3500",
-		// }
-	});
+	const [game_types, set_game_types] = useState({ game_types: [] })
+
+	useEffect(() => {
+		get_types().then(res => {
+			set_game_types({ game_types: res.data.game_types })
+			new Glide(".glide", {
+				type: "slider",
+				perView: 4,
+				startAt: 0,
+				autoplay: false,
+				rewind: true,
+				gap: 10,
+				bound: false,
+				focusAt: 'center'
+			})
+				.mount();
+		}).catch(err => console.log(err))
 
 
+	}, [])
 
-	return (<div>
+
+	return (<div style={{ background: "#ffffff" }}>
 		<Header />
-		<Container fluid style={{ background: "#533E85" }}>
-			<Row>
-				<div style={{ padding: "1rem", background: "#1B1A17" }}>
-					<ul class="nav justify-content-center">
-						<li class="nav-item">
-							<button class="nav-link active" aria-current="page">Wordle</button>
-						</li>
-						<li class="nav-item">
-							<button class="nav-link">Scavanger Hunt</button>
-						</li>
-						<li class="nav-item">
-							<button class="nav-link">Pictography</button>
-						</li>
+		<div className="container__bg">
+			<Bar />
+			<div className="glide">
+				<div className="glide__arrows" data-glide-el="controls">
+					<ArrowLeftIcon style={{ color: "black", borderRadius: "2vh" }} className="glide__arrow glide__arrow--left h-12 w-12 my-3 cursor-pointer dark:stroke-dark" data-glide-dir="<">
+					</ArrowLeftIcon>
+				</div>
+				<div className="glide__track" data-glide-el="track">
+					<ul className="glide__slides">
+						{game_types.game_types.map((i) =>
+							<ContestCard className="glide__slide" key={i.starts_on} gameConfig={i}></ContestCard>
+						)}
 					</ul>
 				</div>
-				<div>
-					<div className='contest'>
-						{items.map((i) => <ContestCard key={i} gameConfig={i}></ContestCard>)}
-					</div>
+				<div className="glide__arrows" data-glide-el="controls">
+					<ArrowRightIcon style={{ color: "black", borderRadius: "2vh" }} className="glide__arrow glide__arrow--right h-12 w-12 my-3 cursor-pointer dark:stroke-dark" data-glide-dir=">">
+					</ArrowRightIcon>
 				</div>
-			</Row>
-		</Container>
-
-
+			</div>
+		</div>
 	</div>)
 }
 export default Wordle

@@ -94,12 +94,16 @@ const Signup = () => {
                   <div>
                     <div>
                       {!status.error ? (
-                        <div class="alert alert-success">{status.message}</div>
+                        <div className="alert alert-success">
+                          {status.message}
+                        </div>
                       ) : null}
                     </div>
                     <div>
                       {status.error ? (
-                        <div class="alert alert-danger">{status.message}</div>
+                        <div className="alert alert-danger">
+                          {status.message}
+                        </div>
                       ) : null}
                     </div>
                   </div>

@@ -1,0 +1,68 @@
+.timer {
+  box-shadow: 1px 1px 3px #495371, -1px -1px 3px #495371;
+  background-color: #495371;
+  color: white;
+  font-size: 1.5rem;
+  padding: 1rem;
+  margin: 1rem 1rem 1rem 1rem;
+  padding: 1rem 5rem 1rem 1rem;
+  border-radius: 2vh;
+  position: relative;
+}
+
+.timer__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.first_item {
+  display: flex;
+  align-self: flex-start;
+  width: 60%;
+}
+
+.timer img {
+  position: absolute;
+  width: 6rem;
+  top: -1rem;
+  right: -1rem;
+}
+
+.timer__container .first_item .rndv {
+  display: flex;
+  align-self: flex-start;
+  color: #ffffff;
+  display: flex;
+  align-self: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #495371;
+  padding: 0.5rem 1rem 0.5rem 2rem;
+  border-radius: 2vh;
+  transform: translateX(-2rem);
+  z-index: 0;
+  box-shadow: 1px 1px 2px #495371;
+}
+
+.rndv .price {
+  display: flex;
+  font-size: 0.9rem;
+  align-self: center;
+  margin: 0 0.4rem;
+}
+
+.timer__container .first_item img {
+  background-color: #495371;
+  border-radius: 10vh;
+  margin: 1rem 0;
+  width: 4rem;
+  height: 4rem;
+  padding: 0.75rem;
+  z-index: 1;
+  box-shadow: 1px 1px 2px #495371;
+}
+
+.NavLink {
+  font-size: 1.4rem;
+}
