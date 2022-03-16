@@ -14,6 +14,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Switch>
+          <Route exact component={Wordle} path="/" />
           <Route exact component={Wordle} path="/wordle" />
           <Route exact component={WordleGameContainer} path="/wordle/game" />
           <div className="auth_container">
