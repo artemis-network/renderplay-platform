@@ -9,16 +9,8 @@ import './Bar.css'
 const Bar = () => {
 
 	const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
-	return <div className='timer__container'>
-		< InfoModal
-			isOpen={isInfoModalOpen}
-			handleClose={() => setIsInfoModalOpen(false)}
-		/>
-		<div className="first_item">
-			<img src={Logo} alt="logo"></img>
-			<div className='rndv'>$RNDV USD<div className='price'>$320</div></div>
-		</div>
-		<div style={{ padding: "1rem", background: "#ffffff" }}>
+	return <div>
+		<div style={{ background: "#1A132F", padding: "1rem" }}>
 			<ul className="nav nav-pills justify-content-center">
 				<li className="nav-item" >
 					<NavLink to={"/wordle"} className="nav-link NavLink" activeClassName='active'>Wordle</NavLink>
@@ -31,13 +23,24 @@ const Bar = () => {
 				</li>
 			</ul>
 		</div>
-		<div>
-			<QuestionMarkCircleIcon
-				className="h-12 w-12 my-3 cursor-pointer dark:stroke-white"
-				onClick={() => setIsInfoModalOpen(true)}
+		<div className='timer__container'>
+			< InfoModal
+				isOpen={isInfoModalOpen}
+				handleClose={() => setIsInfoModalOpen(false)}
 			/>
-		</div>
-	</div >
+			<div className="first_item">
+				<img src={Logo} alt="logo"></img>
+				<div className='rndv'>$RNDV USD<div className='price'>$320</div></div>
+			</div>
+
+			<div>
+				<QuestionMarkCircleIcon
+					className="h-12 w-12 my-3 cursor-pointer dark:stroke-white"
+					onClick={() => setIsInfoModalOpen(true)}
+				/>
+			</div>
+		</div >
+	</div>
 };
 
 export default Bar

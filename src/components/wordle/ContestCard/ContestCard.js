@@ -1,14 +1,14 @@
 import Countdown from "react-countdown"
-import CoinIcon from '../../../assets/coin.png'
 
 import { Button, ProgressBar } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { PlayIcon, BanIcon } from '@heroicons/react/outline'
+import React from 'react'
 
 
-import './ContestCard.css'
 import { useEffect, useState } from "react"
 import { get_player_status } from '../../../service/game.service'
+import Card2 from './Card2'
 
 const ContestCard = (props) => {
 
@@ -71,6 +71,12 @@ const ContestCard = (props) => {
 
 	}
 
+	const indexFinder = () => {
+		const ind = "_" + Number(props.index + 1)
+		console.log(ind)
+		return ind
+	}
+
 	const renderer = ({ hours, minutes, seconds, completed }) => {
 		if (completed) {
 			return <div className='contest_card__action'>
@@ -78,15 +84,12 @@ const ContestCard = (props) => {
 					{expiredIn() > -1000 * 60 * 30 ?
 						<Button onClick={() => gameConfig(props.gameConfig)}>Play Now</Button>
 						:
-						<Button disabled>Completed</Button>
+						null
 					}
 				</div>
 			</div>
-		} else {
-			return <div className='contest_card__action'>
-				<Button disabled>Opens Soon</Button>;
-			</div>
 		}
+		else return null
 	};
 
 	const exp_renderer = ({ hours, minutes, seconds, completed }) => {
@@ -94,8 +97,7 @@ const ContestCard = (props) => {
 			return <div>
 				{
 					expiredIn() > -1000 * 60 * 30 ?
-
-						<div className="contest_card__header">
+						<div className={"contest_card__header " + colorFinder()}>
 							<PlayIcon
 								color="#219f94"
 								className="h-8 w-8 m-2 cursor-pointer dark:stroke-white"
@@ -105,10 +107,10 @@ const ContestCard = (props) => {
 							</div>
 						</div>
 						:
-						<div className="contest_card__header expired">
+						<div className={"contest_card__header " + colorFinder()}>
 							<BanIcon
 								color="#74959A"
-								className="h-8 w-8 m-2 cursor-pointer dark:stroke-white"
+								className="h-6 w-6 m-2 cursor-pointer dark:stroke-white"
 							/>
 							<div style={{ color: "#74959A" }}>
 								Expired
@@ -130,56 +132,20 @@ const ContestCard = (props) => {
 	}
 
 	const Completed = () => {
-		return <div key={props.gameConfig.id} className='contest_card expired'>
-			<Countdown renderer={exp_renderer} date={Date.now() + expiredIn()} />
-			<div className="contest_card__image">
-				<Button>New</Button>
-				<img width="100%" alt='coin' src={CoinIcon} />
-			</div>
-			<div className='contest_card__content expired'>
-				<div className="contest_card__content_header">Last Price</div>
-				<div className="contest_card__content_subheader">$320</div>
-
-				<div className='c_item'>
-					<div>Pool Prize</div>
-					<div>$342</div>
-				</div>
-				<div className='c_item'>
-					<div>Challege</div>
-					<div>{props.gameConfig.id} letters</div>
-
-				</div>
-			</div>
-			<div className="contest_card__action">
-				<div>
-					<Button disabled>Completed</Button>
-				</div>
-			</div>
-		</div>
-
-	}
-
-	const Running = () => {
 		return (
 			<div key={props.gameConfig.id} className={'contest_card ' + colorFinder()}>
 				<Countdown renderer={exp_renderer} date={Date.now() + expiredIn()} />
 				{expiredIn() < 0 && expiredIn() > -1000 * 60 * 30 ? <ProgressBar now={progressFinder()} /> : null}
-				<div className="contest_card__image">
-					<Button>New</Button>
-					<img width="100%" alt='coin' src={CoinIcon} />
-				</div>
 				<div className={"contest_card__content " + colorFinder()}>
-					<div className="contest_card__content_header">Last Price</div>
-					<div className="contest_card__content_subheader">$320</div>
-
-					<div className='c_item'>
-						<div>Pool Prize</div>
-						<div>$342</div>
-					</div>
-					<div className='c_item'>
-						<div>Challege</div>
-						<div>{props.gameConfig.id} letters</div>
-
+					<div className="c_items">
+						<div className='c_item'>
+							<div>Pool Prize</div>
+							<div>Winner</div>
+						</div>
+						<div className='c_item'>
+							<div>$50</div>
+							<div>0/5</div>
+						</div>
 					</div>
 				</div>
 				<div className="contest_card__action">
@@ -189,9 +155,53 @@ const ContestCard = (props) => {
 		)
 	}
 
+	const Running = () => {
+		return (
+			<div key={props.gameConfig.id} className={'contest_card ' + colorFinder()}>
+				<Countdown renderer={exp_renderer} date={Date.now() + expiredIn()} />
+				{expiredIn() < 0 && expiredIn() > -1000 * 60 * 30 ? <ProgressBar now={progressFinder()} /> : null}
+				<div className={"contest_card__content " + colorFinder()}>
+					<div className="c_items">
+						<div className='c_item'>
+							<div>Pool Prize</div>
+							<div>Winner</div>
+						</div>
+						<div className='c_item'>
+							<div>$50</div>
+							<div>0/5</div>
+						</div>
+					</div>
+				</div>
+				<div className="contest_card__action">
+					<Countdown renderer={renderer} date={Date.now() + expiredIn()} />
+				</div>
+			</div>
+		)
+	}
+
+	const svgRef = React.useRef(null)
+	const [toggle, setToggle] = React.useState(false)
+
+	useEffect(() => {
+		console.log()
+	}, [svgRef])
+
+	const onMenuShow = () => {
+		setToggle(!toggle)
+		if (toggle) {
+			svgRef.current.setAttribute("height", "50")
+			svgRef.current.setAttribute("viewBox", "0 0 1400 700")
+		}
+		else {
+			svgRef.current.setAttribute("viewBox", "0 0 1400 700")
+			svgRef.current.setAttribute("height", "400")
+		}
+	}
 
 	return (
-		<div> {isCompleted ? <Completed /> : <Running />} </div>
+		<div>
+			<Card2 index={indexFinder()} />
+		</div>
 	)
 }
 

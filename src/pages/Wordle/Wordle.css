@@ -1,14 +1,11 @@
 .container__bg {
-  background-color: #ffffff;
-  padding: 2rem 12rem;
+  background-color: #321e43;
 }
 
-.c__icon_group {
+.contest {
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  padding: 1rem 0;
-}
-
-.glide {
-  padding: 2rem 8rem;
+  column-gap: 4rem;
+  padding: 3rem;
 }
