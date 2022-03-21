@@ -1,7 +1,5 @@
-import { StatBar } from '../stats/StatBar'
 import { BaseModal } from './BaseModal'
 import {
-  STATISTICS_TITLE,
 } from '../../constants/strings'
 import { Button } from 'react-bootstrap'
 
@@ -12,17 +10,6 @@ export const StatsModal = ({
   isGameLost,
   isGameWon,
 }) => {
-  if (gameStats.totalGames <= 0) {
-    return (
-      <BaseModal
-        title={STATISTICS_TITLE}
-        isOpen={isOpen}
-        handleClose={handleClose}
-      >
-        <StatBar gameStats={gameStats} />
-      </BaseModal>
-    )
-  }
   return (
     <BaseModal
       title={""}
@@ -39,8 +26,6 @@ export const StatsModal = ({
       <div style={{ padding: "2rem" }}>
         <Button variant="outline-primary" onClick={handleClose}>Close</Button>
       </div>
-
-
     </BaseModal>
   )
 }

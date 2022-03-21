@@ -6,8 +6,6 @@ import Signup from './pages/Signup'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import WordleGameContainer from "./pages/WordleGameContainer/WordleGameContainer";
 
-import "../node_modules/@glidejs/glide/dist/css/glide.core.css";
-import "../node_modules/@glidejs/glide/dist/css/glide.theme.css";
 
 function App() {
   return (
@@ -17,12 +15,8 @@ function App() {
           <Route exact component={Wordle} path="/" />
           <Route exact component={Wordle} path="/wordle" />
           <Route exact component={WordleGameContainer} path="/wordle/game" />
-          <div className="auth_container">
-            <div className="forms">
-              <Route exact component={Login} path='/login' />
-              <Route exact component={Signup} path='/signup' />
-            </div>
-          </div>
+          <Route exact component={Login} path='/login' />
+          <Route exact component={Signup} path='/signup' />
         </Switch>
       </BrowserRouter>
     </div >
