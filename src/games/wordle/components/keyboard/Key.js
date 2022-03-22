@@ -1,6 +1,7 @@
 import classnames from 'classnames'
-import { MAX_WORD_LENGTH, REVEAL_TIME_MS } from '../../constants/settings'
+import { REVEAL_TIME_MS } from '../../constants/settings'
 import { getStoredIsHighContrastMode } from '../../lib/localStorage'
+import { useState, useEffect } from 'react'
 
 
 export const Key = ({
@@ -11,8 +12,16 @@ export const Key = ({
   onClick,
   isRevealing,
 }) => {
+
+  const [MAX_WORD_LENGTH, SET_MAX] = useState(5)
+
   const keyDelayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH
   const isHighContrast = getStoredIsHighContrastMode()
+
+  const data = JSON.parse(localStorage.getItem("gameConfig"))
+  useEffect(() => {
+    SET_MAX(data.game_type)
+  }, [MAX_WORD_LENGTH, data.game_type])
 
   const classes = classnames(
     'flex items-center justify-center rounded mx-0.5 text-xs font-bold cursor-pointer select-none dark:text-white',

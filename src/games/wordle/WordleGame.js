@@ -11,7 +11,6 @@ import {
   WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE,
 } from './constants/strings'
 import {
-  MAX_WORD_LENGTH,
   MAX_CHALLENGES,
   REVEAL_TIME_MS,
   GAME_LOST_INFO_DELAY,
@@ -40,6 +39,7 @@ import { post_winner, get_player_status } from '../../service/game.service'
 
 function WorldleGame() {
 
+
   const history = useHistory()
 
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } = useAlert()
@@ -52,6 +52,7 @@ function WorldleGame() {
   const [currentRowClass, setCurrentRowClass] = useState('')
   const [isGameLost, setIsGameLost] = useState(false)
   const [isRevealing, setIsRevealing] = useState(false)
+  const [MAX_WORD_LENGTH, SET_MAX] = useState(5)
 
   const [guesses, setGuesses] = useState(() => {
     const loaded = loadGameStateFromLocalStorage()
@@ -83,22 +84,27 @@ function WorldleGame() {
     setCurrentRowClass('')
   }
 
+
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, solution })
   }, [guesses])
 
-  useEffect(() => {
-    const username = localStorage.getItem("username")
-    const data = JSON.parse(localStorage.getItem("gameConfig"))
+  const username = localStorage.getItem("username")
+  const data = JSON.parse(localStorage.getItem("gameConfig"))
 
+  useEffect(() => {
+    SET_MAX(data.game_type)
+  }, [MAX_WORD_LENGTH, data.game_type])
+
+  useEffect(() => {
     if (username) {
       get_player_status({ username: username })
         .then(res => {
           const is_first_game = res.data.status.is_first_game
-          const is_same_contest = data.session.contest_id === res.data.status.contest_id
+          const is_same_contest = data.contest_id === res.data.status.contest_id
 
           if (is_first_game || !is_same_contest) {
-            let time = new Date(data.session.starts_on).getTime() + (1000 * 60 * 30) - (1000 * 60 * 60 * 5) - (1000 * 60 * 30)
+            let time = new Date(data.starts_on).getTime() + (1000 * 60 * 30) - (1000 * 60 * 60 * 5) - (1000 * 60 * 30)
             const now = new Date(Date.now()).getTime()
             const exp = time - now
             set_timer_out(exp)
@@ -112,8 +118,8 @@ function WorldleGame() {
                 username: localStorage.getItem("username"),
                 chances: guesses,
                 game_type: gameConfig.game_type,
-                began_at: gameConfig.session.starts_on,
-                contest_id: gameConfig.session.contest_id,
+                began_at: gameConfig.starts_on,
+                contest_id: gameConfig.contest_id,
                 is_won: false
               }
               post_winner(data).then(res => {
@@ -138,8 +144,8 @@ function WorldleGame() {
                 username: localStorage.getItem("username"),
                 chances: guesses,
                 game_type: gameConfig.game_type,
-                began_at: gameConfig.session.starts_on,
-                contest_id: gameConfig.session.contest_id,
+                began_at: gameConfig.starts_on,
+                contest_id: gameConfig.contest_id,
                 is_won: true
               }
               post_winner(data).then(res => {
@@ -149,14 +155,12 @@ function WorldleGame() {
               }).catch(err => console.log(err))
 
             }
-          } else {
-
-            return history.push("/wordle")
-          }
+          } else return history.push("/wordle")
         })
         .catch(err => { console.log(err) })
     } else return history.push("/wordle")
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameWon, isGameLost, showSuccessAlert, history])
 
 

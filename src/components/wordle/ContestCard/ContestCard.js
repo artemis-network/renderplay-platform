@@ -2,34 +2,32 @@ import React from 'react'
 import Countdown from "react-countdown"
 import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon } from '@heroicons/react/outline'
 
-// import { useHistory } from 'react-router-dom'
-import { PlayIcon, BanIcon } from '@heroicons/react/outline'
+import { useHistory } from 'react-router-dom'
+import { PlayIcon, BanIcon, ClipboardCheckIcon } from '@heroicons/react/outline'
 import Controller from '../../../assets/controller.png'
 
 import './ContestCard.css'
 
 const ContestCard = (props) => {
 
-	// const history = useHistory()
+	const history = useHistory()
 
-	const { timer_1, timer_2 } = { timer_1: props.game_session[0].starts_on, timer_2: props.game_session[1].starts_on }
-	console.log(timer_1)
 	const cssFinder = () => "_" + (props.index + 1)
-	const expiredIn = (date) => {
+	const expiredIn = () => {
 		const now = new Date(Date.now() + (1000 * 60 * 60 * 5) + (1000 * 60 * 30))
-		const time = new Date(date)
-		const exp = time.getTime() - now.getTime()
-		return exp
+		const time = new Date(props.starts_on)
+		return time.getTime() - now.getTime()
 	}
-	// const gameConfig = (i) => {
-	// 	const username = localStorage.getItem("username")
-	// 	if (username !== null) {
-	// 		localStorage.setItem("gameConfig", JSON.stringify(i))
-	// 		history.push("/wordle/game")
-	// 	}
-	// 	else
-	// 		history.push("/login")
-	// }
+
+	const gameConfig = () => {
+		const username = localStorage.getItem("username")
+		if (username !== null) {
+			localStorage.setItem("gameConfig", JSON.stringify(props))
+			return history.push("/wordle/game")
+		}
+		else return history.push("/login")
+	}
+
 	const Expired = () => <div className="contest__card__header">
 		<BanIcon
 			color="#ffffff"
@@ -39,6 +37,7 @@ const ContestCard = (props) => {
 			Expired
 		</div>
 	</div>
+
 	const exp_renderer = ({ hours, minutes, seconds, completed }) => {
 		if (completed)
 			return <div className="contest__card__header">
@@ -110,50 +109,6 @@ const ContestCard = (props) => {
 					<div className={"c-card c-card--back"} style={{ transform: "translateY(-1rem)" }}>
 						<div className={"c-card__details"}>
 							<div className={"c-card__details__top"}>
-
-								{/* <h1>RENDLE #{props.game_session[1].contest_id}</h1> */}
-
-
-								<div style={{ display: "flex", flexDirection: "column", transform: "translateY(-1rem)", padding: "2rem 2rem" }}>
-									<div style={{ display: "flex", justifyContent: "center", color: "white", fontSize: "1.25rem" }}>
-										Play & Win
-									</div>
-									<div style={{ display: "flex", justifyContent: "center", fontSize: "1.5rem", color: "white", fontWeight: "bold" }}>
-										100,000 REND
-									</div>
-								</div>
-
-
-							</div>
-							<div className={"c-card__details__bottom"}>
-								{
-									expiredIn(timer_2) < -1000 * 60 * 30 ?
-										<Expired /> : <Countdown renderer={exp_renderer} date={Date.now() + expiredIn(timer_2)} />
-								}
-							</div>
-						</div>
-					</div>
-					<div className={"c-card c-card--front"} style={{ transform: "translateY(-1rem)" }}>
-						<div className={"c-card__details"}>
-							<div className={"c-card__details__top"}>
-								{/* {
-									expiredIn(timer_1) > -1000 * 60 * 30 && expiredIn(timer_1) < 0 ?
-										<PlayIcon
-											onClick={() => gameConfig({
-												session: props.game_session[0],
-												game_type: props.game_type,
-												id: props.id
-											})}
-											className='h-14 w-14 cursor-pointer'
-											style={{ position: "absolute", right: "15%" }}
-											color="white" />
-										:
-										<ClipboardCheckIcon
-											className='h-14 w-14 cursor-pointer'
-											style={{ position: "absolute", right: "15%" }}
-											color="white" />
-								} */}
-								{/* <h1>RENDLE #{props.game_session[0].contest_id}</h1> */}
 								<div style={{ display: "flex", flexDirection: "column", transform: "translateY(-1rem)", padding: "2rem 2rem" }}>
 									<div style={{ display: "flex", justifyContent: "center", color: "white", fontSize: "1.25rem" }}>
 										0/10
@@ -164,11 +119,28 @@ const ContestCard = (props) => {
 								</div>
 							</div>
 							<div className={"c-card__details__bottom"}>
-								{/* {
-									expiredIn(timer_1) < -1000 * 60 * 30 ?
-										<Expired /> : <Countdown renderer={exp_renderer} date={Date.now() + expiredIn(timer_1)} />
-								} */}
 								<div style={{ color: "white" }}>Entry Fee 0.003 BNB</div>
+							</div>
+						</div>
+					</div>
+					<div className={"c-card c-card--front"} style={{ transform: "translateY(-1rem)" }}>
+						<div className={"c-card__details"}>
+							<div className={"c-card__details__top"}>
+								<div style={{ display: "flex", flexDirection: "column", transform: "translateY(-1rem)", padding: "2rem 2rem" }}>
+									<div style={{ display: "flex", justifyContent: "center", color: "white", fontSize: "1.25rem" }}>
+										Play & Win
+									</div>
+									<div style={{ display: "flex", justifyContent: "center", fontSize: "1.5rem", color: "white", fontWeight: "bold" }}>
+										100,000 REND
+									</div>
+								</div>
+							</div>
+							<div className={"c-card__details__bottom"}>
+
+								{
+									expiredIn() < -1000 * 60 * 30 ?
+										<Expired /> : <Countdown renderer={exp_renderer} date={Date.now() + expiredIn()} />
+								}
 							</div>
 						</div>
 					</div>
@@ -179,14 +151,10 @@ const ContestCard = (props) => {
 				<SwitchVerticalIcon className='h-4 w-4 cursor-pointer' color="white" />
 			</label>
 
-			{/* {
-				expiredIn(timer_2) > -1000 * 60 * 30 && expiredIn(timer_2) ?
+			{
+				expiredIn() > -1000 * 60 * 30 && expiredIn() ?
 					<PlayIcon
-						onClick={() => gameConfig({
-							session: props.game_session[0],
-							game_type: props.game_type,
-							id: props.id
-						})}
+						onClick={() => gameConfig()}
 						className='h-14 w-14 cursor-pointer'
 						style={{
 							position: "absolute",
@@ -202,7 +170,7 @@ const ContestCard = (props) => {
 						className='h-14 w-14 cursor-pointer'
 						style={{ position: "absolute", right: "15%" }}
 						color="white" />
-			} */}
+			}
 
 		</div >
 	);
