@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
 .content {
   min-width: 30rem;
   min-height: 30rem;
@@ -19,22 +20,22 @@
   transform: translateY(-3.5rem);
 }
 
-.content .text {
-  font-size: 25px;
-  font-weight: 600;
-  margin-bottom: 35px;
-  color: #000;
-}
-
 .content .field {
-  height: 50px;
+  min-height: 3.5rem;
   width: 100%;
   display: flex;
   position: relative;
+  row-gap: 0.2rem;
+  flex-direction: column;
+}
+
+.content .field div {
+  display: flex;
+  margin: 0 0.5rem;
 }
 
 .field input {
-  height: 100%;
+  min-height: 3.5rem;
   width: 100%;
   padding-left: 45px;
   font-size: 18px;
@@ -47,8 +48,13 @@
   font-family: "Poppins", sans-serif;
 }
 
-.field:nth-child(2) {
-  margin-top: 20px;
+.field {
+  margin-bottom: 20px;
+}
+
+.field div {
+  display: flex;
+  justify-content: center;
 }
 
 .field span {

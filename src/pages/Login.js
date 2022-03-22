@@ -8,7 +8,6 @@ import { useFormik } from "formik";
 import Logo from '../assets/logo.png'
 
 import Bar from '../components/wordle/Bar/Bar'
-import Footer from '../components/wordle/Footer/Footer'
 import { UserCircleIcon, LockClosedIcon } from '@heroicons/react/outline'
 import './Form.css'
 
@@ -181,13 +180,9 @@ const Login = () => {
             <p className="mb-0 text-muted mt-3 text-center">
               © Renderverse.
             </p>
-
-
           </form>
         </div>
       </div>
-
-      < Footer />
     </div >
   );
 };

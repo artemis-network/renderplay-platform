@@ -6,7 +6,6 @@ import { Button } from 'react-bootstrap'
 export const StatsModal = ({
   isOpen,
   handleClose,
-  gameStats,
   isGameLost,
   isGameWon,
 }) => {
