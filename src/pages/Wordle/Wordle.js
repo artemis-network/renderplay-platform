@@ -14,7 +14,6 @@ import Line2Img from '../../assets/line2.png'
 
 import './Wordle.css'
 import Bar from '../../components/wordle/Bar/Bar'
-import Footer from '../../components/wordle/Footer/Footer'
 
 const Wordle = () => {
 
@@ -41,7 +40,6 @@ const Wordle = () => {
 					{game_types.game_types.map((game, i) => <ContestCard {...game} key={i} index={i} />)}
 				</div>
 			</Container>
-			<Footer />
 		</div>
 	</div>)
 }

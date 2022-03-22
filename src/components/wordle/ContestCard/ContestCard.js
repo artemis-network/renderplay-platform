@@ -1,16 +1,16 @@
-import './ContestCard.css'
-import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon } from '@heroicons/react/outline'
-import Countdown from "react-countdown"
-
-
 import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { PlayIcon, BanIcon, ClipboardCheckIcon } from '@heroicons/react/outline'
+import Countdown from "react-countdown"
+import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon } from '@heroicons/react/outline'
+
+// import { useHistory } from 'react-router-dom'
+import { PlayIcon, BanIcon } from '@heroicons/react/outline'
 import Controller from '../../../assets/controller.png'
+
+import './ContestCard.css'
 
 const ContestCard = (props) => {
 
-	const history = useHistory()
+	// const history = useHistory()
 
 	const { timer_1, timer_2 } = { timer_1: props.game_session[0].starts_on, timer_2: props.game_session[1].starts_on }
 	console.log(timer_1)
@@ -21,15 +21,15 @@ const ContestCard = (props) => {
 		const exp = time.getTime() - now.getTime()
 		return exp
 	}
-	const gameConfig = (i) => {
-		const username = localStorage.getItem("username")
-		if (username !== null) {
-			localStorage.setItem("gameConfig", JSON.stringify(i))
-			history.push("/wordle/game")
-		}
-		else
-			history.push("/login")
-	}
+	// const gameConfig = (i) => {
+	// 	const username = localStorage.getItem("username")
+	// 	if (username !== null) {
+	// 		localStorage.setItem("gameConfig", JSON.stringify(i))
+	// 		history.push("/wordle/game")
+	// 	}
+	// 	else
+	// 		history.push("/login")
+	// }
 	const Expired = () => <div className="contest__card__header">
 		<BanIcon
 			color="#ffffff"
@@ -179,7 +179,7 @@ const ContestCard = (props) => {
 				<SwitchVerticalIcon className='h-4 w-4 cursor-pointer' color="white" />
 			</label>
 
-			{
+			{/* {
 				expiredIn(timer_2) > -1000 * 60 * 30 && expiredIn(timer_2) ?
 					<PlayIcon
 						onClick={() => gameConfig({
@@ -202,7 +202,7 @@ const ContestCard = (props) => {
 						className='h-14 w-14 cursor-pointer'
 						style={{ position: "absolute", right: "15%" }}
 						color="white" />
-			}
+			} */}
 
 		</div >
 	);

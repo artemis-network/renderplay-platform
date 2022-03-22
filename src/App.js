@@ -4,7 +4,9 @@ import Wordle from "./pages/Wordle/Wordle";
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+
 import WordleGameContainer from "./pages/WordleGameContainer/WordleGameContainer";
+import Footer from './components/wordle/Footer/Footer'
 
 
 function App() {
@@ -19,6 +21,7 @@ function App() {
           <Route exact component={Signup} path='/signup' />
         </Switch>
       </BrowserRouter>
+      <Footer />
     </div >
   );
 }
