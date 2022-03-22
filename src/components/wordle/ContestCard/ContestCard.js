@@ -57,7 +57,20 @@ const ContestCard = (props) => {
 					className="h-6 w-6 m-2 cursor-pointer dark:stroke-red"
 				/>
 				<div style={{ color: "#ffffff", display: "flex", columnGap: "4rem" }}>
-					{"Starts in"} <div style={{ fontSize: ".8rem" }}>{hours}h:{minutes}m:{seconds}:s</div>
+					{"Starts in"} <div style={{ fontSize: ".8rem" }}>
+						<div>
+							<span style={{ background: "#581291", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+								{hours}
+							</span>
+							<span style={{ background: "#581291", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+								{minutes}
+							</span>
+							<span style={{ background: "#581291", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+								{seconds}
+							</span>
+						</div>
+
+					</div>
 				</div>
 			</div>
 	}
@@ -80,10 +93,10 @@ const ContestCard = (props) => {
 
 			<div className={"c-mobile-view__inner"}>
 				<div className={"c-mobile__topbar"}>
-					<label htmlFor={"u-topbar__button" + cssFinder()} className={"c-button c-topbar__button--menu fa fa-bars"}>
+					<label htmlFor={"u-topbar__button" + cssFinder()} className={"c-button c-topbar__button--menu"}>
 						<MenuIcon style={{ transform: "translateY(-1rem)" }} className='h-6 2-6' color='white' />
 					</label>
-					<label htmlFor={"u-topbar__button" + cssFinder()} className={"c-button c-topbar__button--close fa fa-times"}>
+					<label htmlFor={"u-topbar__button" + cssFinder()} className={"c-button c-topbar__button--close"}>
 						<XIcon style={{ transform: "translateY(-1rem)" }} className='h-6 2-6' color='white' />
 					</label>
 					<ul>
