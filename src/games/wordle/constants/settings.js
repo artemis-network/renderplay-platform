@@ -1,7 +1,4 @@
-const letters = JSON.parse(localStorage.getItem("gameConfig"))
-let number = 5
-if (letters.game_type !== null) number = letters.game_type
-export const MAX_WORD_LENGTH = number
+export const MAX_WORD_LENGTH = 5
 export const MAX_CHALLENGES = 7
 export const ALERT_TIME_MS = 2000
 export const REVEAL_TIME_MS = 350
