@@ -1,1 +1,1 @@
-export const SevenLetterGuesses = ['']
+export const SevenLetterGuesses = ['ability', 'absence', 'academy', 'account', 'accused']

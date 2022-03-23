@@ -4,10 +4,12 @@ import { CurrentRow } from './CurrentRow'
 import { EmptyRow } from './EmptyRow'
 
 export const Grid = ({
+  solution,
   guesses,
   currentGuess,
   isRevealing,
   currentRowClassName, }) => {
+
   const empties =
     guesses.length < MAX_CHALLENGES - 1
       ? Array.from(Array(MAX_CHALLENGES - 1 - guesses.length))
@@ -19,6 +21,7 @@ export const Grid = ({
         <CompletedRow
           key={i}
           guess={guess}
+          solution={solution}
           isRevealing={isRevealing && guesses.length - 1 === i}
         />
       ))}

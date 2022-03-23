@@ -42,14 +42,12 @@ const Signup = () => {
     onSubmit: (values) => {
       signUp(values)
         .then((res) => {
-          console.log(res.data);
           if (res.data.errorType === "USER_ALREADY_EXIST") {
             setStatus({
               status: res.data.status,
               error: res.data.error,
               message: res.data.message,
             });
-            console.log(status);
           }
 
           if (res.data.errorType === "SUCCESS") {
@@ -93,7 +91,7 @@ const Signup = () => {
           margin: "10rem ",
         }}
       >
-        <div class="content">
+        <div className="content">
           <img src={Logo} alt="logo" />
           <form action="#">
             {status.status ? (
@@ -111,7 +109,7 @@ const Signup = () => {
               </div>
             ) : null}
 
-            <div class="field">
+            <div className="field">
               <span>
                 <UserCircleIcon className="h-6 w-6" color="black" />
               </span>
@@ -128,7 +126,7 @@ const Signup = () => {
                 <div style={error}> {form.errors.name} </div>
               ) : null}
             </div>
-            <div class="field">
+            <div className="field">
               <span>
                 <UserCircleIcon className="h-6 w-6" color="black" />
               </span>
@@ -147,7 +145,7 @@ const Signup = () => {
                 <div> </div>
               )}
             </div>
-            <div class="field">
+            <div className="field">
               <span>
                 <LockClosedIcon className="h-6 w-6" color="black" />
               </span>
@@ -166,7 +164,7 @@ const Signup = () => {
             </div>
 
             <PasswordStrengthBar password={form.values.password} />
-            <div class="field">
+            <div className="field">
               <span>
                 <LockClosedIcon className="h-6 w-6" color="black" />
               </span>

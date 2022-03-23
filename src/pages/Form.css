@@ -38,7 +38,7 @@
   min-height: 3.5rem;
   width: 100%;
   padding-left: 45px;
-  font-size: 18px;
+  font-size: 1rem;
   outline: none;
   border: none;
   color: #595959;
@@ -50,6 +50,7 @@
 
 .field {
   margin-bottom: 20px;
+  font-size: 1rem;
 }
 
 .field div {
@@ -61,7 +62,7 @@
   position: absolute;
   line-height: 50px;
   left: 0.75rem;
-  top: 0.75rem;
+  top: 0.95rem;
   color: #595959;
 }
 
@@ -83,4 +84,12 @@
 .n_button:focus {
   color: #3498db;
   box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #ffffff73;
+}
+
+@media screen and (max-width: 1200px) {
+  .content {
+    margin: 0 0rem 16rem 0rem;
+    min-width: 90vw;
+    min-height: 50vh;
+  }
 }

@@ -1,9 +1,8 @@
-import { solution, unicodeSplit } from './words'
-
+import { unicodeSplit } from './words'
 
 export const getStatuses = (guesses) => {
   const charObj = {}
-  const splitSolution = unicodeSplit(solution)
+  const splitSolution = unicodeSplit(guesses)
 
   guesses.forEach((word) => {
     unicodeSplit(word).forEach((letter, i) => {
@@ -27,12 +26,11 @@ export const getStatuses = (guesses) => {
   return charObj
 }
 
-export const getGuessStatuses = (guess) => {
+export const getGuessStatuses = (guess, solution) => {
   const splitSolution = unicodeSplit(solution)
   const splitGuess = unicodeSplit(guess)
 
   const solutionCharsTaken = splitSolution.map((_) => false)
-
   const statuses = Array.from(Array(guess.length))
 
   // handle all correct cases first
@@ -46,18 +44,14 @@ export const getGuessStatuses = (guess) => {
 
   splitGuess.forEach((letter, i) => {
     if (statuses[i]) return
-
     if (!splitSolution.includes(letter)) {
-      // handles the absent case
       statuses[i] = 'absent'
       return
     }
-
     // now we are left with "present"s
     const indexOfPresentChar = splitSolution.findIndex(
       (x, index) => x === letter && !solutionCharsTaken[index]
     )
-
     if (indexOfPresentChar > -1) {
       statuses[i] = 'present'
       solutionCharsTaken[indexOfPresentChar] = true

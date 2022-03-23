@@ -12,8 +12,9 @@ import SevenRendleImg from '../../assets/7rendle.png'
 import Line1Img from '../../assets/line1.png'
 import Line2Img from '../../assets/line2.png'
 
-import './Wordle.css'
 import Bar from '../../components/wordle/Bar/Bar'
+
+import './Wordle.css'
 
 const Wordle = () => {
 

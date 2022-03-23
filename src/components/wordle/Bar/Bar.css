@@ -66,3 +66,54 @@
 .NavLink {
   font-size: 1rem;
 }
+
+.nav_end__mid_desktop {
+  display: flex;
+  justify-content: center;
+}
+
+.nav_end__items_desktop {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nav_end__items_mobile {
+  display: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .nav_end__items_desktop {
+    display: none;
+  }
+  .nav_end__mid_desktop {
+    display: none;
+  }
+  .nav_end__items_mobile {
+    display: flex;
+  }
+}
+
+.side_bar {
+  position: fixed;
+  width: 100vw;
+  overflow-x: hidden;
+  border-bottom-right-radius: 2vh;
+  border-bottom-left-radius: 2vh;
+  z-index: 3;
+  background-color: white;
+}
+
+.side_bar__content {
+  z-index: 3;
+  display: flex;
+  justify-content: baseline;
+  flex-direction: column;
+  padding: 4rem 2rem;
+}
+
+.side_bar__content button {
+  width: 100%;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  z-index: 3;
+}

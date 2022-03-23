@@ -10,6 +10,7 @@ export const Keyboard = ({
   onEnter,
   guesses,
   isRevealing,
+  MAX_WORD_LENGTH
 }) => {
   const charStatuses = getStatuses(guesses)
 
@@ -38,9 +39,7 @@ export const Keyboard = ({
       }
     }
     window.addEventListener('keyup', listener)
-    return () => {
-      window.removeEventListener('keyup', listener)
-    }
+    return () => window.removeEventListener('keyup', listener)
   }, [onEnter, onDelete, onChar])
 
   return (
@@ -53,6 +52,7 @@ export const Keyboard = ({
             onClick={onClick}
             status={charStatuses[key]}
             isRevealing={isRevealing}
+            MAX_WORD_LENGTH={MAX_WORD_LENGTH}
           />
         ))}
       </div>
@@ -64,11 +64,12 @@ export const Keyboard = ({
             onClick={onClick}
             status={charStatuses[key]}
             isRevealing={isRevealing}
+            MAX_WORD_LENGTH={MAX_WORD_LENGTH}
           />
         ))}
       </div>
       <div className="flex justify-center">
-        <Key width={65.4} value="ENTER" onClick={onClick}>
+        <Key MAX_WORD_LENGTH={MAX_WORD_LENGTH} width={65.4} value="ENTER" onClick={onClick}>
           {ENTER_TEXT}
         </Key>
         {['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map((key) => (
@@ -78,9 +79,10 @@ export const Keyboard = ({
             onClick={onClick}
             status={charStatuses[key]}
             isRevealing={isRevealing}
+            MAX_WORD_LENGTH={MAX_WORD_LENGTH}
           />
         ))}
-        <Key width={65.4} value="DELETE" onClick={onClick}>
+        <Key MAX_WORD_LENGTH={MAX_WORD_LENGTH} width={65.4} value="DELETE" onClick={onClick}>
           {DELETE_TEXT}
         </Key>
       </div>

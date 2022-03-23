@@ -1,26 +1,9 @@
 import { getGuessStatuses } from './statuses'
-import { solutionIndex } from './words'
-import { GAME_TITLE } from '../constants/strings'
-import { MAX_CHALLENGES } from '../constants/settings'
 
-export const shareStatus = (
-  guesses,
-  lost,
-  isHardMode,
-  isDarkMode,
-  isHighContrastMode
-) => {
-  navigator.clipboard.writeText(
-    `${GAME_TITLE} ${solutionIndex} ${lost ? 'X' : guesses.length
-    }/${MAX_CHALLENGES}${isHardMode ? '*' : ''}\n\n` +
-    generateEmojiGrid(guesses, getEmojiTiles(isDarkMode, isHighContrastMode))
-  )
-}
-
-export const generateEmojiGrid = (guesses, tiles) => {
+export const generateEmojiGrid = (guesses, tiles, solution) => {
   return guesses
     .map((guess) => {
-      const status = getGuessStatuses(guess)
+      const status = getGuessStatuses(guess, solution)
       return guess
         .split('')
         .map((_, i) => {
@@ -36,12 +19,4 @@ export const generateEmojiGrid = (guesses, tiles) => {
         .join('')
     })
     .join('\n')
-}
-
-const getEmojiTiles = (isDarkMode, isHighContrastMode) => {
-  let tiles = []
-  tiles.push(isHighContrastMode ? '🟧' : '🟩')
-  tiles.push(isHighContrastMode ? '🟦' : '🟨')
-  tiles.push(isDarkMode ? '⬛' : '⬜')
-  return tiles
 }

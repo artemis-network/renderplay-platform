@@ -78,7 +78,7 @@ const Login = () => {
     <div style={{ background: "#321E43", }}>
       <Bar />
       <div style={{ display: "flex", justifyContent: "center", margin: "10rem " }}>
-        <div class="content">
+        <div className="content">
           <img src={Logo} alt="logo" />
           <form action="#">
             {status.status ? (
@@ -96,7 +96,7 @@ const Login = () => {
               </div>
             ) : null}
 
-            <div class="field">
+            <div className="field">
               <span>
                 <UserCircleIcon className="h-6 w-6" color="black" />
               </span>
@@ -109,7 +109,7 @@ const Login = () => {
                 type="email"
               />
             </div>
-            <div class="field">
+            <div className="field">
               <span>
                 <LockClosedIcon className="h-6 w-6" color="black" />
               </span>

@@ -1,68 +1,81 @@
 import { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
+
+import { useAlert } from './context/AlertContext'
+import { AlertContainer } from './components/alerts/AlertContainer'
+
 import { InfoModal } from './components/modals/InfoModal'
 import { StatsModal } from './components/modals/StatsModal'
-import { SettingsModal } from './components/modals/SettingsModal'
-import {
-  WIN_MESSAGES,
-  GAME_COPIED_MESSAGE,
-  NOT_ENOUGH_LETTERS_MESSAGE,
-  WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE,
-} from './constants/strings'
-import {
-  MAX_CHALLENGES,
-  REVEAL_TIME_MS,
-  GAME_LOST_INFO_DELAY,
-  WELCOME_INFO_MODAL_MS,
-} from './constants/settings'
-import {
-  isWordInWordList,
-  isWinningWord,
-  solution,
-  unicodeLength,
-} from './lib/words'
-import {
-  loadGameStateFromLocalStorage,
-  saveGameStateToLocalStorage,
-} from './lib/localStorage'
-import { default as GraphemeSplitter } from 'grapheme-splitter'
 
-import './App.css'
-import { AlertContainer } from './components/alerts/AlertContainer'
-import { useAlert } from './context/AlertContext'
-import Countdown from 'react-countdown'
-import { useHistory } from 'react-router-dom'
+import { WIN_MESSAGES, GAME_COPIED_MESSAGE, NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE } from './constants/strings'
+import { MAX_CHALLENGES, REVEAL_TIME_MS, GAME_LOST_INFO_DELAY, WELCOME_INFO_MODAL_MS } from './constants/settings'
+import { isWordInWordList, isWinningWord, getWordOfDay, unicodeLength } from './lib/words'
+import { loadGameStateFromLocalStorage, saveGameStateToLocalStorage } from './lib/localStorage'
+
+import { fiveLetterList } from './constants/config/fiveLetterList'
+import { sixLetterList } from './constants/config/sixLetterList'
+import { sevenLetterList } from './constants/config/sevenLetterList'
+import { FiveLetterGuesses } from './constants/config/fiveLetterGuesses'
+import { sixLetterGuesses } from './constants/config/sixLetterGuesses'
+import { SevenLetterGuesses } from './constants/config/sevenLetterGuesses'
+
+import { default as GraphemeSplitter } from 'grapheme-splitter'
 
 import { post_winner, get_player_status } from '../../service/game.service'
 
+import './App.css'
 
 function WorldleGame() {
-
 
   const history = useHistory()
 
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } = useAlert()
   const [currentGuess, setCurrentGuess] = useState('')
-  const [timer_out, set_timer_out] = useState(1000 * 30)
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [currentRowClass, setCurrentRowClass] = useState('')
   const [isGameLost, setIsGameLost] = useState(false)
   const [isRevealing, setIsRevealing] = useState(false)
   const [MAX_WORD_LENGTH, SET_MAX] = useState(5)
+  const [WORDS, SET_WORDS] = useState([])
+  const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
+
+  const [solution, setSolution] = useState("")
+  const username = localStorage.getItem("username")
+  const data = JSON.parse(localStorage.getItem("gameConfig"))
+
+  useEffect(() => {
+    SET_MAX(data.game_type)
+    if (data.game_type === 5) {
+      SET_WORDS(fiveLetterList)
+      SET_VALID_GUESSES(FiveLetterGuesses)
+      const { solution } = getWordOfDay(fiveLetterList)
+      setSolution(solution)
+    }
+    if (data.game_type === 6) {
+      SET_WORDS(sixLetterList)
+      SET_VALID_GUESSES(sixLetterGuesses)
+      const { solution } = getWordOfDay(sixLetterList)
+      setSolution(solution)
+    }
+    if (data.game_type === 7) {
+      SET_WORDS(sevenLetterList)
+      SET_VALID_GUESSES(SevenLetterGuesses)
+      const { solution } = getWordOfDay(sevenLetterList)
+      setSolution(solution)
+    }
+
+  }, [MAX_WORD_LENGTH, data.game_type, solution])
 
   const [guesses, setGuesses] = useState(() => {
     const loaded = loadGameStateFromLocalStorage()
-    if (loaded?.solution !== solution) {
-      return []
-    }
+    if (loaded?.solution !== solution) return []
     const gameWasWon = loaded.guesses.includes(solution)
-    if (gameWasWon) {
-      setIsGameWon(true)
-    }
+    if (gameWasWon) setIsGameWon(true)
     if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
       setIsGameLost(true)
       showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
@@ -84,31 +97,19 @@ function WorldleGame() {
     setCurrentRowClass('')
   }
 
-
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, solution })
-  }, [guesses])
-
-  const username = localStorage.getItem("username")
-  const data = JSON.parse(localStorage.getItem("gameConfig"))
-
-  useEffect(() => {
-    SET_MAX(data.game_type)
-  }, [MAX_WORD_LENGTH, data.game_type])
+  }, [guesses, solution])
 
   useEffect(() => {
     if (username) {
-      get_player_status({ username: username })
+      get_player_status({ username: username, game_type: data.game_type, contest_id: data.contest_id })
         .then(res => {
+          console.log(res.data)
           const is_first_game = res.data.status.is_first_game
           const is_same_contest = data.contest_id === res.data.status.contest_id
 
           if (is_first_game || !is_same_contest) {
-            let time = new Date(data.starts_on).getTime() + (1000 * 60 * 30) - (1000 * 60 * 60 * 5) - (1000 * 60 * 30)
-            const now = new Date(Date.now()).getTime()
-            const exp = time - now
-            set_timer_out(exp)
-
             let guesses = JSON.parse(localStorage.getItem("gameState"))
             guesses = guesses.guesses.length
             let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
@@ -127,10 +128,11 @@ function WorldleGame() {
                 localStorage.removeItem("gameStats")
                 return history.push("/wordle")
               }).catch(err => console.log(err))
+
+              setTimeout(() => {
+                setIsStatsModalOpen(true)
+              }, GAME_LOST_INFO_DELAY)
             }
-            setTimeout(() => {
-              setIsStatsModalOpen(true)
-            }, GAME_LOST_INFO_DELAY)
 
             if (isGameWon) {
               const winMessage =
@@ -140,6 +142,7 @@ function WorldleGame() {
                 delayMs,
                 onClose: () => setIsStatsModalOpen(true),
               })
+
               const data = {
                 username: localStorage.getItem("username"),
                 chances: guesses,
@@ -148,12 +151,12 @@ function WorldleGame() {
                 contest_id: gameConfig.contest_id,
                 is_won: true
               }
+
               post_winner(data).then(res => {
                 localStorage.removeItem("gameState")
                 localStorage.removeItem("gameStats")
                 return history.push("/wordle")
               }).catch(err => console.log(err))
-
             }
           } else return history.push("/wordle")
         })
@@ -177,9 +180,8 @@ function WorldleGame() {
 
   const onEnter = () => {
     if (isGameWon || isGameLost) return
-
     const condition_1 = (unicodeLength(currentGuess) === MAX_WORD_LENGTH)
-    const condition_2 = !isWordInWordList(currentGuess)
+    const condition_2 = !isWordInWordList(currentGuess, WORDS, VALID_GUESSES)
     const condition_3 = guesses.length < MAX_CHALLENGES
 
     if (!condition_1) {
@@ -200,7 +202,7 @@ function WorldleGame() {
       setIsRevealing(false)
     }, REVEAL_TIME_MS * MAX_WORD_LENGTH)
 
-    const winningWord = isWinningWord(currentGuess)
+    const winningWord = isWinningWord(currentGuess, solution)
 
     if (condition_1 && condition_3 && !isGameWon) {
       setGuesses([...guesses, currentGuess])
@@ -214,26 +216,16 @@ function WorldleGame() {
         })
       }
     }
-  }
-
-  const renderer = ({ hours, minutes, seconds, completed }) => {
-    if (!completed) {
-      return <div style={{ display: "flex" }}>
-        <div style={{ color: "white", background: "#05595B", padding: "1rem", borderRadius: "2vh", fontSize: "2rem", fontWeight: "bold" }}>
-          {minutes}m:{seconds}s
-        </div>
-      </div>
-    } else return history.push("/wordle")
+    console.log(isGameWon, isGameLost)
   }
 
   return (
     <div style={{ background: "#0b1118", padding: "2rem" }} className="h-screen flex flex-col">
-      <Countdown date={Date.now() + timer_out} renderer={renderer} />
-
       <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
-        <div className="pb-6 grow">
+        <div className="pb-6">
           <Grid
             guesses={guesses}
+            solution={solution}
             currentGuess={currentGuess}
             isRevealing={isRevealing}
             currentRowClassName={currentRowClass}
@@ -245,6 +237,7 @@ function WorldleGame() {
           onEnter={onEnter}
           guesses={guesses}
           isRevealing={isRevealing}
+          MAX_WORD_LENGTH={MAX_WORD_LENGTH}
         />
         <InfoModal
           isOpen={isInfoModalOpen}
@@ -257,10 +250,6 @@ function WorldleGame() {
           isGameLost={isGameLost}
           isGameWon={isGameWon}
           handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
-        />
-        <SettingsModal
-          isOpen={isSettingsModalOpen}
-          handleClose={() => setIsSettingsModalOpen(false)}
         />
         <AlertContainer />
       </div>

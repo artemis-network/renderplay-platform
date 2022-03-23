@@ -3,8 +3,8 @@ import { Cell } from './Cell'
 import { unicodeSplit } from '../../lib/words'
 
 
-export const CompletedRow = ({ guess, isRevealing }) => {
-  const statuses = getGuessStatuses(guess)
+export const CompletedRow = ({ guess, isRevealing, solution }) => {
+  const statuses = getGuessStatuses(guess, solution)
   const splitGuess = unicodeSplit(guess)
 
   return (

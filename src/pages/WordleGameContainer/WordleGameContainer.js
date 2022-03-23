@@ -16,16 +16,19 @@ const WordleGameContainer = () => {
 	return (
 		<div>
 			<Navbar style={{ background: "#321E43", margin: "0", padding: "1rem" }} bg="" expand="lg">
-				<Navbar.Toggle aria-controls="basic-navbar-nav" />
-				<Navbar.Collapse id="basic-navbar-nav">
+				<Navbar.Toggle className="bg-light" />
+				<Navbar.Collapse>
 					<Nav.Link>
 						<ArrowLeftIcon
+							color='white'
 							className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
 							onClick={back}
 						/>
 					</Nav.Link>
 					<Nav.Link>
 						<InformationCircleIcon
+
+							color='white'
 							className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
 							onClick={() => setIsInfoModalOpen(true)}
 						/>
