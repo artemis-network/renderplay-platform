@@ -7,6 +7,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import WordleGameContainer from "./pages/WordleGameContainer/WordleGameContainer";
 import Footer from './components/wordle/Footer/Footer'
+import ComingSoon from "./components/CommingSoon";
 
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
           <Route exact component={WordleGameContainer} path="/rendle/game" />
           <Route exact component={Login} path='/login' />
           <Route exact component={Signup} path='/signup' />
+          <Route exact component={ComingSoon} path='/sc' />
+          <Route exact component={ComingSoon} path='/lottery' />
         </Switch>
       </BrowserRouter>
       <Footer />

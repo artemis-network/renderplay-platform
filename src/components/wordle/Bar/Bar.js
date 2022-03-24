@@ -64,7 +64,7 @@ const Bar = () => {
 				</div>
 			</div>
 		</div>
-		<nav style={{ background: "#6D1DAF", padding: "1rem ", gridTemplateColumns: "1fr 2fr 1fr" }} className="nav_desktop" >
+		<nav style={{ background: "#6D1DAF", padding: "1rem ", gridTemplateColumns: "1fr 2fr 1fr", minHeight: "10vh" }} className="nav_desktop" >
 			<a href="https://renderverse.io" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
 				<img src={Logo} width="30" alt=""></img>
 				<div>Renderverse</div>
@@ -78,7 +78,7 @@ const Bar = () => {
 			<div style={{ display: "flex", justifyContent: "flex-end", columnGap: "2rem" }} >
 				<NavLink to={"/connect-wallet"} className="neu neu_end" activeClassName='neu_active'>Connect Wallet</NavLink>
 				{localStorage.getItem("username") !== null ?
-					<div className="neu neu_end" activeClassName='neu_active' onClick={logout}>Logout</div>
+					<div className="neu neu_end" onClick={logout}>Logout</div>
 					:
 					<NavLink to={"/login"} className="neu neu_end" activeClassName='neu_active'>Login</NavLink>
 				}
