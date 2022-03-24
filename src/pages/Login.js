@@ -55,7 +55,7 @@ const Login = () => {
               message: res.data.message,
             });
           } else {
-            history.push("/wordle");
+            history.push("/rendle");
             window.location.reload();
           }
         })
@@ -158,11 +158,13 @@ const Login = () => {
             </button>
 
 
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center", }}>
               <GoogleLogin
                 clientId={"461311621504-7qc2ioaio08dvv3f2q2f5l25rm0ct0to.apps.googleusercontent.com"}
                 onFailure={handleFailure}
                 onSuccess={handleSuccess}
+                color="#FFFFFF"
+                theme="dark"
               ></GoogleLogin>
             </div>
 

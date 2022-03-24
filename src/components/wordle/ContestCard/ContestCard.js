@@ -1,10 +1,13 @@
 import React from 'react'
 import Countdown from "react-countdown"
-import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon } from '@heroicons/react/outline'
+import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
 
 import { useHistory } from 'react-router-dom'
-import { PlayIcon, BanIcon, ClipboardCheckIcon } from '@heroicons/react/outline'
 import Controller from '../../../assets/controller.png'
+
+import PlayPng from '../../../assets/play.png'
+import ExpiredPng from '../../../assets/hamburger-menu.png'
+import StartsPng from '../../../assets/play1.png'
 
 import './ContestCard.css'
 
@@ -29,7 +32,7 @@ const ContestCard = (props) => {
 		const username = localStorage.getItem("username")
 		if (username !== null) {
 			localStorage.setItem("gameConfig", JSON.stringify(props))
-			return history.push("/wordle/game")
+			return history.push("/rendle/game")
 		}
 		else return history.push("/login")
 	}
@@ -156,35 +159,61 @@ const ContestCard = (props) => {
 			<label htmlFor={"u-cards-switcher__button" + cssFinder()} className={"c-button c-switcher__button"}>
 				<SwitchVerticalIcon className='h-4 w-4 cursor-pointer' color="white" />
 			</label>
-
 			{
-				expiredIn() > -1000 * 60 * 60 * 4 && expiredIn() ?
-					<PlayIcon
+				expiredIn() > -1000 * 60 * 60 * 4 && expiredIn() < 0 ?
+					<img
+						alt="play"
+						src={PlayPng}
 						onClick={() => gameConfig()}
-						className='h-14 w-14 cursor-pointer'
+						className='h-24 w-24 cursor-pointer'
 						style={{
 							position: "absolute",
 							margin: "auto",
 							left: 0,
 							right: 0,
-							bottom: "-1rem"
+							bottom: "-2.5rem"
 
 						}}
-						color="white" />
-					:
-					<ClipboardCheckIcon
-						className='h-14 w-14 cursor-pointer'
+						color="green" />
+					: null
+
+			}
+			{
+				expiredIn() < 1000 * 60 * 60 * 4 && expiredIn() > 0 ?
+					<img
+						alt="play"
+						src={StartsPng}
+						className='h-24 w-24 cursor-pointer'
 						style={{
 							position: "absolute",
 							margin: "auto",
 							left: 0,
 							right: 0,
-							bottom: "-1rem"
+							bottom: "-2.5rem"
 
 						}}
-						color="white" />
+						color="green" />
+					: null
+
 			}
 
+			{
+				expiredIn() < -1000 * 60 * 60 * 8 ?
+					<img
+						alt="play"
+						src={ExpiredPng}
+						className='h-20 w-20 cursor-pointer'
+						style={{
+							position: "absolute",
+							margin: "auto",
+							left: 0,
+							right: 0,
+							bottom: "-2.5rem"
+
+						}}
+					/>
+					: null
+			}
 		</div >
 	);
 }

@@ -11,7 +11,7 @@ import { InfoModal } from './components/modals/InfoModal'
 import { GameModal } from './components/modals/GameModal'
 
 import { WIN_MESSAGES, GAME_COPIED_MESSAGE, NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE } from './constants/strings'
-import { MAX_CHALLENGES, REVEAL_TIME_MS, GAME_LOST_INFO_DELAY, WELCOME_INFO_MODAL_MS } from './constants/settings'
+import { MAX_CHALLENGES, REVEAL_TIME_MS, WELCOME_INFO_MODAL_MS } from './constants/settings'
 import { isWordInWordList, isWinningWord, getWordOfDay, unicodeLength } from './lib/words'
 import { loadGameStateFromLocalStorage, saveGameStateToLocalStorage } from './lib/localStorage'
 
@@ -105,6 +105,7 @@ function WorldleGame() {
     if (username) {
       get_player_status({ username: username, game_type: data.game_type, contest_id: data.contest_id })
         .then(res => {
+          console.log(res)
           const is_first_game = res.data.status.is_first_game
           const is_same_contest = data.contest_id === res.data.status.contest_id
 
@@ -123,14 +124,9 @@ function WorldleGame() {
                 is_won: false
               }
               post_winner(data).then(res => {
-                localStorage.removeItem("gameState")
-                localStorage.removeItem("gameStats")
+                setIsGameModalOpen(true)
                 return setIsGameLost(true)
               }).catch(err => console.log(err))
-
-              setTimeout(() => {
-                setIsGameModalOpen(true)
-              }, GAME_LOST_INFO_DELAY)
             }
 
             if (isGameWon) {
@@ -151,8 +147,6 @@ function WorldleGame() {
                 is_won: true
               }
               post_winner(data).then(res => {
-                localStorage.removeItem("gameState")
-                localStorage.removeItem("gameStats")
                 return setIsGameWon(true)
               }).catch(err => console.log(err))
             }
@@ -163,7 +157,7 @@ function WorldleGame() {
           }
         })
         .catch(err => { console.log(err) })
-    } else return history.push("/wordle")
+    } else return history.push("/rendle")
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameWon, isGameLost, showSuccessAlert, history])
@@ -224,7 +218,7 @@ function WorldleGame() {
 
   const returnToWordle = () => {
     setIsGameModalOpen(false)
-    history.push("/wordle")
+    history.push("/rendle")
   }
 
   return (

@@ -486,3 +486,8 @@ input[name="u-topbar__button_3"]:checked
 .contest__card__header {
   display: flex;
 }
+
+.cursor-pointer:hover {
+  transform: scale(1.2);
+  transition: all 0.25s;
+}

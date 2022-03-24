@@ -12,6 +12,9 @@ body {
   background-color: #321e43;
 }
 
+html {
+  overflow-x: hidden;
+}
 .auth_container {
   background-image: url("./assets/user.jpg");
   min-height: 100vh;

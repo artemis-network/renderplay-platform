@@ -64,45 +64,43 @@ const Bar = () => {
 				</div>
 			</div>
 		</div>
-		<nav style={{ background: "#1A132F", padding: "1rem 3rem" }} className="navbar navbar-expand-lg">
-			<div className="navbar-brand" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", columnGap: ".35rem" }}>
-				<img src={Logo} width="30" height="30" alt=""></img>
+		<nav style={{ background: "#6D1DAF", padding: "1rem ", gridTemplateColumns: "1fr 2fr 1fr" }} className="nav_desktop" >
+			<a href="https://renderverse.io" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
+				<img src={Logo} width="30" alt=""></img>
 				<div>Renderverse</div>
+			</a>
+			<div className='neu' style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }}>
+				<NavLink className="neu_link" activeClassName='neu_link__active' to={"/rendle"} >Rendle</NavLink>
+				<NavLink className="neu_link" activeClassName='neu_link__active' to={"/sc"} >Scavenger Hunt</NavLink>
+				<NavLink className="neu_link" activeClassName='neu_link__active' to={"/lottery"} >Lottery</NavLink>
 			</div>
 
-
-			<div className="collapse navbar-collapse nav_end__mid_desktop">
-				<ul className="nav nav-pills justify-content-center" style={{ columnGap: "3rem" }}>
-					<li className="nav-item" >
-						<NavLink to={"/wordle"} className="nav-link NavLink" activeClassName='active'>Wordle</NavLink>
-					</li>
-					<li className="nav-item">
-						<NavLink to={"/sc"} className="nav-link NavLink" activeClassName='active'>Scavenger Hunt</NavLink>
-					</li>
-					<li className="nav-item">
-						<NavLink to={"/lottery"} className="nav-link NavLink" activeClassName='active'>Lottery</NavLink>
-					</li>
-				</ul>
-			</div>
-
-			<div className="nav_end__items_desktop">
-				<form className="form-inline my-2 my-lg-0" style={{ display: 'flex', columnGap: "1rem" }}>
-					<Button>Connect Wallet</Button>
-					{localStorage.getItem("username") !== null ?
-						<div style={{ display: "flex", flexDirection: "row" }}>
-							<Button onClick={logout}>Logout</Button>
-						</div>
-						:
-						<Link to="/login"><Button>Login</Button></Link>
-					}
-				</form>
-			</div>
-
-			<div className='nav_end__items_mobile'>
-				<MenuIcon onClick={toggleNav} style={{ background: "white" }} className="shadow-m rounded-xl p-1 w-12 h-12 cursor-pointer" color="black" />
+			<div style={{ display: "flex", justifyContent: "flex-end", columnGap: "2rem" }} >
+				<NavLink to={"/connect-wallet"} className="neu neu_end" activeClassName='neu_active'>Connect Wallet</NavLink>
+				{localStorage.getItem("username") !== null ?
+					<div className="neu neu_end" activeClassName='neu_active' onClick={logout}>Logout</div>
+					:
+					<NavLink to={"/login"} className="neu neu_end" activeClassName='neu_active'>Login</NavLink>
+				}
 			</div>
 		</nav>
-	</div>
+		<div className='nav_mobile'>
+			<div style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center", width: "100%", padding: "0 2rem" }}>
+				<img src={Logo} width="30" alt=""></img>
+				<div>Renderverse</div>
+			</div>
+			<div style={{ display: "flex", justifyContent: "flex-end", width: "100%", padding: "0 1rem" }}>
+				<MenuIcon onClick={toggleNav} style={{ background: "white" }} className="shadow-m rounded-xl p-1 w-12 h-12 cursor-pointer" color="black" />
+			</div>
+		</div>
+		{localStorage.getItem("username") ?
+			<div style={{ display: "flex", justifyContent: "flex-end", padding: "2rem 4rem" }}>
+				<div className='username' style={{ display: "flex", justifyContent: "flex-end", color: "#fbd6d2", fontWeight: "bold", padding: "1rem", borderRadius: "1vh" }}>
+					Welcome {localStorage.getItem("username")}!
+				</div>
+			</div> : null
+		}
+	</div >
 };
 
 export default Bar

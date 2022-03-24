@@ -15,8 +15,8 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact component={Wordle} path="/" />
-          <Route exact component={Wordle} path="/wordle" />
-          <Route exact component={WordleGameContainer} path="/wordle/game" />
+          <Route exact component={Wordle} path="/rendle" />
+          <Route exact component={WordleGameContainer} path="/rendle/game" />
           <Route exact component={Login} path='/login' />
           <Route exact component={Signup} path='/signup' />
         </Switch>

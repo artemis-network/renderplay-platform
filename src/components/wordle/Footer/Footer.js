@@ -1,6 +1,7 @@
 import './Footer.css'
 
 import Terms from './TermsAndConditions'
+import Logo from '../../../assets/logo.webp'
 import { useState, useEffect } from 'react'
 
 const Footer = (props) => {
@@ -11,8 +12,8 @@ const Footer = (props) => {
       {isModalOpen && <Modal2 onRequestClose={toggleModal} />}
       <hr />
       <div className='footer_end_l item_point'>
-        <a href="rendervese.io" style={{ fontSize: "1.75rem", display: 'flex', justifyContent: "center", color: "white", fontWeight: "bold" }}>
-          Renderverse
+        <a href="https://renderverse.io">
+          <img style={{ display: 'flex', justifyContent: "center" }} alt="logo" src={Logo} width={"40"} />
         </a>
         <div className='footer_content_links item_point'>
           <div style={{ color: "white" }} onClick={() => toggleModal()}>Terms and condition</div>
