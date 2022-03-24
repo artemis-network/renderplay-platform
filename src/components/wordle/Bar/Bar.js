@@ -53,7 +53,7 @@ const Bar = () => {
 			<div className="side_bar">
 				<XIcon onClick={toggleNav} style={{ display: "block", background: "black", float: "right", margin: "1rem" }} className="shadow-m rounded-xl p-1 w-12 h-12 cursor-pointer" color="white" />
 				<div className="side_bar__content">
-					<Link onClick={toggleNav} to="/Wordle"><Button variant="outline-primary">Wordle</Button></Link>
+					<Link onClick={toggleNav} to="/Wordle"><Button variant="outline-primary">Rendle</Button></Link>
 					<Link onClick={toggleNav} to="/"><Button variant="outline-primary">Scavenger Hunt</Button></Link>
 					<Link onClick={toggleNav} to="/"><Button variant="outline-primary">Lottery</Button></Link>
 					{localStorage.getItem("username") !== null ?

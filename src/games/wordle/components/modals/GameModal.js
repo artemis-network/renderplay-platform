@@ -3,7 +3,7 @@ import {
 } from '../../constants/strings'
 import { Button } from 'react-bootstrap'
 
-export const StatsModal = ({
+export const GameModal = ({
   isOpen,
   handleClose,
   isGameLost,

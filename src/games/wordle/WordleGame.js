@@ -8,7 +8,7 @@ import { useAlert } from './context/AlertContext'
 import { AlertContainer } from './components/alerts/AlertContainer'
 
 import { InfoModal } from './components/modals/InfoModal'
-import { StatsModal } from './components/modals/StatsModal'
+import { GameModal } from './components/modals/GameModal'
 
 import { WIN_MESSAGES, GAME_COPIED_MESSAGE, NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE } from './constants/strings'
 import { MAX_CHALLENGES, REVEAL_TIME_MS, GAME_LOST_INFO_DELAY, WELCOME_INFO_MODAL_MS } from './constants/settings'
@@ -36,7 +36,7 @@ function WorldleGame() {
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
-  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
+  const [isGameModalOpen, setIsGameModalOpen] = useState(false)
   const [currentRowClass, setCurrentRowClass] = useState('')
   const [isGameLost, setIsGameLost] = useState(false)
   const [isRevealing, setIsRevealing] = useState(false)
@@ -105,7 +105,6 @@ function WorldleGame() {
     if (username) {
       get_player_status({ username: username, game_type: data.game_type, contest_id: data.contest_id })
         .then(res => {
-          console.log(res.data)
           const is_first_game = res.data.status.is_first_game
           const is_same_contest = data.contest_id === res.data.status.contest_id
 
@@ -126,11 +125,11 @@ function WorldleGame() {
               post_winner(data).then(res => {
                 localStorage.removeItem("gameState")
                 localStorage.removeItem("gameStats")
-                return history.push("/wordle")
+                return setIsGameLost(true)
               }).catch(err => console.log(err))
 
               setTimeout(() => {
-                setIsStatsModalOpen(true)
+                setIsGameModalOpen(true)
               }, GAME_LOST_INFO_DELAY)
             }
 
@@ -140,7 +139,7 @@ function WorldleGame() {
               const delayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH
               showSuccessAlert(winMessage, {
                 delayMs,
-                onClose: () => setIsStatsModalOpen(true),
+                onClose: () => setIsGameModalOpen(true),
               })
 
               const data = {
@@ -151,14 +150,17 @@ function WorldleGame() {
                 contest_id: gameConfig.contest_id,
                 is_won: true
               }
-
               post_winner(data).then(res => {
                 localStorage.removeItem("gameState")
                 localStorage.removeItem("gameStats")
-                return history.push("/wordle")
+                return setIsGameWon(true)
               }).catch(err => console.log(err))
             }
-          } else return history.push("/wordle")
+          } else {
+            setIsGameModalOpen(true)
+            setIsGameWon(res.data.status.is_won)
+            setIsGameLost(!res.data.status.is_won)
+          }
         })
         .catch(err => { console.log(err) })
     } else return history.push("/wordle")
@@ -197,6 +199,7 @@ function WorldleGame() {
       })
     }
 
+
     setIsRevealing(true)
     setTimeout(() => {
       setIsRevealing(false)
@@ -217,6 +220,11 @@ function WorldleGame() {
       }
     }
     console.log(isGameWon, isGameLost)
+  }
+
+  const returnToWordle = () => {
+    setIsGameModalOpen(false)
+    history.push("/wordle")
   }
 
   return (
@@ -243,9 +251,9 @@ function WorldleGame() {
           isOpen={isInfoModalOpen}
           handleClose={() => setIsInfoModalOpen(false)}
         />
-        <StatsModal
-          isOpen={isStatsModalOpen}
-          handleClose={() => setIsStatsModalOpen(false)}
+        <GameModal
+          isOpen={isGameModalOpen}
+          handleClose={returnToWordle}
           guesses={guesses}
           isGameLost={isGameLost}
           isGameWon={isGameWon}
