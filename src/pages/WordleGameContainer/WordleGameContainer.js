@@ -12,7 +12,7 @@ import WordleGame from '../../games/wordle/WordleGame'
 const WordleGameContainer = () => {
 	const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
 	const history = useHistory()
-	const back = () => history.push("/wordle")
+	const back = () => history.push("/rendle")
 	return (
 		<div>
 			<Navbar style={{ background: "#321E43", margin: "0", padding: "1rem" }} bg="" expand="lg">

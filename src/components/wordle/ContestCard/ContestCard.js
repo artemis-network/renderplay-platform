@@ -3,11 +3,11 @@ import Countdown from "react-countdown"
 import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
 
 import { useHistory } from 'react-router-dom'
-import Controller from '../../../assets/controller.png'
+import Controller from '../../../assets/joystick.webp'
 
-import PlayPng from '../../../assets/play.png'
-import ExpiredPng from '../../../assets/hamburger-menu.png'
-import StartsPng from '../../../assets/play1.png'
+import PlayPng from '../../../assets/play.webp'
+import ExpiredPng from '../../../assets/menu.webp'
+import StartsPng from '../../../assets/play_disable.webp'
 
 import './ContestCard.css'
 
