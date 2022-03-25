@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import { Button } from 'react-bootstrap'
 import { MenuIcon, XIcon } from '@heroicons/react/solid';
 
 import Logo from '../../../assets/logo.webp'
@@ -51,15 +50,15 @@ const Bar = () => {
 	return <div>
 		<div style={toggleClass} >
 			<div className="side_bar">
-				<XIcon onClick={toggleNav} style={{ display: "block", background: "black", float: "right", margin: "1rem" }} className="shadow-m rounded-xl p-1 w-12 h-12 cursor-pointer" color="white" />
-				<div className="side_bar__content">
-					<Link onClick={toggleNav} to="/Wordle"><Button variant="outline-primary">Rendle</Button></Link>
-					<Link onClick={toggleNav} to="/"><Button variant="outline-primary">Scavenger Hunt</Button></Link>
-					<Link onClick={toggleNav} to="/"><Button variant="outline-primary">Lottery</Button></Link>
+				<XIcon onClick={toggleNav} style={{ display: "block", float: "right", margin: "1rem" }} className="p-1 w-12 h-12 neu" color="white" />
+				<div className="side_bar__content" style={{ rowGap: "2rem" }}>
+					<Link className='neu neu_link' onClick={toggleNav} to="/rendle">Rendle</Link>
+					<Link className="neu neu_link" onClick={toggleNav} to="/sc">Scavenger Hunt</Link>
+					<Link className="neu neu_link" onClick={toggleNav} to="/lottery">Lottery</Link>
 					{localStorage.getItem("username") !== null ?
-						<Button variant="outline-primary" onClick={logout}>Logout</Button>
+						<Link to="/" className='neu neu_link' onClick={logout}>Logout</Link>
 						:
-						<Link onClick={toggleNav} to="/login"><Button variant="outline-primary">Login</Button></Link>
+						<Link onClick={toggleNav} to="/login">Login</Link>
 					}
 				</div>
 			</div>
@@ -90,7 +89,7 @@ const Bar = () => {
 				<div>Renderverse</div>
 			</div>
 			<div style={{ display: "flex", justifyContent: "flex-end", width: "100%", padding: "0 1rem" }}>
-				<MenuIcon onClick={toggleNav} style={{ background: "white" }} className="shadow-m rounded-xl p-1 w-12 h-12 cursor-pointer" color="black" />
+				<MenuIcon onClick={toggleNav} className="neu rounded-xl p-1 w-12 h-12 cursor-pointer" color="white" />
 			</div>
 		</div>
 		{localStorage.getItem("username") ?

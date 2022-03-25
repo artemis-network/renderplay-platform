@@ -193,7 +193,6 @@ function WorldleGame() {
       })
     }
 
-
     setIsRevealing(true)
     setTimeout(() => {
       setIsRevealing(false)
@@ -222,9 +221,9 @@ function WorldleGame() {
   }
 
   return (
-    <div style={{ background: "#0b1118", padding: "2rem" }} className="h-screen flex flex-col">
+    <div style={{ background: "#0b1118", padding: "0 2rem", }} className="h-screen flex flex-col">
       <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
-        <div className="pb-6">
+        <div className="pb-6 keys_">
           <Grid
             guesses={guesses}
             solution={solution}

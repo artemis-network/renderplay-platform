@@ -13,7 +13,7 @@ const Footer = (props) => {
       <hr />
       <div className='footer_end_l item_point'>
         <a href="https://renderverse.io">
-          <img style={{ display: 'flex', justifyContent: "center" }} alt="logo" src={Logo} width={"40"} />
+          <img alt="logo" src={Logo} width={"40"} />
         </a>
         <div className='footer_content_links item_point'>
           <div style={{ color: "white" }} onClick={() => toggleModal()}>Terms and condition</div>
