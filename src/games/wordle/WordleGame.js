@@ -223,7 +223,7 @@ function WorldleGame() {
 
     if (condition_1 && condition_3 && !isGameWon) {
       setGuesses([...guesses, currentGuess])
-      setCurrentGuess('')
+      if (!winningWord) setCurrentGuess('')
       const game_state_id = localStorage.getItem("game_state_id")
       const word_data = {
         username: localStorage.getItem("username"),

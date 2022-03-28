@@ -23,7 +23,7 @@ const ContestCard = (props) => {
 		return time
 	}
 	const expiredIn = () => {
-		const now = new Date(Date.now() + (1000 * 60 * 60 * 5) + (1000 * 60 * 30))
+		const now = new Date(Date.now())
 		const time = new Date(props.starts_on)
 		return time.getTime() - now.getTime()
 	}
@@ -56,7 +56,6 @@ const ContestCard = (props) => {
 				/>
 				<div style={{ color: "#ffffff", display: "flex", columnGap: "5.7rem" }}>
 					{"Live"}
-
 				</div>
 			</div >
 		else
