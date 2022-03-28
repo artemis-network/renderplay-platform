@@ -24,7 +24,7 @@ import { SevenLetterGuesses } from './constants/config/sevenLetterGuesses'
 
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
-import { post_winner, get_player_status } from '../../service/game.service'
+import { post_winner, get_player_status, post_word, get_guesses } from '../../service/game.service'
 
 import './App.css'
 
@@ -45,6 +45,7 @@ function WorldleGame() {
   const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
 
   const [solution, setSolution] = useState("")
+  const [img, setImg] = useState("")
   const username = localStorage.getItem("username")
   const data = JSON.parse(localStorage.getItem("gameConfig"))
 
@@ -105,7 +106,6 @@ function WorldleGame() {
     if (username) {
       get_player_status({ username: username, game_type: data.game_type, contest_id: data.contest_id })
         .then(res => {
-          console.log(res)
           const is_first_game = res.data.status.is_first_game
           const is_same_contest = data.contest_id === res.data.status.contest_id
 
@@ -113,6 +113,7 @@ function WorldleGame() {
             let guesses = JSON.parse(localStorage.getItem("gameState"))
             guesses = guesses.guesses.length
             let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
+            setImg(gameConfig.banner)
 
             if (isGameLost) {
               const data = {
@@ -125,6 +126,7 @@ function WorldleGame() {
               }
               post_winner(data).then(res => {
                 setIsGameModalOpen(true)
+                localStorage.removeItem("game_state_id")
                 return setIsGameLost(true)
               }).catch(err => console.log(err))
             }
@@ -147,6 +149,8 @@ function WorldleGame() {
                 is_won: true
               }
               post_winner(data).then(res => {
+                localStorage.removeItem("game_state_id")
+                localStorage.removeItem("game_state_id")
                 return setIsGameWon(true)
               }).catch(err => console.log(err))
             }
@@ -158,6 +162,21 @@ function WorldleGame() {
         })
         .catch(err => { console.log(err) })
     } else return history.push("/rendle")
+
+
+    const game_state_id = { game_state_id: JSON.parse(localStorage.getItem("game_state_id")) }
+    get_guesses(game_state_id).then((res_ => {
+      if (res_.data.guesses.length <= 0) console.log("")
+      else {
+        const new_guesses = {
+          solution: solution,
+          guesses: res_.data.guesses
+        }
+        setGuesses([...res_.data.guesses])
+        localStorage.setItem("gameState", JSON.stringify(new_guesses))
+      }
+    }))
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameWon, isGameLost, showSuccessAlert, history])
@@ -175,6 +194,8 @@ function WorldleGame() {
   }
 
   const onEnter = () => {
+
+
     if (isGameWon || isGameLost) return
     const condition_1 = (unicodeLength(currentGuess) === MAX_WORD_LENGTH)
     const condition_2 = !isWordInWordList(currentGuess, WORDS, VALID_GUESSES)
@@ -203,6 +224,13 @@ function WorldleGame() {
     if (condition_1 && condition_3 && !isGameWon) {
       setGuesses([...guesses, currentGuess])
       setCurrentGuess('')
+      const game_state_id = localStorage.getItem("game_state_id")
+      const word_data = {
+        username: localStorage.getItem("username"),
+        word: currentGuess,
+        game_state_id: game_state_id
+      }
+      post_word(word_data).then(res => localStorage.setItem("game_state_id", res.data.game_state_id)).catch(err => console.log(err))
       if (winningWord) return setIsGameWon(true)
       if (guesses.length === MAX_CHALLENGES - 1) {
         setIsGameLost(true)
@@ -212,7 +240,6 @@ function WorldleGame() {
         })
       }
     }
-    console.log(isGameWon, isGameLost)
   }
 
   const returnToWordle = () => {
@@ -222,8 +249,11 @@ function WorldleGame() {
 
   return (
     <div style={{ background: "#0b1118", padding: "0 2rem", }} className="h-screen flex flex-col">
+      <div style={{ display: "flex", justifyContent: "center", margin: "6rem 0 0 0" }}>
+        <img src={img} alt="img" width={"500px"} height="200px" style={{ display: "flex", alignSelf: "center" }} />
+      </div>
       <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
-        <div className="pb-6 keys_">
+        <div className="grow_keyboard">
           <Grid
             guesses={guesses}
             solution={solution}

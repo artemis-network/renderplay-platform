@@ -1,3 +1,15 @@
 html.dark {
   background-color: rgb(15, 23, 42);
 }
+
+@media screen and (min-width: 320px) {
+  .grow_keyboard {
+    padding: 4rem 0 2rem 0;
+  }
+}
+
+@media screen and (min-width: 420px) {
+  .grow_keyboard {
+    padding: 2rem 0 3rem 0;
+  }
+}

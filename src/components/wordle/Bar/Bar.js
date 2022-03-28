@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useState } from "react";
 
+import { Link, NavLink } from 'react-router-dom';
 import { MenuIcon, XIcon } from '@heroicons/react/solid';
 
 import Logo from '../../../assets/logo.webp'
-
 import './Bar.css'
 
 const Bar = () => {

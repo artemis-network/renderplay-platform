@@ -54,10 +54,11 @@ const ContestCard = (props) => {
 					color="#219f94"
 					className="h-6 w-6 m-2 cursor-pointer dark:stroke-white"
 				/>
-				<div style={{ color: "#ffffff" }}>
-					Live
+				<div style={{ color: "#ffffff", display: "flex", columnGap: "5.7rem" }}>
+					{"Live"}
+
 				</div>
-			</div>
+			</div >
 		else
 			return <div className="contest__card__header">
 				<ClockIcon
