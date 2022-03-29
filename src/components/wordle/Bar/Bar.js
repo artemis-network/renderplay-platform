@@ -57,7 +57,7 @@ const Bar = () => {
 					{localStorage.getItem("username") !== null ?
 						<Link to="/" className='neu neu_link' onClick={logout}>Logout</Link>
 						:
-						<Link onClick={toggleNav} to="/login">Login</Link>
+						<Link className="neu neu_link" onClick={toggleNav} to="/login">Login</Link>
 					}
 				</div>
 			</div>
