@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { login, createSession, loginGoogle } from "../service/auth.service";
-import GoogleLogin from "react-google-login";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 
-import Logo from '../assets/logo.png'
+import { login, createSession, loginGoogle } from "../service/auth.service";
+import GoogleLogin from "react-google-login";
+
+import Logo from '../assets/logo.webp'
 
 import Bar from '../components/wordle/Bar/Bar'
 import { UserCircleIcon, LockClosedIcon } from '@heroicons/react/outline'

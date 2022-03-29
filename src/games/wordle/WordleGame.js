@@ -248,8 +248,8 @@ function WorldleGame() {
   }
 
   return (
-    <div style={{ background: "#0b1118", padding: "0 2rem", }} className="h-screen flex flex-col">
-      <div style={{ display: "flex", justifyContent: "center", margin: "6rem 0 0 0" }}>
+    <div style={{ padding: "0 2rem", background: "#321E43" }} className="h-screen flex flex-col">
+      <div style={{ display: "flex", justifyContent: "center", margin: "2rem 0 0 0" }}>
         <img src={img} alt="img" width={"500px"} height="200px" style={{ display: "flex", alignSelf: "center" }} />
       </div>
       <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">

@@ -15,7 +15,7 @@ const WordleGameContainer = () => {
 	const back = () => history.push("/rendle")
 	return (
 		<div>
-			<Navbar style={{ background: "#321E43", margin: "0", padding: "1rem" }} bg="" expand="lg">
+			<Navbar style={{ background: "#0b1118", margin: "0", padding: "1rem" }} bg="" expand="lg">
 				<Navbar.Toggle className="bg-light" />
 				<Navbar.Collapse>
 					<Nav.Link>

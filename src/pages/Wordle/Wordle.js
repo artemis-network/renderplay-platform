@@ -6,14 +6,14 @@ import { Container } from 'react-bootstrap'
 
 import ContestCard from '../../components/wordle/ContestCard/ContestCard'
 
-import FiveRendleImg from '../../assets/5rendle.png'
-import SixRendleImg from '../../assets/6rendle.png'
-import SevenRendleImg from '../../assets/7rendle.png'
-import Line1Img from '../../assets/line1.png'
-import Line2Img from '../../assets/line2.png'
-import RendleFive from '../../assets/rendle_5.png'
-import RendleSix from '../../assets/rendle_6.png'
-import RendleSeven from '../../assets/rendle_7.png'
+import FiveRendleImg from '../../assets/5rendle.webp'
+import SixRendleImg from '../../assets/6rendle.webp'
+import SevenRendleImg from '../../assets/7rendle.webp'
+import Line1Img from '../../assets/line1.webp'
+import Line2Img from '../../assets/line2.webp'
+import RendleFive from '../../assets/rendle_5.webp'
+import RendleSix from '../../assets/rendle_6.webp'
+import RendleSeven from '../../assets/rendle_7.webp'
 
 import Bar from '../../components/wordle/Bar/Bar'
 

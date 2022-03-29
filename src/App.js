@@ -1,20 +1,23 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
+import { lazy, Suspense } from 'react'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
+
 import "./App.css";
-import Wordle from "./pages/Wordle/Wordle";
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-
-import WordleGameContainer from "./pages/WordleGameContainer/WordleGameContainer";
 import Footer from './components/wordle/Footer/Footer'
-import ComingSoon from "./components/CommingSoon";
 
+const Wordle = lazy(() => import('./pages/Wordle/Wordle'));
+const Login = lazy(() => import('./pages/Login'));
+const Signup = lazy(() => import('./pages/Signup'));
+const WordleGameContainer = lazy(() => import('./pages/WordleGameContainer/WordleGameContainer'));
+const ComingSoon = lazy(() => import('./components/CommingSoon'));
+const Loader = () => <div>Loader</div>
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
-        <Switch>
+      <Suspense fallback={Loader}>
+
+        <Router>
           <Route exact component={Wordle} path="/" />
           <Route exact component={Wordle} path="/rendle" />
           <Route exact component={WordleGameContainer} path="/rendle/game" />
@@ -22,9 +25,9 @@ function App() {
           <Route exact component={Signup} path='/signup' />
           <Route exact component={ComingSoon} path='/sc' />
           <Route exact component={ComingSoon} path='/lottery' />
-        </Switch>
-      </BrowserRouter>
-      <Footer />
+        </Router>
+        <Footer />
+      </Suspense>
     </div >
   );
 }

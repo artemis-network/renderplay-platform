@@ -5,7 +5,7 @@ import PasswordStrengthBar from "react-password-strength-bar";
 import { Link } from "react-router-dom";
 
 import Bar from "../components/wordle/Bar/Bar";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/logo.webp";
 import { LockClosedIcon, UserCircleIcon } from "@heroicons/react/outline";
 
 const validate = (values) => {

@@ -16,7 +16,6 @@ html {
   overflow-x: hidden;
 }
 .auth_container {
-  background-image: url("./assets/user.jpg");
   min-height: 100vh;
   background-repeat: no-repeat;
   background-size: cover;

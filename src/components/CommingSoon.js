@@ -1,5 +1,5 @@
 import Bar from './wordle/Bar/Bar'
-import ComingSoonPng from '../assets/cs.png'
+import ComingSoonPng from '../assets/cs.webp'
 
 const ComingSoon = () => {
 
