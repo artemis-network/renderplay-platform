@@ -18,6 +18,9 @@
   width: 8rem;
   border-radius: 2vh;
   transform: translateY(-3.5rem);
+  background-color: #321e43;
+  box-shadow: -3px -3px 7px #ffffff73, 2px 2px 5px rgba(94, 104, 121, 0.288);
+  padding: 1rem;
 }
 
 .content .field {
