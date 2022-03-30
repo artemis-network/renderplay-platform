@@ -16,7 +16,7 @@ import Wallet from './Wallet'
 import { get_wallet } from '../../../service/game.service'
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 
-import Random from '../../../assets/5rendle.webp'
+import Random from '../../../assets/rendle_5.webp'
 
 const Bar = (props) => {
 
@@ -41,7 +41,8 @@ const Bar = (props) => {
 
 	let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
 	useEffect(() => {
-		setImg(gameConfig.banner)
+		if (gameConfig !== null) setImg(gameConfig.banner)
+		setImg(Random)
 	}, [gameConfig.banner])
 
 	useEffect(() => {

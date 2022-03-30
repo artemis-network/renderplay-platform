@@ -23,7 +23,7 @@ const ContestCard = (props) => {
 		return time
 	}
 	const expiredIn = () => {
-		const now = new Date(Date.now() + (5 * 60 * 60 * 1000) + (1000 * 60 * 30))
+		const now = new Date(Date.now())
 		const time = new Date(props.starts_on)
 		return time.getTime() - now.getTime()
 	}
