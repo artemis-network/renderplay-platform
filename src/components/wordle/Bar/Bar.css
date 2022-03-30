@@ -88,3 +88,12 @@
   background: #321e43;
   box-shadow: 5px 5px 19px #180e1f, -5px -5px 19px #4d2e67;
 }
+
+.neu_disable {
+  opacity: 0.4;
+}
+
+.neu_disable:hover {
+  color: #fbd6d2;
+  border-bottom: 0;
+}

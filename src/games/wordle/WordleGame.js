@@ -46,6 +46,7 @@ function WorldleGame() {
 
   const [solution, setSolution] = useState("")
   const [img, setImg] = useState("")
+
   const username = localStorage.getItem("username")
   const data = JSON.parse(localStorage.getItem("gameConfig"))
 
@@ -164,9 +165,10 @@ function WorldleGame() {
     } else return history.push("/rendle")
 
 
-    const game_state_id = { game_state_id: JSON.parse(localStorage.getItem("game_state_id")) }
+    const game_state_id = { username: localStorage.getItem("username") }
     get_guesses(game_state_id).then((res_ => {
-      if (res_.data.guesses.length <= 0) console.log("")
+      console.log(res_.data)
+      if (res_.data.guesses.length <= 0) return
       else {
         const new_guesses = {
           solution: solution,
@@ -176,8 +178,6 @@ function WorldleGame() {
         localStorage.setItem("gameState", JSON.stringify(new_guesses))
       }
     }))
-
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameWon, isGameLost, showSuccessAlert, history])
 
@@ -225,10 +225,20 @@ function WorldleGame() {
       setGuesses([...guesses, currentGuess])
       if (!winningWord) setCurrentGuess('')
       const game_state_id = localStorage.getItem("game_state_id")
-      const word_data = {
-        username: localStorage.getItem("username"),
-        word: currentGuess,
-        game_state_id: game_state_id
+      let word_data = {
+      }
+      if (game_state_id !== undefined || game_state_id !== null) {
+        word_data = {
+          username: localStorage.getItem("username"),
+          word: currentGuess,
+          game_state_id: JSON.parse(game_state_id)
+        }
+      } else {
+        word_data = {
+          username: localStorage.getItem("username"),
+          word: currentGuess,
+          game_state_id: null
+        }
       }
       post_word(word_data).then(res => localStorage.setItem("game_state_id", res.data.game_state_id)).catch(err => console.log(err))
       if (winningWord) return setIsGameWon(true)

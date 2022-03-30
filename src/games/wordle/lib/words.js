@@ -43,7 +43,6 @@ export const unicodeSplit = (word) => {
 }
 
 export const unicodeLength = (word) => {
-  console.log(word.length)
   return unicodeSplit(word).length
 }
 

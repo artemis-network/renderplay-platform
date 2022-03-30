@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import { lazy, Suspense } from 'react'
 import { Route, BrowserRouter as Router } from 'react-router-dom'
+import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 
 import "./App.css";
-import Footer from './components/wordle/Footer/Footer'
 
 const Wordle = lazy(() => import('./pages/Wordle/Wordle'));
 const Login = lazy(() => import('./pages/Login'));
@@ -12,13 +12,14 @@ const WordleGameContainer = lazy(() => import('./pages/WordleGameContainer/Wordl
 const ComingSoon = lazy(() => import('./components/CommingSoon'));
 const Loader = () => <div>Loader</div>
 
+
 function App() {
   return (
     <div>
       <Suspense fallback={Loader}>
 
         <Router>
-          <Route exact component={Wordle} path="/" />
+          <Redirect from="/" to="/rendle"></Redirect>
           <Route exact component={Wordle} path="/rendle" />
           <Route exact component={WordleGameContainer} path="/rendle/game" />
           <Route exact component={Login} path='/login' />
@@ -26,7 +27,6 @@ function App() {
           <Route exact component={ComingSoon} path='/sc' />
           <Route exact component={ComingSoon} path='/lottery' />
         </Router>
-        <Footer />
       </Suspense>
     </div >
   );

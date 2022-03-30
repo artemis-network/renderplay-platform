@@ -8,12 +8,22 @@ import Bar from "../components/wordle/Bar/Bar";
 import Logo from "../assets/logo.webp";
 import { LockClosedIcon, UserCircleIcon } from "@heroicons/react/outline";
 
+const isValidUsername = (username) => {
+  const usernameRegex = /^[a-zA-Z0-9_]{3,10}$/;
+  return usernameRegex.test(username);
+};
+
 const validate = (values) => {
   const errors = {};
   const emailRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   if (!values.name) errors.name = "*Required";
+
+  if (!values.username) errors.username = "*Required";
+  else if (isValidUsername(values.username))
+    errors.username = "Invalid username";
+
   if (!values.email) errors.email = "*Requried";
   else if (!emailRegex.test(String(values.email).toLowerCase()))
     errors.email = "Invalid email";
@@ -34,6 +44,7 @@ const Signup = () => {
       name: "",
       email: "",
       password: "",
+      username: "",
       confirmPassword: "",
       accept: false,
     },
@@ -42,6 +53,7 @@ const Signup = () => {
     onSubmit: (values) => {
       signUp(values)
         .then((res) => {
+          console.log(res.data);
           if (res.data.errorType === "USER_ALREADY_EXIST") {
             setStatus({
               status: res.data.status,
@@ -121,11 +133,31 @@ const Signup = () => {
                 onChange={form.handleChange}
                 onFocus={form.handleChange}
                 id="name"
+                autocomplete="off"
               />
               {form.touched.name || form.errors.name ? (
                 <div style={error}> {form.errors.name} </div>
               ) : null}
             </div>
+            <div className="field">
+              <span>
+                <UserCircleIcon className="h-6 w-6" color="black" />
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Username"
+                value={form.values.username}
+                onChange={form.handleChange}
+                onFocus={form.handleChange}
+                id="username"
+                autocomplete="off"
+              />
+              {form.touched.username || form.errors.username ? (
+                <div style={error}> {form.errors.username} </div>
+              ) : null}
+            </div>
+
             <div className="field">
               <span>
                 <UserCircleIcon className="h-6 w-6" color="black" />

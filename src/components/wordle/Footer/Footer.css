@@ -5,8 +5,10 @@ html {
 }
 
 footer {
+  width: 100%;
   position: absolute;
   bottom: 0;
+  background: #1b132f;
 }
 
 .footer_end_l {

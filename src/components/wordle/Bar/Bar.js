@@ -1,10 +1,16 @@
-import { useState } from "react";
+/* eslint-disable */
+import { useEffect, useState } from "react";
 
 import { Link, NavLink } from 'react-router-dom';
-import { MenuIcon, XIcon } from '@heroicons/react/solid';
+import { MenuIcon, XIcon, CurrencyDollarIcon } from '@heroicons/react/solid';
 
 import Logo from '../../../assets/logo.webp'
 import './Bar.css'
+
+import CustomDropDown from "./DropDown";
+import Wallet from './Wallet'
+
+import { get_wallet } from '../../../service/game.service'
 
 const Bar = () => {
 
@@ -17,6 +23,23 @@ const Bar = () => {
 		transition: "all 0.5s"
 	}
 	)
+	const [wallet, setWallet] = useState({
+		id: null,
+		balance: 0
+	})
+
+	useEffect(() => {
+		const data = {
+			username: localStorage.getItem("username")
+		}
+		get_wallet(data)
+			.then((res) => {
+				setWallet({
+					id: res.data.wallet.id,
+					balance: res.data.wallet.balance
+				})
+			})
+	}, [])
 
 	const logout = () => {
 		localStorage.removeItem("username")
@@ -62,8 +85,8 @@ const Bar = () => {
 				</div>
 			</div>
 		</div>
-		<nav style={{ background: "#6D1DAF", padding: "1rem ", gridTemplateColumns: "1fr 2fr 1fr", minHeight: "10vh" }} className="nav_desktop" >
-			<a href="https://renderverse.io" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
+		<nav style={{ background: "#6D1DAF", padding: "1rem ", gridTemplateColumns: "1fr 2fr 1fr", minHeight: "10.5vh" }} className="nav_desktop" >
+			<a href="https://play.renderverse.io" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
 				<img src={Logo} width="30" alt=""></img>
 				<div>Renderverse</div>
 			</a>
@@ -73,10 +96,10 @@ const Bar = () => {
 				<NavLink className="neu_link" activeClassName='neu_link__active' to={"/lottery"} >Lottery</NavLink>
 			</div>
 
-			<div style={{ display: "flex", justifyContent: "flex-end", columnGap: "2rem" }} >
-				<NavLink to={"/connect-wallet"} className="neu neu_end" activeClassName='neu_active'>Connect Wallet</NavLink>
+			<div style={{ display: "flex", justifyContent: "flex-end", columnGap: "2rem", alignItems: "center" }} >
+				<Wallet />
 				{localStorage.getItem("username") !== null ?
-					<div className="neu neu_end" onClick={logout}>Logout</div>
+					<CustomDropDown />
 					:
 					<NavLink to={"/login"} className="neu neu_end" activeClassName='neu_active'>Login</NavLink>
 				}
@@ -93,8 +116,9 @@ const Bar = () => {
 		</div>
 		{localStorage.getItem("username") ?
 			<div style={{ display: "flex", justifyContent: "flex-end", padding: "2rem 4rem" }}>
-				<div className='username' style={{ display: "flex", justifyContent: "flex-end", color: "#fbd6d2", fontWeight: "bold", padding: "1rem", borderRadius: "1vh" }}>
-					Welcome {localStorage.getItem("username")}!
+				<div className='username' style={{ display: "flex", justifyContent: "flex-end", color: "#fbd6d2", fontWeight: "bold", padding: "1rem", borderRadius: "1vh", alignItems: "center" }}>
+					<CurrencyDollarIcon className=" rounded-xl p-1 w-12 h-12 cursor-pointer" color="white" />
+					<div style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{wallet.balance} REND</div>
 				</div>
 			</div> : null
 		}

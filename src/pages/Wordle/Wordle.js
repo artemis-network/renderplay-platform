@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from 'react'
-
-import { get_types } from '../../service/game.service'
-
+import React, { useEffect, useState, lazy } from 'react'
 import { Container } from 'react-bootstrap'
-
-import ContestCard from '../../components/wordle/ContestCard/ContestCard'
 
 import FiveRendleImg from '../../assets/5rendle.webp'
 import SixRendleImg from '../../assets/6rendle.webp'
@@ -15,15 +10,21 @@ import RendleFive from '../../assets/rendle_5.webp'
 import RendleSix from '../../assets/rendle_6.webp'
 import RendleSeven from '../../assets/rendle_7.webp'
 
-import Bar from '../../components/wordle/Bar/Bar'
+import { get_types } from '../../service/game.service'
 
 import './Wordle.css'
+
+const ContestCard = lazy(() => import('../../components/wordle/ContestCard/ContestCard'))
+const Bar = lazy(() => import("../../components/wordle/Bar/Bar"))
+const Footer = lazy(() => import("../../components/wordle/Footer/Footer"))
 
 const Wordle = () => {
 
 	const [game_types, set_game_types] = useState({ game_types: [] })
 
 	useEffect(() => {
+		localStorage.removeItem("game_state_id")
+		localStorage.removeItem("gameState")
 		get_types().then(res => {
 			let data = res.data.game_types
 			data[0].img = FiveRendleImg
@@ -44,7 +45,7 @@ const Wordle = () => {
 			}
 			set_game_types({ game_types: data })
 		}).catch(err => console.log(err))
-	}, [])
+	}, [game_types.game_types.length])
 
 	return (<div>
 		<div className="container__bg">
@@ -55,6 +56,7 @@ const Wordle = () => {
 				</div>
 			</Container>
 		</div>
+		<Footer />
 	</div>)
 }
 export default Wordle

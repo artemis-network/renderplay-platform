@@ -8,7 +8,7 @@ const Footer = (props) => {
   const [isModalOpen, setModalIsOpen] = useState(false);
   const toggleModal = () => setModalIsOpen(!isModalOpen);
   return (
-    <footer style={{ position: "absolute", width: "100%", bottom: 0, background: "#1B132F", }} >
+    <footer >
       {isModalOpen && <Modal2 onRequestClose={toggleModal} />}
       <hr />
       <div className='footer_end_l item_point'>
