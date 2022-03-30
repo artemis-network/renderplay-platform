@@ -22,11 +22,13 @@ import { FiveLetterGuesses } from './constants/config/fiveLetterGuesses'
 import { sixLetterGuesses } from './constants/config/sixLetterGuesses'
 import { SevenLetterGuesses } from './constants/config/sevenLetterGuesses'
 
+
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
 import { post_winner, get_player_status, post_word, get_guesses } from '../../service/game.service'
 
 import './App.css'
+import { InformationCircleIcon } from '@heroicons/react/outline'
 
 function WorldleGame() {
 
@@ -45,7 +47,6 @@ function WorldleGame() {
   const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
 
   const [solution, setSolution] = useState("")
-  const [img, setImg] = useState("")
 
   const username = localStorage.getItem("username")
   const data = JSON.parse(localStorage.getItem("gameConfig"))
@@ -87,14 +88,6 @@ function WorldleGame() {
     return loaded.guesses
   })
 
-  useEffect(() => {
-    if (!loadGameStateFromLocalStorage()) {
-      setTimeout(() => {
-        setIsInfoModalOpen(true)
-      }, WELCOME_INFO_MODAL_MS)
-    }
-  }, [])
-
   const clearCurrentRowClass = () => {
     setCurrentRowClass('')
   }
@@ -114,7 +107,6 @@ function WorldleGame() {
             let guesses = JSON.parse(localStorage.getItem("gameState"))
             guesses = guesses.guesses.length
             let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
-            setImg(gameConfig.banner)
 
             if (isGameLost) {
               const data = {
@@ -167,7 +159,6 @@ function WorldleGame() {
 
     const game_state_id = { username: localStorage.getItem("username") }
     get_guesses(game_state_id).then((res_ => {
-      console.log(res_.data)
       if (res_.data.guesses.length <= 0) return
       else {
         const new_guesses = {
@@ -260,8 +251,13 @@ function WorldleGame() {
   return (
     <div style={{ padding: "0 2rem", background: "#321E43" }} className="h-screen flex flex-col">
       <div style={{ display: "flex", justifyContent: "center", margin: "2rem 0 0 0" }}>
-        <img src={img} alt="img" width={"500px"} height="200px" style={{ display: "flex", alignSelf: "center" }} />
       </div>
+      <InformationCircleIcon
+        color='white'
+        style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
+        className="h-12 w-12 mr-2 cursor-pointer dark:stroke-white"
+        onClick={() => setIsInfoModalOpen(true)}
+      />
       <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
         <div className="grow_keyboard">
           <Grid

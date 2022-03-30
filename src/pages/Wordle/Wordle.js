@@ -49,7 +49,7 @@ const Wordle = () => {
 
 	return (<div>
 		<div className="container__bg">
-			<Bar />
+			<Bar isGame={false} />
 			<Container>
 				<div className="contest">
 					{game_types.game_types.map((game, i) => <ContestCard {...game} key={i} index={i} />)}
