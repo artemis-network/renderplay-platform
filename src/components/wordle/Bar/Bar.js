@@ -39,11 +39,11 @@ const Bar = (props) => {
 
 	const [img, setImg] = useState(Random)
 
-	let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
-	useEffect(() => {
-		if (gameConfig !== null) setImg(gameConfig.banner)
-		setImg(Random)
-	}, [gameConfig.banner])
+	// let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
+	// useEffect(() => {
+	// 	// if (gameConfig !== null) setImg(gameConfig.banner)
+	// 	// setImg(Random)
+	// }, [gameConfig.banner])
 
 	useEffect(() => {
 
