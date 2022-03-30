@@ -1,10 +1,12 @@
 /* eslint-disable */
+/* eslint-disable react/no-direct-mutation-state */
 import { useEffect, useState } from "react";
 
 import { Link, NavLink } from 'react-router-dom';
 import { MenuIcon, XIcon, CurrencyDollarIcon } from '@heroicons/react/solid';
 
 import Logo from '../../../assets/logo.webp'
+import Coin from '../../../assets/coin.webp'
 import './Bar.css'
 
 import CustomDropDown from "./DropDown";
@@ -117,7 +119,7 @@ const Bar = () => {
 		{localStorage.getItem("username") ?
 			<div style={{ display: "flex", justifyContent: "flex-end", padding: "2rem 4rem" }}>
 				<div className='username' style={{ display: "flex", justifyContent: "flex-end", color: "#fbd6d2", fontWeight: "bold", padding: "1rem", borderRadius: "1vh", alignItems: "center" }}>
-					<CurrencyDollarIcon className=" rounded-xl p-1 w-12 h-12 cursor-pointer" color="white" />
+					<img className="rounded-xl p-1 w-12 h-12 cursor-pointer" src={Coin} alt="coin" />
 					<div style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{wallet.balance} REND</div>
 				</div>
 			</div> : null

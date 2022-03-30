@@ -94,7 +94,7 @@ function AccountModal({ isOpen, onClose }) {
               <Identicon />
               <Text
                 color="white"
-                fontSize="xl"
+                fontSize="sm"
                 fontWeight="semibold"
                 ml="2"
                 lineHeight="1.1"
@@ -203,7 +203,7 @@ function Wallet() {
         py="0"
       >
         <Box px="3">
-          <Text color="white" fontSize="xl">
+          <Text color="white" fontSize="sm">
             {etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)} ETH
           </Text>
         </Box>
@@ -222,7 +222,7 @@ function Wallet() {
           px={3}
           height="38px"
         >
-          <Text color="white" fontSize="xl" fontWeight="medium" mr="2">
+          <Text color="white" fontSize="sm" fontWeight="medium" mr="2">
             {account &&
               `${account.slice(0, 6)}...${account.slice(
                 account.length - 4,
