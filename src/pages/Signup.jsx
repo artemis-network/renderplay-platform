@@ -88,9 +88,9 @@ const Signup = () => {
         });
 
       setTimeout(() => {
-        if (status.error) history.push("/");
+        if (!status.error) history.push("/login");
         setStatus({});
-      }, 5000);
+      }, 2000);
     },
   });
 
@@ -228,8 +228,9 @@ const Signup = () => {
                 onChange={form.handleChange}
                 onFocus={form.handleChange}
                 autoComplete="off"
+                className="form-check-input"
               />
-              <label className="form-check-label text-muted" htmlFor="accept">
+              <label className="form-check-label text-light" htmlFor="accept">
                 I Accept{" "}
                 <Link to="/" className="text-primary">
                   Terms And Condition

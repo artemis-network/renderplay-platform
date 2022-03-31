@@ -139,15 +139,15 @@ const Login = () => {
                     id="flexCheckDefault"
                   />
                   <label
-                    className="form-check-label text-muted"
+                    className="form-check-label text-light"
                     htmlFor="flexCheckDefault"
                   >
                     Remember me
                   </label>
                 </div>
               </div>
-              <small className="forgot-pass text-muted mb-0">
-                <div className="text-muted fw-medium">
+              <small className="forgot-pass text-light mb-0">
+                <div className="text-light fw-medium">
                   Forgot password ?
                 </div>
               </small>
