@@ -45,6 +45,7 @@ function WorldleGame() {
   const [MAX_WORD_LENGTH, SET_MAX] = useState(5)
   const [WORDS, SET_WORDS] = useState([])
   const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
+  const [isGameFinished, setIsGameFinished] = useState(false)
 
   const [solution, setSolution] = useState("")
 
@@ -148,6 +149,7 @@ function WorldleGame() {
               }).catch(err => console.log(err))
             }
           } else {
+            setIsGameFinished(true)
             setIsGameModalOpen(true)
             setIsGameWon(res.data.status.is_won)
             setIsGameLost(!res.data.status.is_won)
@@ -286,6 +288,7 @@ function WorldleGame() {
           guesses={guesses}
           isGameLost={isGameLost}
           isGameWon={isGameWon}
+          isGameFinished={isGameFinished}
           handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
         />
         <AlertContainer />

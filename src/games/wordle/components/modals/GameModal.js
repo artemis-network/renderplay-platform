@@ -8,6 +8,7 @@ export const GameModal = ({
   handleClose,
   isGameLost,
   isGameWon,
+  isGameFinished
 }) => {
   return (
     <BaseModal
@@ -15,7 +16,10 @@ export const GameModal = ({
       isOpen={isOpen}
       handleClose={handleClose}
     >
-      {isGameLost ? (
+      {isGameFinished ? (
+        <h2>You already participated in this contest, stay tuned for results.</h2>
+      ) : null}
+      {isGameLost && !isGameFinished ? (
         <h2>Better Luck next time!.</h2>
       ) : null}
       {isGameWon ? (

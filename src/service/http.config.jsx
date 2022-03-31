@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let SERVER = "DEV";
+let SERVER = "PROD";
 let URL = "";
 
 if (SERVER === "DEV") URL = "http://localhost:5000/";
