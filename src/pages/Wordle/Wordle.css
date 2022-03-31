@@ -27,6 +27,7 @@
 @media screen and (max-width: 900px) {
   .contest {
     padding: 5rem 0 24rem 0;
+    row-gap: 10rem;
   }
 }
 
