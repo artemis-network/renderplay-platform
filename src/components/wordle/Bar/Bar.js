@@ -16,7 +16,7 @@ import Wallet from './Wallet'
 import { get_wallet } from '../../../service/game.service'
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 
-import Random from '../../../assets/rendle_5.webp'
+import Random from '../../../assets/5rendle.webp'
 
 const Bar = (props) => {
 
@@ -38,25 +38,26 @@ const Bar = (props) => {
 	})
 
 	const [img, setImg] = useState(Random)
-
-	// let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
-	// useEffect(() => {
-	// 	// if (gameConfig !== null) setImg(gameConfig.banner)
-	// 	// setImg(Random)
-	// }, [gameConfig.banner])
-
+	let gameConfig = localStorage.getItem("gameConfig")
 	useEffect(() => {
-
-		const data = {
-			username: localStorage.getItem("username")
+		if (gameConfig !== null) {
+			gameConfig = JSON.parse(gameConfig)
+			return setImg(gameConfig.banner)
 		}
-		get_wallet(data)
-			.then((res) => {
-				setWallet({
-					id: res.data.wallet.id,
-					balance: res.data.wallet.balance
+		return setImg(Random)
+	}, [])
+
+	const data = { username: localStorage.getItem("username") }
+	useEffect(() => {
+		if (data.username !== null) {
+			get_wallet(data)
+				.then((res) => {
+					setWallet({
+						id: res.data.wallet.id,
+						balance: res.data.wallet.balance
+					})
 				})
-			})
+		}
 	}, [])
 
 	const logout = () => {
@@ -104,7 +105,7 @@ const Bar = (props) => {
 			</div>
 		</div>
 		<nav style={{ background: "#6D1DAF", padding: "1rem ", gridTemplateColumns: "1fr 2fr 1fr", minHeight: "10.5vh" }} className="nav_desktop" >
-			<a href="https://play.renderverse.io" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
+			<Link to="/rendle" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
 				{!props.isGame ? <img src={Logo} width="30" alt=""></img> : null}
 				{!props.isGame ? <div>Renderverse</div> :
 					<div className="neu neu_end">
@@ -115,7 +116,7 @@ const Bar = (props) => {
 						/>
 					</div>
 				}
-			</a>
+			</Link>
 			{
 				!props.isGame ?
 					<div className='neu' style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }}>
@@ -137,28 +138,21 @@ const Bar = (props) => {
 			</div>
 		</nav>
 		<div className='nav_mobile'>
-			<div style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "center", columnGap: "2rem", alignItems: "center", width: "100%", padding: "0 2rem" }}>
-				{!props.isGame ?
-					<div>
-						<img src={Logo} alt="img" width={"60px"} height="250px" style={{ display: "flex", alignSelf: "center", }} />
-					</div>
-					: null}
+			<div style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: "2rem", alignItems: "center", width: "100%", padding: "0 2rem" }}>
 				{!props.isGame ? <div>Renderverse</div> :
-					<div className="neu neu_end" style={{ padding: ".5rem", display: "flex", justifyContent: "flex-start", margin: "0rem" }}>
+					<div className="neu neu_end" style={{ padding: 0 }}>
 						<ArrowLeftIcon
 							color='white'
-							className="h-8 w-8 mx-0 cursor-pointer dark:stroke-white no_border"
+							className="h-8 w-6 mx-0 cursor-pointer dark:stroke-white no_border"
 							onClick={back}
 						/>
 					</div>
 				}
 				{props.isGame ?
-					<div >
-						<img src={img} alt="img" width={"350px"} height="250px" style={{ display: "flex", alignSelf: "center", }} />
-					</div>
+					<img src={img} alt="img" width={"350px"} height="250px" style={{ display: "flex", alignSelf: "center" }} />
 					: null}
 			</div>
-			<div style={{ display: "flex", justifyContent: "flex-end", width: "30%", padding: "0 1rem" }}>
+			<div style={{ display: "flex", justifyContent: "flex-end", width: "100%", padding: "0 1rem" }}>
 				<MenuIcon onClick={toggleNav} className="neu rounded-xl p-1 w-12 h-12 cursor-pointer" color="white" />
 			</div>
 		</div>

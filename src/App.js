@@ -10,14 +10,12 @@ const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const WordleGameContainer = lazy(() => import('./pages/WordleGameContainer/WordleGameContainer'));
 const ComingSoon = lazy(() => import('./components/CommingSoon'));
-const Loader = () => <div>Loader</div>
 
 
 function App() {
   return (
     <div>
-      <Suspense fallback={Loader}>
-
+      <Suspense fallback={<div>Loading...</div>}>
         <Router>
           <Redirect from="/" to="/rendle"></Redirect>
           <Route exact component={Wordle} path="/rendle" />

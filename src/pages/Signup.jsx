@@ -22,7 +22,8 @@ const validate = (values) => {
 
   if (!values.username) errors.username = "*Required";
   else if (isValidUsername(values.username))
-    errors.username = "Invalid username";
+    errors.username = "*should contain special character";
+  else if (values.username.length < 8) errors.username = "min 8 characters";
 
   if (!values.email) errors.email = "*Requried";
   else if (!emailRegex.test(String(values.email).toLowerCase()))

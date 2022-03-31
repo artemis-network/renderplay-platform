@@ -8,9 +8,10 @@ export const BaseModal = ({ title, children, isOpen, handleClose }) => {
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
+        style={{ top: "-18rem" }}
         onClose={handleClose}
       >
-        <div className="flex items-center justify-center min-h-screen py-10 px-4 text-center sm:block sm:p-0">
+        <div className="flex items-center justify-center min-h-screen p-0 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -20,7 +21,7 @@ export const BaseModal = ({ title, children, isOpen, handleClose }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-1000 bg-opacity-0 transition-opacity" />
+            <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
