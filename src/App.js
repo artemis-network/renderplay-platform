@@ -10,12 +10,16 @@ const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const WordleGameContainer = lazy(() => import('./pages/WordleGameContainer/WordleGameContainer'));
 const ComingSoon = lazy(() => import('./components/CommingSoon'));
-
+import Loader from "react-js-loader";
 
 function App() {
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={
+        <div style={{ height: "100vh", width: "100%", display: "flex", justifyContent: "center", alignItems: "center", background: "#321e43" }}>
+          <Loader type="bubble-scale" bgColor={"#F3CCD0"} color={"#F3CCD0"} title={"Loading..."} size={100} />
+        </div>
+      }>
         <Router>
           <Redirect from="/" to="/rendle"></Redirect>
           <Route exact component={Wordle} path="/rendle" />

@@ -234,8 +234,8 @@ function Wallet() {
       </Box>
     ) : (
       <Button
-        className="neu neu_end no_border"
-        style={{ fontSize: "1.5rem", padding: "1.5rem 1.6rem" }}
+        className="neu neu_end no_border neu_link"
+        style={{ fontSize: "1.25rem", fontWeight: "bold", padding: "1.5rem 1.6rem" }}
         onClick={handleConnectWallet}
         bg="#651CA3"
         color="#F2CAD0"
@@ -248,7 +248,7 @@ function Wallet() {
           border: 0
         }}
       >
-        Connect to a wallet
+        Connect Wallet
       </Button>
     );
   }

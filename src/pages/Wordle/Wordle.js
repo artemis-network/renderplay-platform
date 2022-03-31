@@ -27,6 +27,7 @@ const Wordle = () => {
 		localStorage.removeItem("gameState")
 		get_types().then(res => {
 			let data = res.data.game_types
+			let temp = []
 			data[0].img = FiveRendleImg
 			data[0].line = Line2Img
 			data[0].banner = RendleFive
@@ -36,14 +37,29 @@ const Wordle = () => {
 			data[2].img = SevenRendleImg
 			data[2].line = Line2Img
 			data[2].banner = RendleSeven
+
 			for (let i in data) {
-				const now = new Date(Date.now() + (1000 * 60 * 60 * 9) + (1000 * 60 * 30))
+				const now = new Date(Date.now())
 				const time = new Date(data[i].starts_on)
 				const isLive = time.getTime() - now.getTime()
+
+				if (isLive < 0 && isLive > -1000 * 60 * 60 * 8) {
+					temp[1] = data[i]
+					temp[1].css = "_scale"
+				}
+				if (isLive < - 1000 * 60 * 60 * 8) {
+					temp[0] = data[i]
+					temp[0].css = "_fade"
+				}
+				if (isLive > 0) {
+					temp[2] = data[i]
+					temp[2].css = "_fade"
+				}
+
 				if (isLive) data[i].live = true
 				else data[i].live = false
 			}
-			set_game_types({ game_types: data })
+			set_game_types({ game_types: temp })
 		}).catch(err => console.log(err))
 	}, [game_types.game_types.length])
 
@@ -52,7 +68,9 @@ const Wordle = () => {
 			<Bar isGame={false} />
 			<Container>
 				<div className="contest">
-					{game_types.game_types.map((game, i) => <ContestCard {...game} key={i} index={i} />)}
+					{game_types.game_types.map((game, i) => <div className={game.css}>
+						<ContestCard  {...game} key={i} index={i} />
+					</div>)}
 				</div>
 			</Container>
 		</div>

@@ -22,7 +22,7 @@ export const GameModal = ({
       {isGameLost && !isGameFinished ? (
         <h2>Better Luck next time!.</h2>
       ) : null}
-      {isGameWon ? (
+      {isGameWon && !isGameFinished ? (
         <h2>Congrats you completed, resutls will be announced soon.</h2>
       ) : null}
 

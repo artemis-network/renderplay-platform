@@ -3,14 +3,14 @@
 .content {
   min-width: 30rem;
   min-height: 30rem;
-  background: #dde1e7;
-  border-radius: 10px;
-  box-shadow: -3px -3px 7px #ffffff73, 2px 2px 5px rgba(94, 104, 121, 0.288);
+  background: #321e43;
+  box-shadow: 18px 18px 84px #140c1b, -18px -18px 84px #50306b;
   position: relative;
-  padding: 0 2rem 2rem 2rem;
+  padding: 0 4rem 2rem 4rem;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  border-radius: 2vh;
 }
 
 .content img {
@@ -18,8 +18,8 @@
   width: 8rem;
   border-radius: 2vh;
   transform: translateY(-3.5rem);
-  background-color: #321e43;
-  box-shadow: -3px -3px 7px #ffffff73, 2px 2px 5px rgba(94, 104, 121, 0.288);
+  background: #321e43;
+  box-shadow: 18px 18px 84px #140c1b, -18px -18px 84px #50306b;
   padding: 1rem;
 }
 
@@ -44,11 +44,11 @@
   font-size: 1rem;
   outline: none;
   border: none;
-  color: #595959;
-  background: #dde1e7;
-  border-radius: 25px;
-  box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #ffffff73;
+  color: white;
+  background: #321e43;
+  box-shadow: 27px 27px 41px #22142e, -27px -27px 41px #422858;
   font-family: "Poppins", sans-serif;
+  border-radius: 2vh;
 }
 
 .field {
@@ -64,29 +64,31 @@
 .field span {
   position: absolute;
   line-height: 50px;
-  left: 0.75rem;
-  top: 0.95rem;
-  color: #595959;
+  left: 0.5rem;
+  top: 1.25rem;
+  color: white;
 }
 
 .n_button {
   margin: 1rem 0;
   width: 100%;
   height: 50px;
-  color: #000;
+  color: white;
   font-size: 18px;
   font-weight: 600;
-  background: #dde1e7;
   border: none;
   outline: none;
   cursor: pointer;
   border-radius: 25px;
-  box-shadow: 2px 2px 5px #babecc, -5px -5px 10px #ffffff73;
+  background: #321e43;
+  box-shadow: 27px 27px 41px #22142e, -27px -27px 41px #422858;
 }
 
+.n_button:hover,
 .n_button:focus {
   color: #3498db;
-  box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #ffffff73;
+  background: #321e43;
+  box-shadow: inset 35px 35px 62px #2a1938, inset -35px -35px 62px #3b234e;
 }
 
 @media screen and (max-width: 1200px) {
@@ -95,4 +97,14 @@
     min-width: 90vw;
     min-height: 50vh;
   }
+}
+
+input {
+  margin: 0.5rem 0;
+}
+
+input:focus,
+input:active {
+  background: #321e43;
+  box-shadow: inset 35px 35px 62px #2a1938, inset -35px -35px 62px #3b234e;
 }

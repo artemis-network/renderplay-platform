@@ -103,7 +103,7 @@ const Login = () => {
 
             <div className="field">
               <span>
-                <UserCircleIcon className="h-6 w-6" color="black" />
+                <UserCircleIcon className="h-6 w-6" color="white" />
               </span>
               <input
                 id="username"
@@ -112,11 +112,12 @@ const Login = () => {
                 value={form.values.username}
                 onChange={form.handleChange}
                 type="email"
+                autoComplete="off"
               />
             </div>
             <div className="field">
               <span>
-                <LockClosedIcon className="h-6 w-6" color="black" />
+                <LockClosedIcon className="h-6 w-6" color="white" />
               </span>
               <input
                 type="password"
@@ -124,6 +125,7 @@ const Login = () => {
                 placeholder="Password"
                 value={form.values.password}
                 onChange={form.handleChange}
+                autoComplete="off"
               />
             </div>
 
@@ -145,12 +147,9 @@ const Login = () => {
                 </div>
               </div>
               <small className="forgot-pass text-muted mb-0">
-                <Link
-                  to="/auth/reset-password"
-                  className="text-muted fw-medium"
-                >
+                <div className="text-muted fw-medium">
                   Forgot password ?
-                </Link>
+                </div>
               </small>
             </div>
 
@@ -175,16 +174,16 @@ const Login = () => {
 
             <div className="col-12 text-center mt-3">
               <small>
-                <small className="text-muted me-2">
+                <small className="text-light me-2">
                   Don't have an account ?
                 </small>{" "}
-                <Link to="/signup" className="text-dark fw-medium">
+                <Link to="/signup" className="text-light fw-medium">
                   Sign Up
                 </Link>
               </small>
             </div>
             {/*end col*/}
-            <p className="mb-0 text-muted mt-3 text-center">
+            <p className="mb-0 text-light mt-3 text-center">
               © Renderverse.
             </p>
           </form>

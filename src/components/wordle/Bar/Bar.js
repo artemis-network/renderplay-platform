@@ -99,7 +99,7 @@ const Bar = (props) => {
 					{localStorage.getItem("username") !== null ?
 						<Link to="/" className='neu neu_link' onClick={logout}>Logout</Link>
 						:
-						<Link className="neu neu_link" onClick={toggleNav} to="/login">Login</Link>
+						<Link className="neu neu_link no_border" onClick={toggleNav} to="/login">Login</Link>
 					}
 				</div>
 			</div>
@@ -133,7 +133,7 @@ const Bar = (props) => {
 				{localStorage.getItem("username") !== null ?
 					<CustomDropDown />
 					:
-					<NavLink to={"/login"} className="neu neu_end" activeClassName='neu_active'>Login</NavLink>
+					<NavLink to={"/login"} className="neu neu_end no_border" activeClassName='neu_active'>Login</NavLink>
 				}
 			</div>
 		</nav>

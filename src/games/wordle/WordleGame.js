@@ -167,7 +167,7 @@ function WorldleGame() {
           solution: solution,
           guesses: res_.data.guesses
         }
-        setGuesses([...res_.data.guesses])
+        if (!isGameWon && !isGameLost) setGuesses([...res_.data.guesses])
         localStorage.setItem("gameState", JSON.stringify(new_guesses))
       }
     }))
@@ -216,7 +216,7 @@ function WorldleGame() {
 
     if (condition_1 && condition_3 && !isGameWon) {
       setGuesses([...guesses, currentGuess])
-      if (!winningWord) setCurrentGuess('')
+      setCurrentGuess("")
       const game_state_id = localStorage.getItem("game_state_id")
       let word_data = {
       }

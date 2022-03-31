@@ -1,45 +1,52 @@
+import { useState, lazy } from "react";
 import { useFormik } from "formik";
-import { useState } from "react";
-import { signUp } from "../service/auth.service";
-import PasswordStrengthBar from "react-password-strength-bar";
-import { Link } from "react-router-dom";
 
-import Bar from "../components/wordle/Bar/Bar";
+import { Link } from "react-router-dom";
+import { signUp } from "../service/auth.service";
+import { useHistory } from "react-router-dom";
+
+const Bar = lazy(() => import("../components/wordle/Bar/Bar"));
+import PasswordStrengthBar from "react-password-strength-bar";
+
 import Logo from "../assets/logo.webp";
 import { LockClosedIcon, UserCircleIcon } from "@heroicons/react/outline";
 
-const isValidUsername = (username) => {
-  const usernameRegex = /^[a-zA-Z0-9_]{3,10}$/;
-  return usernameRegex.test(username);
-};
+const isValidUsername = (username) => /^[a-z0-9]{6}$/.test(username);
+
+const isValidEmail = (email) =>
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
+
+const toLowerCase = (text) => String(text).toLowerCase();
 
 const validate = (values) => {
   const errors = {};
-  const emailRegex =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!values.name) errors.name = "*required";
 
-  if (!values.name) errors.name = "*Required";
+  if (!values.username) errors.username = "*required";
+  else if (isValidUsername(toLowerCase(values.username)))
+    errors.username = "*username should be alpha numeric";
+  else if (values.username.length < 7) errors.username = "*min 6 characters";
 
-  if (!values.username) errors.username = "*Required";
-  else if (isValidUsername(values.username))
-    errors.username = "*should contain special character";
-  else if (values.username.length < 8) errors.username = "min 8 characters";
+  if (!values.email) errors.email = "*requried";
+  else if (!isValidEmail(toLowerCase(values.email)))
+    errors.email = "*invalid email";
 
-  if (!values.email) errors.email = "*Requried";
-  else if (!emailRegex.test(String(values.email).toLowerCase()))
-    errors.email = "Invalid email";
+  if (!values.password) errors.password = "*requried";
+  if (values.password.length < 7) errors.password = "*min 8 characters";
 
-  if (!values.password) errors.password = "*Requried";
-
-  if (!values.confirmPassword) errors.confirmPassword = "*Requried";
+  if (!values.confirmPassword) errors.confirmPassword = "*requried";
   else if (values.confirmPassword !== values.password)
-    errors.confirmPassword = "*Password and confirm password are not same";
+    errors.confirmPassword = "*password and confirm password are not same";
 
-  if (!values.accept) errors.accept = "*Please accepts terms and conditions";
+  if (!values.accept) errors.accept = "*please accepts terms and conditions";
   return errors;
 };
 
 const Signup = () => {
+  const history = useHistory();
+
   const form = useFormik({
     initialValues: {
       name: "",
@@ -54,7 +61,6 @@ const Signup = () => {
     onSubmit: (values) => {
       signUp(values)
         .then((res) => {
-          console.log(res.data);
           if (res.data.errorType === "USER_ALREADY_EXIST") {
             setStatus({
               status: res.data.status,
@@ -82,6 +88,7 @@ const Signup = () => {
         });
 
       setTimeout(() => {
+        if (status.error) history.push("/");
         setStatus({});
       }, 5000);
     },
@@ -124,11 +131,10 @@ const Signup = () => {
 
             <div className="field">
               <span>
-                <UserCircleIcon className="h-6 w-6" color="black" />
+                <UserCircleIcon className="h-7 w-7" color="white" />
               </span>
               <input
                 type="text"
-                className="form-control"
                 placeholder="Name"
                 value={form.values.name}
                 onChange={form.handleChange}
@@ -142,11 +148,10 @@ const Signup = () => {
             </div>
             <div className="field">
               <span>
-                <UserCircleIcon className="h-6 w-6" color="black" />
+                <UserCircleIcon className="h-7 w-7" color="white" />
               </span>
               <input
                 type="text"
-                className="form-control"
                 placeholder="Username"
                 value={form.values.username}
                 onChange={form.handleChange}
@@ -161,16 +166,16 @@ const Signup = () => {
 
             <div className="field">
               <span>
-                <UserCircleIcon className="h-6 w-6" color="black" />
+                <UserCircleIcon className="h-7 w-7" color="white" />
               </span>
               <input
                 type="email"
-                className="form-control"
                 placeholder="name@example.com"
                 value={form.values.email}
                 onChange={form.handleChange}
                 onFocus={form.handleChange}
                 id="email"
+                autoComplete="off"
               />
               {form.touched.email || form.errors.email ? (
                 <div style={error}> {form.errors.email} </div>
@@ -180,16 +185,16 @@ const Signup = () => {
             </div>
             <div className="field">
               <span>
-                <LockClosedIcon className="h-6 w-6" color="black" />
+                <LockClosedIcon className="h-7 w-7" color="white" />
               </span>
               <input
                 id="password"
                 type="password"
-                className="form-control"
                 placeholder="Password"
                 value={form.values.password}
                 onChange={form.handleChange}
                 onFocus={form.handleChange}
+                autoComplete="off"
               />
               {form.touched.password || form.errors.password ? (
                 <div style={error}> {form.errors.password} </div>
@@ -199,16 +204,16 @@ const Signup = () => {
             <PasswordStrengthBar password={form.values.password} />
             <div className="field">
               <span>
-                <LockClosedIcon className="h-6 w-6" color="black" />
+                <LockClosedIcon className="h-7 w-7" color="white" />
               </span>
               <input
                 id="confirmPassword"
                 type="password"
-                className="form-control"
                 placeholder="Confirm Password"
                 value={form.values.confirmPassword}
                 onChange={form.handleChange}
                 onFocus={form.handleChange}
+                autoComplete="off"
               />
               {form.touched.confirmPassword || form.errors.confirmPassword ? (
                 <div style={error}> {form.errors.confirmPassword} </div>
@@ -216,13 +221,13 @@ const Signup = () => {
             </div>
             <div className="form-check mb-3">
               <input
-                className="form-check-input"
                 type="checkbox"
                 defaultValue
                 id="accept"
                 value={form.values.accept}
                 onChange={form.handleChange}
                 onFocus={form.handleChange}
+                autoComplete="off"
               />
               <label className="form-check-label text-muted" htmlFor="accept">
                 I Accept{" "}
@@ -243,16 +248,16 @@ const Signup = () => {
             </button>
             <div className="col-12 text-center mt-3">
               <small>
-                <small className="text-muted me-2">
+                <small className="text-light me-2">
                   Already have an account ?{" "}
                 </small>{" "}
-                <Link to="/login" className="text-dark fw-medium">
+                <Link to="/login" className="text-light fw-medium">
                   Sign in
                 </Link>
               </small>
             </div>
             {/*end col*/}
-            <p className="mb-0 text-muted mt-3 text-center">© Renderverse.</p>
+            <p className="mb-0 text-light mt-3 text-center">© Renderverse.</p>
           </form>
         </div>
       </div>

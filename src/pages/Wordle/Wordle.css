@@ -7,7 +7,7 @@
   flex-direction: row;
   justify-content: center;
   padding: 5rem 2rem 10rem 2rem;
-  column-gap: 3rem;
+  column-gap: 5rem;
   min-height: 100vh;
 }
 
@@ -28,4 +28,24 @@
   .contest {
     padding: 5rem 0 24rem 0;
   }
+}
+
+._scale {
+  transform: scale(1.15);
+  transition: all 1s;
+}
+
+._scale:hover {
+  transform: scale(1.2);
+  transition: all 1s;
+}
+
+._fade {
+  opacity: 0.5;
+}
+
+._fade:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  transition: all 1s;
 }
