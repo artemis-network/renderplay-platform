@@ -46,7 +46,7 @@
   border: none;
   color: white;
   background: #321e43;
-  box-shadow: 27px 27px 41px #22142e, -27px -27px 41px #422858;
+  box-shadow: 9px 9px 32px #241530, -9px -9px 32px #412756;
   font-family: "Poppins", sans-serif;
   border-radius: 2vh;
 }
@@ -81,7 +81,7 @@
   cursor: pointer;
   border-radius: 25px;
   background: #321e43;
-  box-shadow: 27px 27px 41px #22142e, -27px -27px 41px #422858;
+  box-shadow: 9px 9px 32px #241530, -9px -9px 32px #412756;
 }
 
 .n_button:hover,
