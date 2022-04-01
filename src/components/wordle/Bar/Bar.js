@@ -15,7 +15,7 @@ import CustomDropDown from "./DropDown";
 import Wallet from './Wallet'
 
 import { get_wallet } from '../../../service/game.service'
-import { ArrowLeftIcon, UserCircleIcon, BriefcaseIcon, LogoutIcon } from "@heroicons/react/outline";
+import { ArrowLeftIcon, UserCircleIcon, BriefcaseIcon, LogoutIcon, ArrowNarrowLeftIcon, ScaleIcon } from "@heroicons/react/outline";
 
 import Random from '../../../assets/5rendle.webp'
 import MobileDropDown from "./MobileDropDown";
@@ -106,6 +106,7 @@ const Bar = (props) => {
 				{!props.isGame ? <img src={Logo} width="30px" alt=""></img> : null}
 				{!props.isGame ? <div>Renderverse</div> :
 					<div className="neu neu_end">
+
 						<ArrowLeftIcon
 							color='white'
 							className="h-10 w-10 mx-0 cursor-pointer dark:stroke-white no_border"
@@ -137,17 +138,11 @@ const Bar = (props) => {
 				<Link to="/rendle" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
 					{!props.isGame ? <img src={Logo} width="30px" alt=""></img> : null}
 					{!props.isGame ? <div>Renderverse</div> :
-						<div className="neu neu_end">
-							<ArrowLeftIcon
-								color='white'
-								className="h-10 w-10 mx-0 cursor-pointer dark:stroke-white no_border"
-								onClick={back}
-							/>
-						</div>
+						<ArrowNarrowLeftIcon onClick={back} className="neu neu_end rounded-xl p-1 w-12 h-12 cursor-pointer" color="white" />
 					}
 				</Link>
 				{props.isGame ?
-					<img src={img} alt="img" width={"350px"} height="250px" style={{ display: "flex", alignSelf: "center" }} />
+					<img src={img} alt="img" width={"350px"} height="250px" style={{ display: "flex", alignSelf: "center", transform: "scale(1.1)" }} />
 					: null}
 			</div>
 			<div style={{ display: "flex", justifyContent: "flex-end", width: "100%", padding: "0 1rem" }}>
