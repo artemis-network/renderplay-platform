@@ -23,6 +23,7 @@ import { DAppProvider } from "@usedapp/core";
 import { useEffect, useRef } from "react";
 import Jazzicon from "@metamask/jazzicon";
 import styled from "@emotion/styled";
+import { useState } from 'react'
 import "@fontsource/inter";
 
 
@@ -187,12 +188,28 @@ function Identicon() {
 
 function Wallet() {
   function ConnectButton({ handleOpenModal }) {
-    const { activateBrowserWallet, account } = useEthers();
+    const { activateBrowserWallet, account, chainId, deactivate } = useEthers();
     const etherBalance = useEtherBalance(account);
+
+    const [isWrongNetwork, setIsWrongNetwork] = useState(false)
 
     function handleConnectWallet() {
       activateBrowserWallet();
+      console.log(account, chainId)
     }
+
+    function changeNetwork() {
+
+    }
+
+    useEffect(() => {
+      try {
+        if (chainId !== 56) setIsWrongNetwork(true)
+        else setIsWrongNetwork(false)
+      } catch (e) {
+        console.log(e)
+      }
+    }, [chainId])
 
     return account ? (
       <Box
@@ -202,35 +219,55 @@ function Wallet() {
         borderRadius="xl"
         py="0"
       >
-        <Box px="3">
-          <Text color="white" fontSize="sm">
-            {etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)} ETH
-          </Text>
-        </Box>
-        <Button
-          onClick={handleOpenModal}
-          bg="gray.800"
-          border="1px solid transparent"
-          _hover={{
-            border: "1px",
-            borderStyle: "solid",
-            borderColor: "blue.400",
-            backgroundColor: "gray.700",
-          }}
-          borderRadius="xl"
-          m="1px"
-          px={3}
-          height="38px"
-        >
-          <Text color="white" fontSize="sm" fontWeight="medium" mr="2">
-            {account &&
-              `${account.slice(0, 6)}...${account.slice(
-                account.length - 4,
-                account.length
-              )}`}
-          </Text>
-          <Identicon />
-        </Button>
+        {!isWrongNetwork ?
+
+          <Box
+            display="flex"
+            alignItems="center"
+            background="gray.700"
+            borderRadius="xl"
+            py="0"
+          >
+            <Box px="3">
+              <Text color="white" fontSize="sm">
+                {etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)} BNB
+              </Text>
+            </Box>
+            <Button
+              onClick={handleOpenModal}
+              bg="gray.800"
+              border="1px solid transparent"
+              _hover={{
+                border: "1px",
+                borderStyle: "solid",
+                borderColor: "blue.400",
+                backgroundColor: "gray.700",
+              }}
+              borderRadius="xl"
+              m="1px"
+              px={3}
+              height="38px"
+            >
+              <Text color="white" fontSize="sm" fontWeight="medium" mr="2">
+                {account &&
+                  `${account.slice(0, 6)}...${account.slice(
+                    account.length - 4,
+                    account.length
+                  )}`}
+              </Text>
+              <Identicon />
+            </Button>
+          </Box> : <Box onClick={() => changeNetwork()} borderRadius={"xl"} background={"#F24A72"} p="2" _hover={{
+            background: "#F46688"
+          }}>
+            <Text color="white" fontSize="sm" fontWeight={"bold"} >
+              Wrong network,
+            </Text>
+            <Text color="white" fontSize="sm" fontWeight={"bold"} >
+              connect to BSC Mainnet
+            </Text>
+          </Box>
+        }
       </Box>
     ) : (
       <Button

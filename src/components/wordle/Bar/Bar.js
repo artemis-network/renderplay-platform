@@ -118,8 +118,8 @@ const Bar = (props) => {
 				!props.isGame ?
 					<div className='neu' style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }}>
 						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/rendle"} >Rendle</NavLink>
-						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/sc"} >Scavenger Hunt</NavLink>
-						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/lottery"} >Lottery</NavLink>
+						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/sc"} >Render-hunt</NavLink>
+						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/lottery"} >Raffle</NavLink>
 					</div> : <div style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }} >
 						<img src={img} alt="img" width={"350px"} height="250px" style={{ display: "flex", alignSelf: "center" }} />
 					</div>

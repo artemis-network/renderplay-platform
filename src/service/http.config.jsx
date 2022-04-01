@@ -4,7 +4,7 @@ let SERVER = "PROD";
 let URL = "";
 
 if (SERVER === "DEV") URL = "http://192.168.1.14:5000/";
-else if (SERVER === "PROD") URL = "https://artemisnetwork.azurewebsites.net/";
+if (SERVER === "PROD") URL = "https://artemisnetwork.azurewebsites.net/";
 
 axios.interceptors.request.use(
   (config) => {

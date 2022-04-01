@@ -128,7 +128,7 @@ const ContestCard = (props) => {
 								</div>
 							</div>
 							<div className={"c-card__details__bottom"}>
-								<div style={{ color: "white" }}>Entry Fee 0.003 BNB</div>
+								<div style={{ color: "white" }}>Entry Fee - {props.entryfee} REND</div>
 							</div>
 						</div>
 					</div>
