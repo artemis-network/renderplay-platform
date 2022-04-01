@@ -96,3 +96,9 @@
   color: #fbd6d2;
   border-bottom: 0;
 }
+
+@media screen and (max-width: 1200px) {
+  .balance {
+    display: none;
+  }
+}

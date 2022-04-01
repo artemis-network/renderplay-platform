@@ -8,7 +8,7 @@ export const BaseModal = ({ title, children, isOpen, handleClose }) => {
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
-        style={{ top: "-18rem" }}
+        style={{ margin: "0 1rem" }}
         onClose={handleClose}
       >
         <div className="flex items-center justify-center min-h-screen p-0 text-center sm:block sm:p-0">

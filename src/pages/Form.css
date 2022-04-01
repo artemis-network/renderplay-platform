@@ -6,11 +6,19 @@
   background: #321e43;
   box-shadow: 18px 18px 84px #140c1b, -18px -18px 84px #50306b;
   position: relative;
-  padding: 0 4rem 2rem 4rem;
+  padding: 1rem 2rem;
+  margin: 1rem;
   display: flex;
   justify-content: center;
   flex-direction: column;
   border-radius: 2vh;
+}
+
+@media screen and (max-width: 520px) {
+  .content {
+    padding: 1rem;
+    margin: 0;
+  }
 }
 
 .content img {

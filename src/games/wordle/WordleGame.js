@@ -10,8 +10,8 @@ import { AlertContainer } from './components/alerts/AlertContainer'
 import { InfoModal } from './components/modals/InfoModal'
 import { GameModal } from './components/modals/GameModal'
 
-import { WIN_MESSAGES, GAME_COPIED_MESSAGE, NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE } from './constants/strings'
-import { MAX_CHALLENGES, REVEAL_TIME_MS, WELCOME_INFO_MODAL_MS } from './constants/settings'
+import { NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE } from './constants/strings'
+import { MAX_CHALLENGES, REVEAL_TIME_MS } from './constants/settings'
 import { isWordInWordList, isWinningWord, getWordOfDay, unicodeLength } from './lib/words'
 import { loadGameStateFromLocalStorage, saveGameStateToLocalStorage } from './lib/localStorage'
 
@@ -80,12 +80,7 @@ function WorldleGame() {
     if (loaded?.solution !== solution) return []
     const gameWasWon = loaded.guesses.includes(solution)
     if (gameWasWon) setIsGameWon(true)
-    if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
-      setIsGameLost(true)
-      showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-        persist: true,
-      })
-    }
+    if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) setIsGameLost(true)
     return loaded.guesses
   })
 
@@ -126,14 +121,7 @@ function WorldleGame() {
             }
 
             if (isGameWon) {
-              const winMessage =
-                WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-              const delayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH
-              showSuccessAlert(winMessage, {
-                delayMs,
-                onClose: () => setIsGameModalOpen(true),
-              })
-
+              setIsGameModalOpen(true)
               const data = {
                 username: localStorage.getItem("username"),
                 chances: guesses,
@@ -237,10 +225,10 @@ function WorldleGame() {
       if (winningWord) return setIsGameWon(true)
       if (guesses.length === MAX_CHALLENGES - 1) {
         setIsGameLost(true)
-        showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-          persist: true,
-          delayMs: REVEAL_TIME_MS * MAX_WORD_LENGTH + 1,
-        })
+        // showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+        //   persist: true,
+        //   delayMs: REVEAL_TIME_MS * MAX_WORD_LENGTH + 1,
+        // })
       }
     }
   }
@@ -289,7 +277,7 @@ function WorldleGame() {
           isGameLost={isGameLost}
           isGameWon={isGameWon}
           isGameFinished={isGameFinished}
-          handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
+        // handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
         />
         <AlertContainer />
       </div>

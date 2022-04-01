@@ -1,4 +1,5 @@
 /* eslint-disable */
+/* eslint-disable react/no-direct-mutation-state */
 import { UserCircleIcon, BriefcaseIcon, LogoutIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 import './DropDown.css'
@@ -55,4 +56,5 @@ const CustomDropDown = () => {
 	)
 }
 
-export default CustomDropDown 
+
+export default CustomDropDown

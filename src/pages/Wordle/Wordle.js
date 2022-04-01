@@ -20,7 +20,7 @@ const Footer = lazy(() => import("../../components/wordle/Footer/Footer"))
 
 const Wordle = () => {
 
-	const [game_types, set_game_types] = useState({ game_types: [] })
+	const [game_types, set_game_types] = useState({ game_types: [], mobile_view: [] })
 
 	useEffect(() => {
 		localStorage.removeItem("game_state_id")
@@ -28,6 +28,7 @@ const Wordle = () => {
 		get_types().then(res => {
 			let data = res.data.game_types
 			let temp = []
+			let temp_m = []
 			data[0].img = FiveRendleImg
 			data[0].line = Line2Img
 			data[0].banner = RendleFive
@@ -46,20 +47,26 @@ const Wordle = () => {
 				if (isLive < 0 && isLive > -1000 * 60 * 60 * 8) {
 					temp[1] = data[i]
 					temp[1].css = "_scale"
+					temp_m[0] = data[i]
+					temp_m[0].css = "_scale"
 				}
 				if (isLive < - 1000 * 60 * 60 * 8) {
 					temp[0] = data[i]
 					temp[0].css = "_fade"
+					temp_m[2] = data[i]
+					temp_m[2].css = "_fade"
 				}
 				if (isLive > 0) {
 					temp[2] = data[i]
 					temp[2].css = "_fade"
+					temp_m[1] = data[i]
+					temp_m[1].css = "_fade"
 				}
 
 				if (isLive) data[i].live = true
 				else data[i].live = false
 			}
-			set_game_types({ game_types: temp })
+			set_game_types({ game_types: temp, mobile_view: temp_m })
 		}).catch(err => console.log(err))
 	}, [game_types.game_types.length])
 
@@ -69,6 +76,12 @@ const Wordle = () => {
 			<Container>
 				<div className="contest">
 					{game_types.game_types.map((game, i) => <div className={game.css}>
+						<ContestCard  {...game} key={i} index={i} />
+					</div>)}
+				</div>
+
+				<div className="contest_mobile">
+					{game_types.mobile_view.map((game, i) => <div className={game.css}>
 						<ContestCard  {...game} key={i} index={i} />
 					</div>)}
 				</div>
