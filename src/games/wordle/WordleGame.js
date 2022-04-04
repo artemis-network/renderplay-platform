@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
+
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
+
+import Background from '../../assets/test.png'
 
 import { useAlert } from './context/AlertContext'
 import { AlertContainer } from './components/alerts/AlertContainer'
@@ -27,7 +30,6 @@ import { default as GraphemeSplitter } from 'grapheme-splitter'
 
 import { save_contest_result, get_contest_status, update_word, get_guesses } from '../../service/game.service'
 
-import './App.css'
 import { InformationCircleIcon } from '@heroicons/react/outline'
 
 function WorldleGame() {
@@ -238,9 +240,8 @@ function WorldleGame() {
   }
 
   return (
-    <div style={{ padding: "0 2rem", background: "#321E43" }} className="h-screen flex flex-col">
-      <div style={{ display: "flex", justifyContent: "center", margin: "2rem 0 0 0" }}>
-      </div>
+    <div style={{ padding: "0rem", background: `url(${Background})`, backgroundPosition: "center", backgroundRepeat: "no-repeat", width: "100%", margin: "auto", backgroundSize: "cover" }} className="h-screen flex flex-col">
+
       <InformationCircleIcon
         color='white'
         style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}

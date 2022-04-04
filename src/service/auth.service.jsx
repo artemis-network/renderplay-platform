@@ -13,6 +13,7 @@ export const createSession = (data) => {
   localStorage.setItem("publicToken", data.publicToken);
   localStorage.setItem("accessToken", data.accessToken);
   localStorage.setItem("username", data.username);
+  localStorage.setItem("session", Date.now());
 };
 
 export const get_wallet = async (data) =>
