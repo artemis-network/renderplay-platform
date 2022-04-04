@@ -32,7 +32,6 @@ const ContestCard = (props) => {
 	const gameConfig = () => {
 		const username = localStorage.getItem("username")
 		if (username !== null) {
-			const wallet_id = JSON.parse(localStorage.getItem('wallet_id'))
 			const data = {
 				contest_id: props.contest_id,
 				game_type: props.game_type,

@@ -24,8 +24,8 @@ function App() {
     if (session !== null || session !== undefined) {
       const loginTime = new Date(JSON.parse(session)).getTime()
       const now = new Date(Date.now()).getTime()
-      const isExpired = loginTime - now
-      if (isExpired > 1000 * 60 * 5) logout()
+      const isExpired = now - loginTime
+      if (isExpired > 1000 * 10) logout()
     }
   }, [])
 

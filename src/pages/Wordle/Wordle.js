@@ -29,7 +29,7 @@ const Wordle = () => {
 			let data = res.data.game_types
 			let temp = []
 			let temp_m = []
-			if (data !== undefined) {
+			if (data[0] !== undefined) {
 				data[0].img = FiveRendleImg
 				data[0].line = Line2Img
 				data[0].banner = RendleFive
@@ -74,8 +74,7 @@ const Wordle = () => {
 				}
 				set_game_types({ game_types: temp, mobile_view: temp_m })
 			}
-
-		}).catch(err => console.log(err))
+		}).catch(err => set_game_types({ game_types: [], mobile_view: [] }))
 	}, [game_types.game_types.length])
 
 	return (<div>
