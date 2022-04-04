@@ -14,8 +14,8 @@ import './Bar.css'
 import CustomDropDown from "./DropDown";
 import Wallet from './Wallet'
 
-import { get_wallet } from '../../../service/game.service'
-import { ArrowLeftIcon, UserCircleIcon, BriefcaseIcon, LogoutIcon, ArrowNarrowLeftIcon, ScaleIcon } from "@heroicons/react/outline";
+import { get_wallet } from '../../../service/auth.service.jsx'
+import { ArrowLeftIcon, ArrowNarrowLeftIcon, } from "@heroicons/react/outline";
 
 import Random from '../../../assets/5rendle.webp'
 import MobileDropDown from "./MobileDropDown";
@@ -58,7 +58,7 @@ const Bar = (props) => {
 						id: res.data.wallet.id,
 						balance: res.data.wallet.balance
 					})
-				})
+				}).catch(err => console.log(err))
 		}
 	}, [])
 

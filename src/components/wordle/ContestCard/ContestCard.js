@@ -8,6 +8,7 @@ import Controller from '../../../assets/joystick.webp'
 import PlayPng from '../../../assets/play.webp'
 import ExpiredPng from '../../../assets/menu.webp'
 import StartsPng from '../../../assets/play_disable.webp'
+import { enter_contest } from '../../../service/game.service'
 
 import './ContestCard.css'
 
@@ -31,8 +32,17 @@ const ContestCard = (props) => {
 	const gameConfig = () => {
 		const username = localStorage.getItem("username")
 		if (username !== null) {
-			localStorage.setItem("gameConfig", JSON.stringify(props))
-			return history.push("/rendle/game")
+			const wallet_id = JSON.parse(localStorage.getItem('wallet_id'))
+			const data = {
+				contest_id: props.contest_id,
+				game_type: props.game_type,
+				username: username
+			}
+			enter_contest(data).then((res) => {
+				console.log(res)
+				localStorage.setItem("gameConfig", JSON.stringify(props))
+				return history.push("/rendle/game")
+			}).catch(err => console.log(err))
 		}
 		else return history.push("/login")
 	}

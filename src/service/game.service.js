@@ -1,8 +1,11 @@
 import http from './http.config'
 
-export const get_types = async () => await http.get("game-types")
-export const post_winner = async (data) => await http.post("post-winner", data)
-export const get_player_status = async (data) => await http.post("get-player-status", data)
-export const post_word = async (data) => await http.post("post-word", data)
-export const get_guesses = async (data) => await http.post("get-current-guesses", data)
-export const get_wallet = async (data) => await http.post("get-user-wallet", data)
+const prefix = "rendles"
+
+export const get_rendles = async () => await http.get(`${prefix}/get-rendles`)
+export const save_contest_result = async (data) => await http.post(`${prefix}/post-contest-result`, data)
+export const get_contest_status = async (data) => await http.post(`${prefix}/get-contest-status`, data)
+export const update_word = async (data) => await http.post(`${prefix}/post-word`, data)
+export const get_guesses = async (data) => await http.post(`${prefix}/get-current-guesses`, data)
+export const enter_contest = async (data) => await http.post(`${prefix}/enter-contest`, data)
+

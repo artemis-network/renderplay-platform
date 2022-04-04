@@ -24,7 +24,6 @@ const Login = () => {
   });
 
   const handleSuccess = (data) => {
-    console.log(data)
     let uname = data.profileObj.email
     const split = uname.split("@")
     const data_c = {
@@ -34,6 +33,7 @@ const Login = () => {
     }
     loginGoogle(data_c).then((res => {
       createSession(res.data);
+      localStorage.setItem("session", Date.now())
       history.push("/rendle")
       window.location.reload()
     })).catch(err => console.log(err))

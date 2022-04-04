@@ -25,7 +25,7 @@ import { SevenLetterGuesses } from './constants/config/sevenLetterGuesses'
 
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
-import { post_winner, get_player_status, post_word, get_guesses } from '../../service/game.service'
+import { save_contest_result, get_contest_status, update_word, get_guesses } from '../../service/game.service'
 
 import './App.css'
 import { InformationCircleIcon } from '@heroicons/react/outline'
@@ -94,7 +94,7 @@ function WorldleGame() {
 
   useEffect(() => {
     if (username) {
-      get_player_status({ username: username, game_type: data.game_type, contest_id: data.contest_id })
+      get_contest_status({ username: username, game_type: data.game_type, contest_id: data.contest_id })
         .then(res => {
           const is_first_game = res.data.status.is_first_game
           const is_same_contest = data.contest_id === res.data.status.contest_id
@@ -113,7 +113,7 @@ function WorldleGame() {
                 contest_id: gameConfig.contest_id,
                 is_won: false
               }
-              post_winner(data).then(res => {
+              save_contest_result(data).then(res => {
                 setIsGameModalOpen(true)
                 localStorage.removeItem("game_state_id")
                 return setIsGameLost(true)
@@ -130,7 +130,7 @@ function WorldleGame() {
                 contest_id: gameConfig.contest_id,
                 is_won: true
               }
-              post_winner(data).then(res => {
+              save_contest_result(data).then(res => {
                 localStorage.removeItem("game_state_id")
                 localStorage.removeItem("game_state_id")
                 return setIsGameWon(true)
@@ -176,7 +176,6 @@ function WorldleGame() {
 
   const onEnter = () => {
 
-
     if (isGameWon || isGameLost) return
     const condition_1 = (unicodeLength(currentGuess) === MAX_WORD_LENGTH)
     const condition_2 = !isWordInWordList(currentGuess, WORDS, VALID_GUESSES)
@@ -221,7 +220,7 @@ function WorldleGame() {
           game_state_id: null
         }
       }
-      post_word(word_data).then(res => localStorage.setItem("game_state_id", res.data.game_state_id)).catch(err => console.log(err))
+      update_word(word_data).then(res => localStorage.setItem("game_state_id", res.data.game_state_id)).catch(err => console.log(err))
       if (winningWord) return setIsGameWon(true)
       if (guesses.length === MAX_CHALLENGES - 1) {
         setIsGameLost(true)

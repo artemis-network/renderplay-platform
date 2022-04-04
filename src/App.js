@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -13,6 +13,22 @@ const ComingSoon = lazy(() => import('./components/CommingSoon'));
 import Loader from "react-js-loader";
 
 function App() {
+
+  const session = localStorage.getItem("session")
+
+  const logout = () => {
+    localStorage.clear()
+  }
+
+  useEffect(() => {
+    if (session !== null || session !== undefined) {
+      const loginTime = new Date(JSON.parse(session)).getTime()
+      const now = new Date(Date.now()).getTime()
+      const isExpired = loginTime - now
+      if (isExpired > 1000 * 60 * 5) logout()
+    }
+  }, [])
+
   return (
     <div>
       <Suspense fallback={

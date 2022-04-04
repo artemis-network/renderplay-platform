@@ -10,7 +10,7 @@ import RendleFive from '../../assets/rendle_5.webp'
 import RendleSix from '../../assets/rendle_6.webp'
 import RendleSeven from '../../assets/rendle_7.webp'
 
-import { get_types } from '../../service/game.service'
+import { get_rendles } from '../../service/game.service'
 
 import './Wordle.css'
 
@@ -25,7 +25,7 @@ const Wordle = () => {
 	useEffect(() => {
 		localStorage.removeItem("game_state_id")
 		localStorage.removeItem("gameState")
-		get_types().then(res => {
+		get_rendles().then(res => {
 			let data = res.data.game_types
 			let temp = []
 			let temp_m = []

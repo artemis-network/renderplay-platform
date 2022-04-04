@@ -195,7 +195,6 @@ function Wallet() {
 
     function handleConnectWallet() {
       activateBrowserWallet();
-      console.log(account, chainId)
     }
 
     function changeNetwork() {
@@ -204,14 +203,16 @@ function Wallet() {
 
     useEffect(() => {
       try {
-        if (chainId !== 56) setIsWrongNetwork(true)
-        else setIsWrongNetwork(false)
+        console.log(chainId, account)
+        if (chainId === 56) return setIsWrongNetwork(false)
+        return setIsWrongNetwork(true)
       } catch (e) {
         console.log(e)
+        return setIsWrongNetwork(true)
       }
     }, [chainId])
 
-    return account ? (
+    return account !== undefined ? (
       <Box
         display="flex"
         alignItems="center"
