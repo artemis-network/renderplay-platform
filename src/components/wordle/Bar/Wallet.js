@@ -293,7 +293,7 @@ function Wallet() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <DAppProvider config={{}}>
-      <ChakraProvider>
+      <ChakraProvider  >
         <ConnectButton handleOpenModal={onOpen} />
         <AccountModal isOpen={isOpen} onClose={onClose} />
       </ChakraProvider>
