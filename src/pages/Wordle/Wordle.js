@@ -9,6 +9,7 @@ import Line2Img from '../../assets/line2.webp'
 import RendleFive from '../../assets/rendle_5.webp'
 import RendleSix from '../../assets/rendle_6.webp'
 import RendleSeven from '../../assets/rendle_7.webp'
+import Background from '../../assets/test.png'
 
 import { get_rendles } from '../../service/game.service'
 
@@ -77,7 +78,7 @@ const Wordle = () => {
 		}).catch(err => set_game_types({ game_types: [], mobile_view: [] }))
 	}, [game_types.game_types.length])
 
-	return (<div>
+	return (<div >
 		<div className="container__bg">
 			<Bar isGame={false} />
 			<Container>

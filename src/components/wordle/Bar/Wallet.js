@@ -203,7 +203,6 @@ function Wallet() {
 
     useEffect(() => {
       try {
-        console.log(chainId, account)
         if (chainId === 56) return setIsWrongNetwork(false)
         return setIsWrongNetwork(true)
       } catch (e) {
