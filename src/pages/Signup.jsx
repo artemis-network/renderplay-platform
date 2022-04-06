@@ -77,6 +77,8 @@ const Signup = () => {
                 "user registration successful, verification email has been sent",
             });
             form.resetForm();
+            history.push("/login");
+            setStatus({});
           }
         })
         .catch((err) => {
@@ -86,11 +88,6 @@ const Signup = () => {
             message: "Internal Server Errror",
           });
         });
-
-      setTimeout(() => {
-        if (!status.error) history.push("/login");
-        setStatus({});
-      }, 2000);
     },
   });
 

@@ -19,9 +19,36 @@ const ContestCard = lazy(() => import('../../components/wordle/ContestCard/Conte
 const Bar = lazy(() => import("../../components/wordle/Bar/Bar"))
 const Footer = lazy(() => import("../../components/wordle/Footer/Footer"))
 
+const game_types_data = [
+	{
+		contest_id: null,
+		game_type: 5,
+		id: 1,
+		is_expired: true,
+		starts_on: null
+	},
+	{
+		contest_id: 2,
+		game_type: 6,
+		id: 2,
+		is_expired: false,
+		starts_on: null
+	},
+	{
+		contest_id: 3,
+		game_type: 7,
+		id: 3,
+		is_expired: false,
+		starts_on: null
+	}
+]
+
+
 const Wordle = () => {
 
-	const [game_types, set_game_types] = useState({ game_types: [], mobile_view: [] })
+	const [game_types, set_game_types] = useState({
+		game_types: [...game_types_data], mobile_view: [...game_types_data]
+	})
 
 	useEffect(() => {
 		localStorage.removeItem("game_state_id")
