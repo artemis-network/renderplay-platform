@@ -60,21 +60,19 @@ const Wordle = () => {
 			let data = res.data.game_types
 			let temp = []
 			let temp_m = []
+			console.log(res.data)
 			if (data[0] !== undefined) {
 				data[0].img = FiveRendleImg
 				data[0].line = Line2Img
 				data[0].banner = RendleFive
-				data[0].entryfee = 100
 
 				data[1].img = SixRendleImg
 				data[1].line = Line1Img
 				data[1].banner = RendleSix
-				data[1].entryfee = 150
 
 				data[2].img = SevenRendleImg
 				data[2].line = Line2Img
 				data[2].banner = RendleSeven
-				data[2].entryfee = 200
 
 				for (let i in data) {
 					const now = new Date(Date.now())

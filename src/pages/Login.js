@@ -63,10 +63,11 @@ const Login = () => {
           }
         })
         .catch((err) => {
+          console.log(err)
           setStatus({
             status: 500,
             error: true,
-            message: "Internal Server Errror",
+            message: "",
           });
         });
       setTimeout(() => {
@@ -106,7 +107,7 @@ const Login = () => {
               <input
                 id="username"
                 name="username"
-                placeholder="name@example.com"
+                placeholder="Username or email"
                 value={form.values.username}
                 onChange={form.handleChange}
                 type="email"

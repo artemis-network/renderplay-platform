@@ -25,7 +25,7 @@ const InsufficentFunds = (props) => {
 						fontWeight: "bold",
 						borderRadius: "2vh"
 
-					}} onClick={props.play}>
+					}} onClick={props.modalClose}>
 						Close
 					</button>
 				</div>

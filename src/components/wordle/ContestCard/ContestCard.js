@@ -34,7 +34,7 @@ const ContestCard = (props) => {
 				username: username
 			}
 			enter_contest(data).then((res) => {
-				console.log(res.data)
+				if(res.data.message === "paid") return history.push("/rendle/game")
 				if(res.data.error) 
 					setInsufficent(res.data.error)
 				else 
