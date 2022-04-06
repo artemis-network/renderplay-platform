@@ -33,7 +33,7 @@ const Login = () => {
     }
     loginGoogle(data_c).then((res => {
       createSession(res.data);
-      history.push("/rendle")
+      history.push("/")
     })).catch(err => console.log(err))
 
   };
@@ -58,7 +58,7 @@ const Login = () => {
               message: res.data.message,
             });
           } else {
-            history.push("/rendle");
+            history.push("/");
             window.location.reload();
           }
         })

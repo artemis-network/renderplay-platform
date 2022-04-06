@@ -9,7 +9,6 @@ import Line2Img from '../../assets/line2.webp'
 import RendleFive from '../../assets/rendle_5.webp'
 import RendleSix from '../../assets/rendle_6.webp'
 import RendleSeven from '../../assets/rendle_7.webp'
-import Background from '../../assets/test.png'
 
 import { get_rendles } from '../../service/game.service'
 
@@ -46,9 +45,13 @@ const game_types_data = [
 
 const Wordle = () => {
 
-	const [game_types, set_game_types] = useState({
-		game_types: [...game_types_data], mobile_view: [...game_types_data]
-	})
+
+	const [game_types, set_game_types] = useState(
+		{
+			game_types: [...game_types_data],
+			mobile_view: [...game_types_data]
+		}
+	)
 
 	useEffect(() => {
 		localStorage.removeItem("game_state_id")
@@ -102,7 +105,7 @@ const Wordle = () => {
 				}
 				set_game_types({ game_types: temp, mobile_view: temp_m })
 			}
-		}).catch(err => set_game_types({ game_types: [], mobile_view: [] }))
+		}).catch(err => set_game_types({ game_types: [...game_types_data], mobile_view: [...game_types_data] }))
 	}, [game_types.game_types.length])
 
 	return (<div >
@@ -110,13 +113,13 @@ const Wordle = () => {
 			<Bar isGame={false} />
 			<Container>
 				<div className="contest">
-					{game_types.game_types.map((game, i) => <div className={game.css}>
+					{game_types.game_types.map((game, i) => <div key={game.contest_id} className={game.css}>
 						<ContestCard  {...game} key={i} index={i} />
 					</div>)}
 				</div>
 
 				<div className="contest_mobile">
-					{game_types.mobile_view.map((game, i) => <div className={game.css}>
+					{game_types.mobile_view.map((game, i) => <div key={game.contest_id} className={game.css}>
 						<ContestCard  {...game} key={i} index={i} />
 					</div>)}
 				</div>

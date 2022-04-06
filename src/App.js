@@ -37,8 +37,7 @@ function App() {
         </div>
       }>
         <Router>
-          <Redirect from="/" to="/rendle"></Redirect>
-          <Route exact component={Wordle} path="/rendle" />
+          <Route exact component={Wordle} path="/" />
           <Route exact component={WordleGameContainer} path="/rendle/game" />
           <Route exact component={Login} path='/login' />
           <Route exact component={Signup} path='/signup' />

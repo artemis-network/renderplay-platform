@@ -69,8 +69,8 @@ export const Keyboard = ({
         ))}
       </div>
       <div className="flex justify-center">
-        <Key MAX_WORD_LENGTH={MAX_WORD_LENGTH} width={65.4} value="ENTER" onClick={onClick}>
-          {ENTER_TEXT}
+        <Key MAX_WORD_LENGTH={MAX_WORD_LENGTH} width={65.4} value="DELETE" onClick={onClick}>
+          {DELETE_TEXT}
         </Key>
         {['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map((key) => (
           <Key
@@ -82,9 +82,10 @@ export const Keyboard = ({
             MAX_WORD_LENGTH={MAX_WORD_LENGTH}
           />
         ))}
-        <Key MAX_WORD_LENGTH={MAX_WORD_LENGTH} width={65.4} value="DELETE" onClick={onClick}>
-          {DELETE_TEXT}
+        <Key MAX_WORD_LENGTH={MAX_WORD_LENGTH} width={65.4} value="ENTER" onClick={onClick}>
+          {ENTER_TEXT}
         </Key>
+
       </div>
     </div>
   )

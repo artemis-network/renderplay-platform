@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Countdown from "react-countdown"
 import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
 
@@ -9,12 +9,40 @@ import PlayPng from '../../../assets/play.webp'
 import ExpiredPng from '../../../assets/menu.webp'
 import StartsPng from '../../../assets/play_disable.webp'
 import { enter_contest } from '../../../service/game.service'
+import ConfirmModal from '../ConfirmModal/ConfirmModal'
+import InsufficentFunds from '../InsufficentFundsModal/InsufficentFunds'
 
 import './ContestCard.css'
 
 const ContestCard = (props) => {
 
 	const history = useHistory()
+	const [show, setShow] = useState(false);
+	const [Insufficent, setInsufficent] = useState(false)
+
+
+	const InsufficentModalClose = () => setInsufficent(false);
+	const InsufficentModalOpen = () =>   setInsufficent(true)
+
+	const ModalClose = () => setShow(false);
+	const ModalOpen = () => {
+		const username = localStorage.getItem("username")
+		if (username !== null) {
+			const data = {
+				contest_id: props.contest_id,
+				game_type: props.game_type,
+				username: username
+			}
+			enter_contest(data).then((res) => {
+				console.log(res.data)
+				if(res.data.error) 
+					setInsufficent(res.data.error)
+				else 
+					setShow(true);
+				
+			}).catch(err => console.log(err))
+		} else return history.push("/login")
+	}
 
 	const cssFinder = () => "_" + (props.index + 1)
 	const timerFormatter = (time) => {
@@ -29,21 +57,11 @@ const ContestCard = (props) => {
 		return time.getTime() - now.getTime()
 	}
 
+
 	const gameConfig = () => {
-		const username = localStorage.getItem("username")
-		if (username !== null) {
-			const data = {
-				contest_id: props.contest_id,
-				game_type: props.game_type,
-				username: username
-			}
-			enter_contest(data).then((res) => {
-				console.log(res)
-				localStorage.setItem("gameConfig", JSON.stringify(props))
-				return history.push("/rendle/game")
-			}).catch(err => console.log(err))
-		}
-		else return history.push("/login")
+			localStorage.setItem("gameConfig", JSON.stringify(props))
+			setShow(false)
+			return history.push("/rendle/game")
 	}
 
 	const Expired = () => <div className="contest__card__header">
@@ -93,6 +111,8 @@ const ContestCard = (props) => {
 	}
 	return (
 		<div style={{ background: `#321E43` }} className={"c-mobile-view"}>
+			<ConfirmModal show={show} gameConfig={props} modalOpen={ModalOpen} modalClose={ModalClose} play={() => gameConfig()} />
+			<InsufficentFunds show={Insufficent} modalOpen={InsufficentModalOpen} modalClose={InsufficentModalClose} />
 			{/* CONTROLLERS */}
 			<input style={{ display: "none" }} type="checkbox" id={"u-mobile__button" + cssFinder()} name={"u-mobile__button" + cssFinder()} />
 			<input style={{ display: "none" }} type="checkbox" id={"u-topbar__button" + cssFinder()} name={"u-topbar__button" + cssFinder()} />
@@ -173,7 +193,7 @@ const ContestCard = (props) => {
 					<img
 						alt="play"
 						src={PlayPng}
-						onClick={() => gameConfig()}
+						onClick={() => ModalOpen()}
 						className='h-24 w-24 cursor-pointer'
 						style={{
 							position: "absolute",

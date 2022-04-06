@@ -14,7 +14,7 @@ import { InfoModal } from './components/modals/InfoModal'
 import { GameModal } from './components/modals/GameModal'
 
 import { NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE } from './constants/strings'
-import { MAX_CHALLENGES, REVEAL_TIME_MS } from './constants/settings'
+import { REVEAL_TIME_MS } from './constants/settings'
 import { isWordInWordList, isWinningWord, getWordOfDay, unicodeLength } from './lib/words'
 import { loadGameStateFromLocalStorage, saveGameStateToLocalStorage } from './lib/localStorage'
 
@@ -45,6 +45,7 @@ function WorldleGame() {
   const [isGameLost, setIsGameLost] = useState(false)
   const [isRevealing, setIsRevealing] = useState(false)
   const [MAX_WORD_LENGTH, SET_MAX] = useState(5)
+  const [MAX_CHALLENGES, SET_MAX_CHALLENGES] = useState(5)
   const [WORDS, SET_WORDS] = useState([])
   const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
   const [isGameFinished, setIsGameFinished] = useState(false)
@@ -56,6 +57,7 @@ function WorldleGame() {
 
   useEffect(() => {
     SET_MAX(data.game_type)
+    SET_MAX_CHALLENGES(data.game_type)
     if (data.game_type === 5) {
       SET_WORDS(fiveLetterList)
       SET_VALID_GUESSES(FiveLetterGuesses)
@@ -146,7 +148,7 @@ function WorldleGame() {
           }
         })
         .catch(err => { console.log(err) })
-    } else return history.push("/rendle")
+    } else return history.push("/")
 
 
     const game_state_id = { username: localStorage.getItem("username") }
@@ -224,30 +226,27 @@ function WorldleGame() {
       }
       update_word(word_data).then(res => localStorage.setItem("game_state_id", res.data.game_state_id)).catch(err => console.log(err))
       if (winningWord) return setIsGameWon(true)
-      if (guesses.length === MAX_CHALLENGES - 1) {
-        setIsGameLost(true)
-        // showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-        //   persist: true,
-        //   delayMs: REVEAL_TIME_MS * MAX_WORD_LENGTH + 1,
-        // })
-      }
+      if (guesses.length === MAX_CHALLENGES - 1) setIsGameLost(true)
+
     }
   }
 
   const returnToWordle = () => {
     setIsGameModalOpen(false)
-    history.push("/rendle")
+    history.push("/")
   }
 
   return (
     <div style={{ padding: "0rem", background: `url(${Background})`, backgroundPosition: "center", backgroundRepeat: "no-repeat", width: "100%", margin: "auto", backgroundSize: "cover" }} className="h-screen flex flex-col">
+      <div className='p-5'>
+        <InformationCircleIcon
+          color='white'
+          style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
+          className="h-12 w-12 cursor-pointer dark:stroke-white"
+          onClick={() => setIsInfoModalOpen(true)}
+        />
+      </div>
 
-      <InformationCircleIcon
-        color='white'
-        style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
-        className="h-12 w-12 mr-2 cursor-pointer dark:stroke-white"
-        onClick={() => setIsInfoModalOpen(true)}
-      />
       <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
         <div className="grow_keyboard">
           <Grid
@@ -256,6 +255,7 @@ function WorldleGame() {
             currentGuess={currentGuess}
             isRevealing={isRevealing}
             currentRowClassName={currentRowClass}
+            MAX_CHALLENGES={MAX_CHALLENGES}
           />
         </div>
         <Keyboard
