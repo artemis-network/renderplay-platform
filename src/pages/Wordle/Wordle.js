@@ -105,7 +105,7 @@ const Wordle = () => {
 				set_game_types({ game_types: temp, mobile_view: temp_m })
 			}
 		}).catch(err => set_game_types({ game_types: [...game_types_data], mobile_view: [...game_types_data] }))
-	}, [game_types.game_types.length])
+	}, [game_types.game_types[0].starts_on])
 
 	return (<div >
 		<div className="container__bg">
