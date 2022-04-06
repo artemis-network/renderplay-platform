@@ -22,7 +22,7 @@ const ContestCard = (props) => {
 
 
 	const InsufficentModalClose = () => setInsufficent(false);
-	const InsufficentModalOpen = () =>   setInsufficent(true)
+	const InsufficentModalOpen = () => setInsufficent(true)
 
 	const ModalClose = () => setShow(false);
 	const ModalOpen = () => {
@@ -34,12 +34,15 @@ const ContestCard = (props) => {
 				username: username
 			}
 			enter_contest(data).then((res) => {
-				if(res.data.message === "paid") return history.push("/rendle/game")
-				if(res.data.error) 
+				if (res.data.message === "paid") {
+					localStorage.setItem("gameConfig", JSON.stringify(props))
+					return history.push("/rendle/game")
+				}
+				if (res.data.error)
 					setInsufficent(res.data.error)
-				else 
+				else
 					setShow(true);
-				
+
 			}).catch(err => console.log(err))
 		} else return history.push("/login")
 	}
@@ -59,9 +62,9 @@ const ContestCard = (props) => {
 
 
 	const gameConfig = () => {
-			localStorage.setItem("gameConfig", JSON.stringify(props))
-			setShow(false)
-			return history.push("/rendle/game")
+		localStorage.setItem("gameConfig", JSON.stringify(props))
+		setShow(false)
+		return history.push("/rendle/game")
 	}
 
 	const Expired = () => <div className="contest__card__header">

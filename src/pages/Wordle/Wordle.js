@@ -56,6 +56,7 @@ const Wordle = () => {
 	useEffect(() => {
 		localStorage.removeItem("game_state_id")
 		localStorage.removeItem("gameState")
+		localStorage.removeItem("gameConfig")
 		get_rendles().then(res => {
 			let data = res.data.game_types
 			let temp = []

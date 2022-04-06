@@ -277,7 +277,6 @@ function WorldleGame() {
           isGameLost={isGameLost}
           isGameWon={isGameWon}
           isGameFinished={isGameFinished}
-        // handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
         />
         <AlertContainer />
       </div>
