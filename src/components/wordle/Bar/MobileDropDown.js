@@ -60,7 +60,7 @@ const MobileDropDown = (props) => {
 			}
 			<div style={{ color: "wheat", fontSize: "1.2rem", fontWeight: "bold", margin: "0rem 1rem 1rem 1rem" }}>Games</div>
 			<div className="custom_drop_down_content">
-				<Link to="/" className='custom_drop_down_content_item neu neu_end no_border scaler'>
+				<Link to="/rendle" className='custom_drop_down_content_item neu neu_end no_border scaler'>
 					<PuzzleIcon className="h-8 w-8" />
 					<div>Rendle</div>
 				</Link>

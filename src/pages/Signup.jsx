@@ -229,9 +229,7 @@ const Signup = () => {
               />
               <label className="form-check-label text-light" htmlFor="accept">
                 I Accept{" "}
-                <Link to="/" className="text-primary">
-                  Terms And Condition
-                </Link>
+                <Link className="text-primary">Terms And Condition</Link>
               </label>
               {form.touched.accept || form.errors.accept ? (
                 <div style={error}> {form.errors.accept} </div>

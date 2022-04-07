@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import { lazy, Suspense, useEffect } from 'react'
-import { Route, BrowserRouter as Router } from 'react-router-dom'
-import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
+import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
 
 import "./App.css";
 
@@ -37,7 +36,8 @@ function App() {
         </div>
       }>
         <Router>
-          <Route exact component={Wordle} path="/" />
+          <Redirect to="/rendle" from="/" />
+          <Route exact component={Wordle} path="/rendle" />
           <Route exact component={WordleGameContainer} path="/rendle/game" />
           <Route exact component={Login} path='/login' />
           <Route exact component={Signup} path='/signup' />

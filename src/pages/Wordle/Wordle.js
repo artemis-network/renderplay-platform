@@ -1,4 +1,5 @@
 import React, { useEffect, useState, lazy } from 'react'
+
 import { Container } from 'react-bootstrap'
 
 import FiveRendleImg from '../../assets/5rendle.webp'
@@ -31,14 +32,14 @@ const game_types_data = [
 		game_type: 6,
 		id: 2,
 		is_expired: false,
-		starts_on: null
+		starts_on: Date.now()
 	},
 	{
 		contest_id: 3,
 		game_type: 7,
 		id: 3,
 		is_expired: false,
-		starts_on: null
+		starts_on: Date.now()
 	}
 ]
 
@@ -105,7 +106,7 @@ const Wordle = () => {
 				set_game_types({ game_types: temp, mobile_view: temp_m })
 			}
 		}).catch(err => set_game_types({ game_types: [...game_types_data], mobile_view: [...game_types_data] }))
-	}, [game_types.game_types[0].starts_on])
+	}, [game_types.game_types[0].starts_on, RendleFive])
 
 	return (<div >
 		<div className="container__bg">

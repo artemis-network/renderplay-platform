@@ -148,7 +148,7 @@ function WorldleGame() {
           }
         })
         .catch(err => { console.log(err) })
-    } else return history.push("/")
+    } else return history.push("/rendle")
 
 
     const game_state_id = { username: localStorage.getItem("username") }
@@ -233,7 +233,7 @@ function WorldleGame() {
 
   const returnToWordle = () => {
     setIsGameModalOpen(false)
-    history.push("/")
+    history.push("/rendle")
   }
 
   return (
