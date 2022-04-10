@@ -9,6 +9,8 @@ const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const WordleGameContainer = lazy(() => import('./pages/WordleGameContainer/WordleGameContainer'));
 const ComingSoon = lazy(() => import('./components/CommingSoon'));
+const HangMan = lazy(() => import('./components/HangMan'));
+
 import Loader from "react-js-loader";
 import Scan from './components/Scan';
 
@@ -41,6 +43,7 @@ function App() {
           <Route exact component={Wordle} path="/rendle" />
           <Route exact component={WordleGameContainer} path="/rendle/game" />
           <Route exact component={Scan} path="/rendle-hunt" />
+          <Route exact component={HangMan} path="/hangman" />
           <Route exact component={Login} path='/login' />
           <Route exact component={Signup} path='/signup' />
           {/* <Route exact component={ComingSoon} path='/sc' /> */}

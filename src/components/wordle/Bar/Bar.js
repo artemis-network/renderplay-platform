@@ -120,6 +120,7 @@ const Bar = (props) => {
 					<div className='neu' style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }}>
 						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/rendle"} >Rendle</NavLink>
 						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/rendle-hunt"} >Render-hunt</NavLink>
+						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/hangman"} >Hang-man</NavLink>
 						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/raffle"} >Raffle</NavLink>
 					</div> : <div style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }} >
 						<img src={img} alt="img" width={"350px"} height="250px" style={{ display: "flex", alignSelf: "center" }} />
@@ -150,7 +151,7 @@ const Bar = (props) => {
 			</div>
 		</div>
 
-		{localStorage.getItem("username") && !props.isGame ?
+		{localStorage.getItem("username") && !props.isGame && !props.is_in_raffle ?
 			<div style={{ position: "absolute", right: 0 }} className="balance">
 				<div style={{ display: "flex", justifyContent: "flex-end", padding: "1rem 2rem", }}>
 					<div className='username' style={{ display: "flex", justifyContent: "flex-end", color: "#fbd6d2", fontWeight: "bold", padding: "1rem", borderRadius: "1vh", alignItems: "center" }}>

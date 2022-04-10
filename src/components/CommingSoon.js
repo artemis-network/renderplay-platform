@@ -3,9 +3,8 @@ import video from '../assets/Video.m4v'
 import CS from '../assets/new-product-launching-ceremony.svg'
 
 const ComingSoon = () => {
-
 	return <div style={{ maxHeight: "98vh", background: "#321E43" }}>
-		<Bar />
+		<Bar is_in_raffle={true} />
 		<video
 			style={{
 				height: "auto",

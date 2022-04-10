@@ -64,10 +64,15 @@ const MobileDropDown = (props) => {
 					<PuzzleIcon className="h-8 w-8" />
 					<div>Rendle</div>
 				</Link>
+				<Link to="/hangman" className='custom_drop_down_content_item neu neu_end no_border scaler'>
+					<PuzzleIcon className="h-8 w-8" />
+					<div>Hang-man</div>
+				</Link>
 				<Link to="/rendle-hunt" className='custom_drop_down_content_item neu neu_end no_border scaler'>
 					<PuzzleIcon className="h-8 w-8" />
 					<div>Render-hunt</div>
 				</Link>
+
 				<Link to="/raffle" className='custom_drop_down_content_item neu neu_end no_border scaler'>
 					<PuzzleIcon className="h-8 w-8" />
 					<div>Raffle</div>
@@ -75,7 +80,7 @@ const MobileDropDown = (props) => {
 			</div>
 
 			<hr className='divider' />
-			<div className="custom_drop_down_footer">
+			<div className="custom_drop_down_footer" style={{ marginBottom: 20 }}>
 				{isLogin ?
 					<div onClick={logout} className='custom_drop_down_content_item neu neu_end no_border scaler'>
 						<LogoutIcon className="h-8 w-8" />
