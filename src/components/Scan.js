@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react"
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import Bar from "./wordle/Bar/Bar"
-import Hello from '../assets/5rendle.webp'
 
 const Scan = () => {
 
 	const [img, setImg] = useState(null)
 
 	useEffect(() => {
-		// const socket = io.connect(`http://192.168.1.14:5000`);
+		// const socket = io.connect(`http://192.168.1.14:5001`);
 		// socket.on("message", i => {
 		// 	console.log(i)
 		// 	setImg(i)
