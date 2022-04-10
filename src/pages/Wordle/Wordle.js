@@ -25,23 +25,28 @@ const game_types_data = [
 		game_type: 5,
 		id: 1,
 		is_expired: true,
-		starts_on: null
+		starts_on: null,
+		img: FiveRendleImg
 	},
 	{
 		contest_id: 2,
 		game_type: 6,
 		id: 2,
 		is_expired: false,
-		starts_on: Date.now()
+		starts_on: Date.now(),
+		img: SixRendleImg
 	},
 	{
 		contest_id: 3,
 		game_type: 7,
 		id: 3,
 		is_expired: false,
-		starts_on: Date.now()
+		starts_on: (new Date(Date.now()).getTime() + 1000 * 60 * 60 * 4),
+		img: SevenRendleImg
 	}
+
 ]
+
 
 
 const Wordle = () => {
@@ -62,7 +67,6 @@ const Wordle = () => {
 			let data = res.data.game_types
 			let temp = []
 			let temp_m = []
-			console.log(res.data)
 			if (data[0] !== undefined) {
 				data[0].img = FiveRendleImg
 				data[0].line = Line2Img
@@ -106,7 +110,7 @@ const Wordle = () => {
 				set_game_types({ game_types: temp, mobile_view: temp_m })
 			}
 		}).catch(err => set_game_types({ game_types: [...game_types_data], mobile_view: [...game_types_data] }))
-	}, [game_types.game_types[0].starts_on, RendleFive])
+	}, [game_types.game_types[2].starts_on, game_types.game_types[2].live])
 
 	return (<div >
 		<div className="container__bg">

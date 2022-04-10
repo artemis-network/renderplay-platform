@@ -225,11 +225,18 @@ function WorldleGame() {
         }
       }
       update_word(word_data).then(res => localStorage.setItem("game_state_id", res.data.game_state_id)).catch(err => console.log(err))
-      if (winningWord) return setIsGameWon(true)
-      if (guesses.length === MAX_CHALLENGES - 1) setIsGameLost(true)
-
+      const timer = get_timer()
+      if (winningWord) return setTimeout(() => setIsGameWon(true), timer)
+      if (guesses.length === MAX_CHALLENGES - 1) setTimeout(() => setIsGameLost(true), timer)
     }
   }
+
+  const get_timer = () => {
+    if (MAX_WORD_LENGTH === 5) return 1950
+    if (MAX_WORD_LENGTH === 6) return 2425
+    if (MAX_WORD_LENGTH === 7) return 2650
+  }
+
 
   const returnToWordle = () => {
     setIsGameModalOpen(false)

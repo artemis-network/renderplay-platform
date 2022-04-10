@@ -64,11 +64,11 @@ const MobileDropDown = (props) => {
 					<PuzzleIcon className="h-8 w-8" />
 					<div>Rendle</div>
 				</Link>
-				<Link to="/sc" className='custom_drop_down_content_item neu neu_end no_border scaler'>
+				<Link to="/rendle-hunt" className='custom_drop_down_content_item neu neu_end no_border scaler'>
 					<PuzzleIcon className="h-8 w-8" />
 					<div>Render-hunt</div>
 				</Link>
-				<Link to="/lottery" className='custom_drop_down_content_item neu neu_end no_border scaler'>
+				<Link to="/raffle" className='custom_drop_down_content_item neu neu_end no_border scaler'>
 					<PuzzleIcon className="h-8 w-8" />
 					<div>Raffle</div>
 				</Link>

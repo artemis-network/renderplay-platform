@@ -31,7 +31,8 @@ const ContestCard = (props) => {
 			const data = {
 				contest_id: props.contest_id,
 				game_type: props.game_type,
-				username: username
+				username: username,
+				confirm: false
 			}
 			enter_contest(data).then((res) => {
 				if (res.data.message === "paid") {
@@ -39,10 +40,9 @@ const ContestCard = (props) => {
 					return history.push("/rendle/game")
 				}
 				if (res.data.error)
-					setInsufficent(res.data.error)
+					return setInsufficent(res.data.error)
 				else
-					setShow(true);
-
+					return setShow(true);
 			}).catch(err => console.log(err))
 		} else return history.push("/login")
 	}
@@ -62,9 +62,25 @@ const ContestCard = (props) => {
 
 
 	const gameConfig = () => {
-		localStorage.setItem("gameConfig", JSON.stringify(props))
-		setShow(false)
-		return history.push("/rendle/game")
+		const username = localStorage.getItem("username")
+		const data = {
+			contest_id: props.contest_id,
+			game_type: props.game_type,
+			username: username,
+			confirm: true
+		}
+		enter_contest(data).then((res) => {
+			if (res.data.message === "paid") {
+				localStorage.setItem("gameConfig", JSON.stringify(props))
+				return history.push("/rendle/game")
+			}
+			if (res.data.error)
+				return setInsufficent(res.data.error)
+			localStorage.setItem("gameConfig", JSON.stringify(props))
+			setShow(false)
+			return history.push("/rendle/game")
+
+		})
 	}
 
 	const Expired = () => <div className="contest__card__header">

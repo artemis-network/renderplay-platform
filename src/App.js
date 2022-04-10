@@ -10,17 +10,18 @@ const Signup = lazy(() => import('./pages/Signup'));
 const WordleGameContainer = lazy(() => import('./pages/WordleGameContainer/WordleGameContainer'));
 const ComingSoon = lazy(() => import('./components/CommingSoon'));
 import Loader from "react-js-loader";
+import Scan from './components/Scan';
 
 function App() {
 
   const session = localStorage.getItem("session")
-
   const logout = () => {
     localStorage.clear()
+    window.location.reload()
   }
 
   useEffect(() => {
-    if (session !== null || session !== undefined) {
+    if (session !== null) {
       const loginTime = new Date(JSON.parse(session)).getTime()
       const now = new Date(Date.now()).getTime()
       const isExpired = now - loginTime
@@ -39,10 +40,11 @@ function App() {
           <Redirect to="/rendle" from="/" />
           <Route exact component={Wordle} path="/rendle" />
           <Route exact component={WordleGameContainer} path="/rendle/game" />
+          <Route exact component={Scan} path="/rendle-hunt" />
           <Route exact component={Login} path='/login' />
           <Route exact component={Signup} path='/signup' />
-          <Route exact component={ComingSoon} path='/sc' />
-          <Route exact component={ComingSoon} path='/lottery' />
+          {/* <Route exact component={ComingSoon} path='/sc' /> */}
+          <Route exact component={ComingSoon} path='/raffle' />
         </Router>
       </Suspense>
     </div >

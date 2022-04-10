@@ -8,7 +8,7 @@ const Footer = (props) => {
   const [isModalOpen, setModalIsOpen] = useState(false);
   const toggleModal = () => setModalIsOpen(!isModalOpen);
   return (
-    <footer >
+    <div className="footer">
       {isModalOpen && <Modal2 onRequestClose={toggleModal} />}
       <hr />
       <div className='footer_end_l item_point'>
@@ -20,7 +20,7 @@ const Footer = (props) => {
           <div style={{ color: "white" }}>© Renderverse 2022</div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };
 

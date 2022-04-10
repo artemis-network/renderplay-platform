@@ -1,7 +1,9 @@
 /* eslint-disable */
 /* eslint-disable react/no-direct-mutation-state */
 import { UserCircleIcon, BriefcaseIcon, LogoutIcon } from '@heroicons/react/outline'
+import { CameraIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import './DropDown.css'
 
 const CustomDropDown = () => {
@@ -43,6 +45,11 @@ const CustomDropDown = () => {
 						<BriefcaseIcon className="h-8 w-8" />
 						<div>Wallet</div>
 					</div>
+					<Link to="/scan" className='custom_drop_down_content_item neu neu_end no_border scaler'>
+						<CameraIcon className="h-8 w-8" />
+						<div>Scan</div>
+					</Link>
+
 				</div>
 				<hr className='divider' />
 				<div className="custom_drop_down_footer">

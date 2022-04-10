@@ -38,3 +38,13 @@ html {
     padding: 2rem 0 3rem 0;
   }
 }
+
+.img_ani {
+  animation: a_d_s 5s infinite;
+}
+
+@keyframes a_d_s {
+  50% {
+    transform: scale(0.75);
+  }
+}
