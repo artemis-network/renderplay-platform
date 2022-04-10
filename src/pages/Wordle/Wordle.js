@@ -52,6 +52,8 @@ const game_types_data = [
 const Wordle = () => {
 
 
+	const [is_loaded, set_is_loaded] = useState(false)
+
 	const [game_types, set_game_types] = useState(
 		{
 			game_types: [...game_types_data],
@@ -60,6 +62,7 @@ const Wordle = () => {
 	)
 
 	useEffect(() => {
+		set_is_loaded(false)
 		localStorage.removeItem("game_state_id")
 		localStorage.removeItem("gameState")
 		localStorage.removeItem("gameConfig")
@@ -108,9 +111,10 @@ const Wordle = () => {
 					else data[i].live = false
 				}
 				set_game_types({ game_types: temp, mobile_view: temp_m })
+				set_is_loaded(true)
 			}
 		}).catch(err => set_game_types({ game_types: [...game_types_data], mobile_view: [...game_types_data] }))
-	}, [game_types.game_types[2].starts_on, game_types.game_types[2].live])
+	}, [is_loaded])
 
 	return (<div >
 		<div className="container__bg">
