@@ -47,12 +47,7 @@ const game_types_data = [
 
 ]
 
-
-
 const Wordle = () => {
-
-
-
 	const [game_types, set_game_types] = useState(
 		{
 			game_types: [...game_types_data],
@@ -109,9 +104,10 @@ const Wordle = () => {
 					else data[i].live = false
 				}
 				set_game_types({ game_types: temp, mobile_view: temp_m })
+				console.log(res.data)
 			}
 		}).catch(err => set_game_types({ game_types: [...game_types_data], mobile_view: [...game_types_data] }))
-	}, [game_types.game_types[2].img])
+	}, [])
 
 	return (<div >
 		<div className="container__bg">

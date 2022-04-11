@@ -7,7 +7,7 @@ const Scan = () => {
 	const [img, setImg] = useState(null)
 
 	useEffect(() => {
-		const socket = io.connect(`http://192.168.1.14:5001`);
+		const socket = io.connect(`http://192.168.1.6:5001`);
 		socket.on("message", i => {
 			setImg(i)
 		})
