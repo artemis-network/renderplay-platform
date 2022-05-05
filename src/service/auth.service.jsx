@@ -1,13 +1,20 @@
 import http from "./http.config";
+import URL from "./config";
 
 const prefix = "users";
 
+function getToken() {
+  return localStorage.getItem("accessToken");
+}
+
 export const signUp = async (data) =>
-  await http.post(`${prefix}/register`, data);
+  await http.post(`${URL}/${prefix}/register`, data);
+
 export const login = async (data) =>
-  await http.post(`${prefix}/authenticate`, data);
+  await http.post(`${URL}/${prefix}/authenticate`, data);
+
 export const loginGoogle = async (data) =>
-  await http.post(`${prefix}/google-register`, data);
+  await http.post(`${URL}/${prefix}/google-register`, data);
 
 export const createSession = (data) => {
   localStorage.setItem("publicToken", data.publicToken);
@@ -17,4 +24,8 @@ export const createSession = (data) => {
 };
 
 export const get_wallet = async (data) =>
-  await http.post(`${prefix}/get-user-wallet`, data);
+  await http.post(`${URL}/${prefix}/get-user-wallet`, data, {
+    headers: {
+      Authorization: getToken(),
+    },
+  });

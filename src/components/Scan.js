@@ -6,7 +6,9 @@ const { delay, ServiceBusClient } = require("@azure/service-bus");
 
 const Scan = () => {
 
-	const connectionString = "Endpoint=sb://renderverse.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=c+WTdQ1c79kwLc54nISubSaYQvvs8tLwwojs4Sa10ZQ=";
+	const connectionString = `
+	Endpoint=sb://renderverse.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=c+WTdQ1c79kwLc54nISubSaYQvvs8tLwwojs4Sa10ZQ=
+	`
 	const queueName = "imagequeue";
 
 	const sbClient = new ServiceBusClient(connectionString);
@@ -16,10 +18,7 @@ const Scan = () => {
 	const [url, setUrl] = useState("")
 
 	function imageV() {
-		console.log(url)
-		axios.get(url, { headers: {} })
-			.then((resp) => setImg('data:image/jpeg;base64, ' + resp.data))
-			.catch(err => console.log(err))
+		setImg(url);
 	}
 
 	async function set() {
