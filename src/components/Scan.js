@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 import Bar from "./wordle/Bar/Bar"
-import Img from '../assets/paid_2.gif'
 
 const { delay, ServiceBusClient } = require("@azure/service-bus");
 
@@ -80,8 +79,8 @@ const Scan = () => {
 			<div style={{ display: "flex", justifyContent: "center", height: "500px", width: "500px", margin: "auto", background: "white", borderRadius: "2vh", padding: "1rem" }}>
 				{img ? <img style={{ height: "auto", width: "300px", }} src={img} /> : null}
 			</div> */}
-			<img style={{ height: "auto", width: "600px", }} src={Img} />
-			<img style={{ height: "auto", width: "600px", }} src={Img} />
+			{/* <img style={{ height: "auto", width: "600px", }} src={Img} />
+			<img style={{ height: "auto", width: "600px", }} src={Img} /> */}
 		</div>
 	</div>)
 
