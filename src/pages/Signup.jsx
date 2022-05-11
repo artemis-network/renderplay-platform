@@ -2,7 +2,7 @@ import { useState, lazy } from "react";
 import { useFormik } from "formik";
 
 import { Link } from "react-router-dom";
-import { signUp } from "../service/auth.service";
+import { register } from "../service/auth.service";
 import { useHistory } from "react-router-dom";
 
 const Bar = lazy(() => import("../components/wordle/Bar/Bar"));
@@ -59,7 +59,7 @@ const Signup = () => {
     validate,
     enableReinitialize: true,
     onSubmit: (values) => {
-      signUp(values)
+      register(values)
         .then((res) => {
           if (res.data.errorType === "USER_ALREADY_EXIST") {
             setStatus({

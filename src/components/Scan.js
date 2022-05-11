@@ -1,6 +1,7 @@
 import { useState } from "react"
+
 import Bar from "./wordle/Bar/Bar"
-import axios from 'axios';
+import Img from '../assets/paid_2.gif'
 
 const { delay, ServiceBusClient } = require("@azure/service-bus");
 
@@ -72,13 +73,15 @@ const Scan = () => {
 
 	return (<div style={{ background: "#321e43", }}>
 		<Bar />
-		<div style={{ display: "flex", justifyContent: 'center', margin: "2rem", padding: "2rem", flexDirection: "column" }}>
-			<div style={{ display: 'flex', justifyContent: 'center', margin: "2rem 0" }}>
+		<div style={{ display: "flex", justifyContent: 'center', alignItems: "center", margin: "2rem", columnGap: "8rem", padding: "2rem", flexDirection: "row" }}>
+			{/* <div style={{ display: 'flex', justifyContent: 'center', margin: "2rem 0" }}>
 				<button onClick={set} className="btn btn-primary" style={{ textAlign: "center", fontSize: "2rem", fontWeight: "bold", color: "#fff", padding: "2rem", width: "20%" }}> Drop here </button>
 			</div>
 			<div style={{ display: "flex", justifyContent: "center", height: "500px", width: "500px", margin: "auto", background: "white", borderRadius: "2vh", padding: "1rem" }}>
 				{img ? <img style={{ height: "auto", width: "300px", }} src={img} /> : null}
-			</div>
+			</div> */}
+			<img style={{ height: "auto", width: "600px", }} src={Img} />
+			<img style={{ height: "auto", width: "600px", }} src={Img} />
 		</div>
 	</div>)
 

@@ -14,7 +14,7 @@ import './Bar.css'
 import CustomDropDown from "./DropDown";
 import Wallet from './Wallet'
 
-import { get_wallet } from '../../../service/auth.service.jsx'
+import { getWallet } from '../../../service/auth.service.jsx'
 import { ArrowLeftIcon, ArrowNarrowLeftIcon, } from "@heroicons/react/outline";
 
 import Random from '../../../assets/5rendle.webp'
@@ -49,14 +49,14 @@ const Bar = (props) => {
 		return setImg(Random)
 	}, [])
 
-	const data = { username: localStorage.getItem("username") }
+	const data = { userId: localStorage.getItem("userId") }
 	useEffect(() => {
-		if (data.username !== null) {
-			get_wallet(data)
+		if (data.userId !== null) {
+			getWallet(data)
 				.then((res) => {
 					setWallet({
-						id: res.data.wallet.id,
-						balance: res.data.wallet.balance
+						id: res.data._id,
+						balance: res.data.balance
 					})
 				}).catch(err => console.log(err))
 		}

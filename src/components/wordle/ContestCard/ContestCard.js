@@ -8,7 +8,9 @@ import Controller from '../../../assets/joystick.webp'
 import PlayPng from '../../../assets/play.webp'
 import ExpiredPng from '../../../assets/menu.webp'
 import StartsPng from '../../../assets/play_disable.webp'
-import { enter_contest } from '../../../service/game.service'
+
+import { enterContest } from '../../../service/game.service'
+
 import ConfirmModal from '../ConfirmModal/ConfirmModal'
 import InsufficentFunds from '../InsufficentFundsModal/InsufficentFunds'
 
@@ -20,22 +22,21 @@ const ContestCard = (props) => {
 	const [show, setShow] = useState(false);
 	const [Insufficent, setInsufficent] = useState(false)
 
-
 	const InsufficentModalClose = () => setInsufficent(false);
 	const InsufficentModalOpen = () => setInsufficent(true)
 
 	const ModalClose = () => setShow(false);
 	const ModalOpen = () => {
-		const username = localStorage.getItem("username")
-		if (username !== null) {
+		const userId = localStorage.getItem("userId")
+		if (userId !== null) {
 			const data = {
-				contest_id: props.contest_id,
-				game_type: props.game_type,
-				username: username,
+				contestId: props.contestId,
+				gameType: props.gameType,
+				userId: userId,
 				confirm: false
 			}
-			enter_contest(data).then((res) => {
-				if (res.data.message === "paid") {
+			enterContest(data).then((res) => {
+				if (res.data.message === "PAID") {
 					localStorage.setItem("gameConfig", JSON.stringify(props))
 					return history.push("/rendle/game")
 				}
@@ -56,21 +57,21 @@ const ContestCard = (props) => {
 	}
 	const expiredIn = () => {
 		const now = new Date(Date.now())
-		const time = new Date(props.starts_on)
+		const time = new Date(props.startsOn)
 		return time.getTime() - now.getTime()
 	}
 
 
 	const gameConfig = () => {
-		const username = localStorage.getItem("username")
+		const userId = localStorage.getItem("userId")
 		const data = {
-			contest_id: props.contest_id,
-			game_type: props.game_type,
-			username: username,
+			contestId: props.contestId,
+			gameType: props.gameType,
+			userId: userId,
 			confirm: true
 		}
-		enter_contest(data).then((res) => {
-			if (res.data.message === "paid") {
+		enterContest(data).then((res) => {
+			if (res.data.message === "PAID") {
 				localStorage.setItem("gameConfig", JSON.stringify(props))
 				return history.push("/rendle/game")
 			}
@@ -79,7 +80,6 @@ const ContestCard = (props) => {
 			localStorage.setItem("gameConfig", JSON.stringify(props))
 			setShow(false)
 			return history.push("/rendle/game")
-
 		})
 	}
 
@@ -176,7 +176,7 @@ const ContestCard = (props) => {
 								</div>
 							</div>
 							<div className={"c-card__details__bottom"}>
-								<div style={{ color: "white" }}>Entry Fee - {props.entryfee} REND</div>
+								<div style={{ color: "white" }}>Entry Fee - {props.entryFee} REND</div>
 							</div>
 						</div>
 					</div>

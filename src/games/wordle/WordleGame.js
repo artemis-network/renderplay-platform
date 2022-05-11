@@ -28,7 +28,7 @@ import { SevenLetterGuesses } from './constants/config/sevenLetterGuesses'
 
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
-import { save_contest_result, get_contest_status, update_word, get_guesses } from '../../service/game.service'
+import { saveRendleGame, getContestantStatus, getGuesses, updateGuesses } from '../../service/game.service'
 
 import { InformationCircleIcon } from '@heroicons/react/outline'
 
@@ -56,28 +56,28 @@ function WorldleGame() {
   const data = JSON.parse(localStorage.getItem("gameConfig"))
 
   useEffect(() => {
-    SET_MAX(data.game_type)
-    SET_MAX_CHALLENGES(data.game_type)
-    if (data.game_type === 5) {
+    SET_MAX(data.gameType)
+    SET_MAX_CHALLENGES(data.gameType)
+    if (data.gameType === 5) {
       SET_WORDS(fiveLetterList)
       SET_VALID_GUESSES(FiveLetterGuesses)
       const { solution } = getWordOfDay(fiveLetterList)
       setSolution(solution)
     }
-    if (data.game_type === 6) {
+    if (data.gameType === 6) {
       SET_WORDS(sixLetterList)
       SET_VALID_GUESSES(sixLetterGuesses)
       const { solution } = getWordOfDay(sixLetterList)
       setSolution(solution)
     }
-    if (data.game_type === 7) {
+    if (data.gameType === 7) {
       SET_WORDS(sevenLetterList)
       SET_VALID_GUESSES(SevenLetterGuesses)
       const { solution } = getWordOfDay(sevenLetterList)
       setSolution(solution)
     }
 
-  }, [MAX_WORD_LENGTH, data.game_type, solution])
+  }, [MAX_WORD_LENGTH, data.gameType, solution])
 
   const [guesses, setGuesses] = useState(() => {
     const loaded = loadGameStateFromLocalStorage()
@@ -88,9 +88,7 @@ function WorldleGame() {
     return loaded.guesses
   })
 
-  const clearCurrentRowClass = () => {
-    setCurrentRowClass('')
-  }
+  const clearCurrentRowClass = () => setCurrentRowClass('')
 
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, solution })
@@ -98,13 +96,14 @@ function WorldleGame() {
 
   useEffect(() => {
     if (username) {
-      get_contest_status({ username: username, game_type: data.game_type, contest_id: data.contest_id })
+      getContestantStatus({ username: username, gameType: data.gameType, contestId: data.contestId })
         .then(res => {
-          const is_first_game = res.data.status.is_first_game
-          const is_same_contest = data.contest_id === res.data.status.contest_id
+          const isFirstGame = res.data.isFirstGame
+          const isSameContest = data.contestId === res.data.contestId
 
-          if (is_first_game || !is_same_contest) {
+          if (isFirstGame || !isSameContest) {
             let guesses = JSON.parse(localStorage.getItem("gameState"))
+
             guesses = guesses.guesses.length
             let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
 
@@ -112,14 +111,14 @@ function WorldleGame() {
               const data = {
                 username: localStorage.getItem("username"),
                 chances: guesses,
-                game_type: gameConfig.game_type,
-                began_at: gameConfig.starts_on,
-                contest_id: gameConfig.contest_id,
-                is_won: false
+                gameType: gameConfig.gameType,
+                beganAt: gameConfig.startsOn,
+                contestId: gameConfig.contestId,
+                isWon: false
               }
-              save_contest_result(data).then(res => {
+              saveRendleGame(data).then(res => {
                 setIsGameModalOpen(true)
-                localStorage.removeItem("game_state_id")
+                localStorage.removeItem("gameStateId")
                 return setIsGameLost(true)
               }).catch(err => console.log(err))
             }
@@ -129,30 +128,30 @@ function WorldleGame() {
               const data = {
                 username: localStorage.getItem("username"),
                 chances: guesses,
-                game_type: gameConfig.game_type,
-                began_at: gameConfig.starts_on,
-                contest_id: gameConfig.contest_id,
+                game_type: gameConfig.gameType,
+                began_at: gameConfig.startsOn,
+                contest_id: gameConfig.contestId,
                 is_won: true
               }
-              save_contest_result(data).then(res => {
-                localStorage.removeItem("game_state_id")
-                localStorage.removeItem("game_state_id")
+              saveRendleGame(data).then(res => {
+                localStorage.removeItem("gameStateId")
+                localStorage.removeItem("gameStateId")
                 return setIsGameWon(true)
               }).catch(err => console.log(err))
             }
           } else {
             setIsGameFinished(true)
             setIsGameModalOpen(true)
-            setIsGameWon(res.data.status.is_won)
-            setIsGameLost(!res.data.status.is_won)
+            setIsGameWon(res.data.isWon)
+            setIsGameLost(!res.data.isWon)
           }
         })
         .catch(err => { console.log(err) })
     } else return history.push("/rendle")
 
 
-    const game_state_id = { username: localStorage.getItem("username") }
-    get_guesses(game_state_id).then((res_ => {
+    const gameStateId = { userId: localStorage.getItem("userId") }
+    getGuesses(gameStateId).then((res_ => {
       if (res_.data.guesses.length <= 0) return
       else {
         const new_guesses = {
@@ -208,23 +207,27 @@ function WorldleGame() {
     if (condition_1 && condition_3 && !isGameWon) {
       setGuesses([...guesses, currentGuess])
       setCurrentGuess("")
-      const game_state_id = localStorage.getItem("game_state_id")
-      let word_data = {
-      }
-      if (game_state_id !== undefined || game_state_id !== null) {
+      const gameStateId = localStorage.getItem("gameStateId")
+      let word_data = {}
+      if (gameStateId !== undefined || gameStateId !== null) {
         word_data = {
-          username: localStorage.getItem("username"),
+          userId: localStorage.getItem("userId"),
+          constestId: data.contestId,
           word: currentGuess,
-          game_state_id: JSON.parse(game_state_id)
+          gameStateId: gameStateId
         }
       } else {
         word_data = {
-          username: localStorage.getItem("username"),
+          userId: localStorage.getItem("userId"),
+          constestId: data.contestId,
           word: currentGuess,
-          game_state_id: null
+          gameStateId: null
         }
       }
-      update_word(word_data).then(res => localStorage.setItem("game_state_id", res.data.game_state_id)).catch(err => console.log(err))
+      updateGuesses(word_data).then(res => {
+        console.log(res.data)
+        localStorage.setItem("gameStateId", res.data.gameStateId)
+      }).catch(err => console.log(err))
       const timer = get_timer()
       if (winningWord) return setTimeout(() => setIsGameWon(true), timer)
       if (guesses.length === MAX_CHALLENGES - 1) setTimeout(() => setIsGameLost(true), timer)
@@ -236,7 +239,6 @@ function WorldleGame() {
     if (MAX_WORD_LENGTH === 6) return 2425
     if (MAX_WORD_LENGTH === 7) return 2650
   }
-
 
   const returnToWordle = () => {
     setIsGameModalOpen(false)

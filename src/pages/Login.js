@@ -27,9 +27,7 @@ const Login = () => {
     let uname = data.profileObj.email
     const split = uname.split("@")
     const data_c = {
-      name: data.profileObj.givenName,
-      email: data.profileObj.email,
-      username: split[0]
+      token: data.tokenId,
     }
     loginGoogle(data_c).then((res => {
       createSession(res.data);
