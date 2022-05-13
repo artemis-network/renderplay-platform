@@ -52,7 +52,7 @@ function WorldleGame() {
 
   const [solution, setSolution] = useState("")
 
-  const username = localStorage.getItem("username")
+  const userId = localStorage.getItem("userId")
   const data = JSON.parse(localStorage.getItem("gameConfig"))
 
   useEffect(() => {
@@ -95,11 +95,13 @@ function WorldleGame() {
   }, [guesses, solution])
 
   useEffect(() => {
-    if (username) {
-      getContestantStatus({ username: username, gameType: data.gameType, contestId: data.contestId })
+    if (userId) {
+      getContestantStatus({ userId: userId, gameType: data.gameType, contestId: data.contestId })
         .then(res => {
+          console.log(res.data)
           const isFirstGame = res.data.isFirstGame
           const isSameContest = data.contestId === res.data.contestId
+
 
           if (isFirstGame || !isSameContest) {
             let guesses = JSON.parse(localStorage.getItem("gameState"))
@@ -109,6 +111,7 @@ function WorldleGame() {
 
             if (isGameLost) {
               const data = {
+                userId: localStorage.getItem("userId"),
                 username: localStorage.getItem("username"),
                 chances: guesses,
                 gameType: gameConfig.gameType,
@@ -126,6 +129,7 @@ function WorldleGame() {
             if (isGameWon) {
               setIsGameModalOpen(true)
               const data = {
+                userId: localStorage.getItem("userId"),
                 username: localStorage.getItem("username"),
                 chances: guesses,
                 game_type: gameConfig.gameType,
@@ -134,7 +138,6 @@ function WorldleGame() {
                 is_won: true
               }
               saveRendleGame(data).then(res => {
-                localStorage.removeItem("gameStateId")
                 localStorage.removeItem("gameStateId")
                 return setIsGameWon(true)
               }).catch(err => console.log(err))
@@ -150,8 +153,9 @@ function WorldleGame() {
     } else return history.push("/rendle")
 
 
-    const gameStateId = { userId: localStorage.getItem("userId") }
-    getGuesses(gameStateId).then((res_ => {
+
+    getGuesses({ userId: localStorage.getItem("userId") }).then((res_ => {
+      console.log(res_.data)
       if (res_.data.guesses.length <= 0) return
       else {
         const new_guesses = {

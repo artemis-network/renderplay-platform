@@ -1,9 +1,9 @@
 
-let SERVER = "DEV";
+let SERVER = "PROD";
 let URL = "";
 
-if (SERVER === "DEV") URL = "http://localhost:3001";
-if (SERVER === "PROD") URL = "https://artemisnetwork.azurewebsites.net";
+if (SERVER === "DEV") URL = "http://localhost:5000";
+if (SERVER === "PROD") URL = "https://api.renderverse.io";
 
 const rendlePrefix = "/api/v1/rendles"
 const userPrefix = "/api/v1/users"

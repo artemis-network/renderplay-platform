@@ -61,6 +61,7 @@ const Signup = () => {
     onSubmit: (values) => {
       register(values)
         .then((res) => {
+          console.log(res.data);
           if (res.data.errorType === "USER_ALREADY_EXIST") {
             setStatus({
               status: res.data.status,
@@ -69,7 +70,7 @@ const Signup = () => {
             });
           }
 
-          if (res.data.errorType === "SUCCESS") {
+          if (res.data.errorType === "NONE") {
             setStatus({
               status: res.data.status,
               error: res.data.error,
@@ -77,11 +78,14 @@ const Signup = () => {
                 "user registration successful, verification email has been sent",
             });
             form.resetForm();
-            history.push("/login");
-            setStatus({});
+            setTimeout(() => {
+              setStatus({});
+              history.push("/login");
+            }, 2000);
           }
         })
         .catch((err) => {
+          console.log(err);
           setStatus({
             status: 500,
             error: true,

@@ -1,86 +1,81 @@
-import { useState } from "react"
+import PlayPng from '../assets/play.webp'
 
 import Bar from "./wordle/Bar/Bar"
 
-const { delay, ServiceBusClient } = require("@azure/service-bus");
+import Lottie from 'lottie-react-web'
+
+import FREE from '../assets/free.json'
+import PAID from '../assets/paid.json'
+import { useHistory } from 'react-router'
+
+const defaultOptions_FREE = {
+	loop: true,
+	autoplay: true,
+	animationData: FREE,
+	rendererSettings: {
+		preserveAspectRatio: 'xMidYMid slice'
+	}
+};
+
+const defaultOptions_PAID = {
+	loop: true,
+	autoplay: true,
+	animationData: PAID,
+	rendererSettings: {
+		preserveAspectRatio: 'xMidYMid slice'
+	}
+};
 
 const Scan = () => {
 
-	const connectionString = `
-	Endpoint=sb://renderverse.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=c+WTdQ1c79kwLc54nISubSaYQvvs8tLwwojs4Sa10ZQ=
-	`
-	const queueName = "imagequeue";
 
-	const sbClient = new ServiceBusClient(connectionString);
-	const sessionId = localStorage.getItem("username")
+	const history = useHistory()
 
-	const [img, setImg] = useState("")
-	const [url, setUrl] = useState("")
-
-	function imageV() {
-		setImg(url);
-	}
-
-	async function set() {
-		let endDate;
-		let isMessageReceived = false;
-		console.log(`receive started`)
-		let i = 0;
-		while (i < 12) {
-			i++;
-			console.log(`Creating session receiver for session '${sessionId}'`);
-			const receiver = await sbClient.acceptSession(queueName, sessionId);
-			const subscribePromise = new Promise(function (resolve, reject) {
-				const processMessage = async (message) => resolve(message);
-				const processError = async (args) => reject(args);
-				receiver.subscribe({
-					processMessage,
-					processError,
-				});
-			});
-			const now = Date.now();
-			endDate = now + 5000;
-			let remainingTime = endDate - now;
-			console.log(`Waiting for ${remainingTime} milliseconds for messages to arrive.`);
-			try {
-				await Promise.race([subscribePromise, delay(remainingTime)])
-					.then(async (res) => {
-						if (res.body != undefined || res.body != null) {
-							var string = new TextDecoder().decode(res.body);
-							setUrl(string)
-							isMessageReceived = true;
-						}
-					}).catch(err => {
-						console.log(err)
-					})
-				await receiver.close();
-				// wait time has expired, we can stop listening.
-				console.log(`Time has expired, closing receiver for session '${sessionId}'`);
-			} catch (err) {
-				// `err` was already logged part of `processError` above.
-				await receiver.close();
-				console.log(err);
-			}
-			console.log("Message recieved >> " + isMessageReceived)
-			if (isMessageReceived) {
-				await receiver.close();
-				break;
-			}
-		}
-		imageV();
-	}
+	const scanPage = () => history.push("/scan")
 
 	return (<div style={{ background: "#321e43", }}>
 		<Bar />
-		<div style={{ display: "flex", justifyContent: 'center', alignItems: "center", margin: "2rem", columnGap: "8rem", padding: "2rem", flexDirection: "row" }}>
-			{/* <div style={{ display: 'flex', justifyContent: 'center', margin: "2rem 0" }}>
-				<button onClick={set} className="btn btn-primary" style={{ textAlign: "center", fontSize: "2rem", fontWeight: "bold", color: "#fff", padding: "2rem", width: "20%" }}> Drop here </button>
+		<div style={{ display: "flex", justifyContent: 'center', alignItems: "center", flexDirection: "row", paddingTop: "4rem" }}>
+
+
+			<div style={{ position: "relative" }}>
+				<Lottie
+					style={{ width: "40rem", }}
+					options={defaultOptions_FREE}
+				/>
+				<img
+					alt="play"
+					src={PlayPng}
+					onClick={scanPage}
+					className='h-36 w-36 cursor-pointer'
+					style={{
+						position: "absolute",
+						margin: "auto",
+						left: 0,
+						right: 0,
+						bottom: "1rem"
+					}}
+					color="green" />
 			</div>
-			<div style={{ display: "flex", justifyContent: "center", height: "500px", width: "500px", margin: "auto", background: "white", borderRadius: "2vh", padding: "1rem" }}>
-				{img ? <img style={{ height: "auto", width: "300px", }} src={img} /> : null}
-			</div> */}
-			{/* <img style={{ height: "auto", width: "600px", }} src={Img} />
-			<img style={{ height: "auto", width: "600px", }} src={Img} /> */}
+			<div style={{ position: "relative" }}>
+				<Lottie
+					style={{ width: "40rem", }}
+					options={defaultOptions_PAID}
+				/>
+				<img
+					alt="play"
+					onClick={scanPage}
+					src={PlayPng}
+					className='h-36 w-36 cursor-pointer'
+					style={{
+						position: "absolute",
+						margin: "auto",
+						left: 0,
+						right: 0,
+						bottom: "1rem"
+					}}
+					color="green" />
+			</div>
 		</div>
 	</div>)
 

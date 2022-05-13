@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
 
 import "./App.css";
 
+const RendleHunt = lazy(() => import("./components/RenderHunt"))
 const Wordle = lazy(() => import('./pages/Wordle/Wordle'));
 const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
@@ -46,6 +47,7 @@ function App() {
           <Route exact component={HangMan} path="/hangman" />
           <Route exact component={Login} path='/login' />
           <Route exact component={Signup} path='/signup' />
+          <Route exact component={RendleHunt} path='/scan' />
           {/* <Route exact component={ComingSoon} path='/sc' /> */}
           <Route exact component={ComingSoon} path='/raffle' />
         </Router>
