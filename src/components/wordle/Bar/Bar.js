@@ -70,6 +70,9 @@ const Bar = (props) => {
 		localStorage.removeItem('gameConfig')
 		localStorage.removeItem('isResultPosted')
 		localStorage.removeItem('gameStats')
+		localStorage.removeItem('session')
+		localStorage.removeItem('userId')
+		localStorage.removeItem('transaction')
 		window.location.reload()
 	}
 

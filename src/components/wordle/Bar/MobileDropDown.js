@@ -17,6 +17,9 @@ const MobileDropDown = (props) => {
 		localStorage.removeItem('gameConfig')
 		localStorage.removeItem('isResultPosted')
 		localStorage.removeItem('gameStats')
+		localStorage.removeItem('session')
+		localStorage.removeItem('transcation')
+		localStorage.removeItem('userId')
 		window.location.reload()
 	}
 
