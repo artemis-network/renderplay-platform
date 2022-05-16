@@ -98,6 +98,7 @@ function WorldleGame() {
     if (userId) {
       getContestantStatus({ userId: userId, gameType: data.gameType, contestId: data.contestId })
         .then(res => {
+
           console.log(res.data)
           const isFirstGame = res.data.isFirstGame
           const isSameContest = data.contestId === res.data.contestId
@@ -115,7 +116,6 @@ function WorldleGame() {
                 username: localStorage.getItem("username"),
                 chances: guesses,
                 gameType: gameConfig.gameType,
-                beganAt: gameConfig.startsOn,
                 contestId: gameConfig.contestId,
                 isWon: false
               }
@@ -132,10 +132,9 @@ function WorldleGame() {
                 userId: localStorage.getItem("userId"),
                 username: localStorage.getItem("username"),
                 chances: guesses,
-                game_type: gameConfig.gameType,
-                began_at: gameConfig.startsOn,
-                contest_id: gameConfig.contestId,
-                is_won: true
+                gameType: gameConfig.gameType,
+                contestId: gameConfig.contestId,
+                isWon: true
               }
               saveRendleGame(data).then(res => {
                 localStorage.removeItem("gameStateId")

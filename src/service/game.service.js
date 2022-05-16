@@ -21,6 +21,7 @@ const rendleGameTypesApi = async () => await axios.get(`${URL}${rendlePrefix}`)
 export const loadRendleGames = async () => {
 	try {
 		const rendles = await rendleGameTypesApi();
+		console.log(rendles)
 		let data = rendles.data.rendleGameTypes
 
 		data[0].img = FiveRendleImg
