@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy } from 'react'
 import { useHistory } from 'react-router-dom'
 
 
@@ -32,6 +32,8 @@ import { saveRendleGame, getContestantStatus, getGuesses, updateGuesses } from '
 
 
 import { InformationCircleIcon } from '@heroicons/react/outline'
+
+const Bar = lazy(() => import("../../common/bar/Bar"))
 
 const RendleGame = () => {
 
@@ -248,49 +250,53 @@ const RendleGame = () => {
   }
 
   return (
-    <div style={{ padding: "0rem", background: `url(${Background})`, backgroundPosition: "center", backgroundRepeat: "no-repeat", width: "100%", margin: "auto", backgroundSize: "cover" }} className="h-screen flex flex-col">
-      <div className='p-5'>
-        <InformationCircleIcon
-          color='white'
-          style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
-          className="h-12 w-12 cursor-pointer dark:stroke-white"
-          onClick={() => setIsInfoModalOpen(true)}
-        />
-      </div>
-
-      <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
-        <div className="grow_keyboard">
-          <Grid
-            guesses={guesses}
-            solution={solution}
-            currentGuess={currentGuess}
-            isRevealing={isRevealing}
-            currentRowClassName={currentRowClass}
-            MAX_CHALLENGES={MAX_CHALLENGES}
+    <div>
+      <Bar isGame={true} />
+      <div className="h-screen flex flex-col" style={{ background: "#321E43" }}>
+        <div className='p-5'>
+          <InformationCircleIcon
+            color='white'
+            style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
+            className="h-12 w-12 cursor-pointer dark:stroke-white"
+            onClick={() => setIsInfoModalOpen(true)}
           />
         </div>
-        <Keyboard
-          onChar={onChar}
-          onDelete={onDelete}
-          onEnter={onEnter}
-          guesses={guesses}
-          isRevealing={isRevealing}
-          MAX_WORD_LENGTH={MAX_WORD_LENGTH}
-        />
-        <InfoModal
-          isOpen={isInfoModalOpen}
-          handleClose={() => setIsInfoModalOpen(false)}
-        />
-        <GameModal
-          isOpen={isGameModalOpen}
-          handleClose={returnToWordle}
-          guesses={guesses}
-          isGameLost={isGameLost}
-          isGameWon={isGameWon}
-          isGameFinished={isGameFinished}
-        />
-        <AlertContainer />
+
+        <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
+          <div className="grow_keyboard">
+            <Grid
+              guesses={guesses}
+              solution={solution}
+              currentGuess={currentGuess}
+              isRevealing={isRevealing}
+              currentRowClassName={currentRowClass}
+              MAX_CHALLENGES={MAX_CHALLENGES}
+            />
+          </div>
+          <Keyboard
+            onChar={onChar}
+            onDelete={onDelete}
+            onEnter={onEnter}
+            guesses={guesses}
+            isRevealing={isRevealing}
+            MAX_WORD_LENGTH={MAX_WORD_LENGTH}
+          />
+          <InfoModal
+            isOpen={isInfoModalOpen}
+            handleClose={() => setIsInfoModalOpen(false)}
+          />
+          <GameModal
+            isOpen={isGameModalOpen}
+            handleClose={returnToWordle}
+            guesses={guesses}
+            isGameLost={isGameLost}
+            isGameWon={isGameWon}
+            isGameFinished={isGameFinished}
+          />
+          <AlertContainer />
+        </div>
       </div>
+      {/* <img src={Background} style={{ position: "absolute", bottom: "-8rem", backgroundSize: "cover" }} /> */}
     </div>
   )
 }

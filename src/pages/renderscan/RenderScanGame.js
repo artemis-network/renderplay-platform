@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
 
 import DropSvg from '../../assets/renderscan/black frame.svg'
-import HowToPlaySvg from '../../assets/renderscan/Artboard 2.svg'
+import HowToPlaySvg from '../../assets/renderscan/hp.svg'
 import Astro from '../../assets/renderscan/Artboard 4.svg'
 
-import Play1Png from '../../assets/renderscan/1.svg'
+import GrabPng from '../../assets/renderscan/grab.svg'
+import ProcessPng from '../../assets/renderscan/processing.svg'
+import SubmitPng from '../../assets/renderscan/submit.svg'
+
 import RenderScanImg from '../../assets/renderscan/renderscan.svg'
 
 
@@ -34,6 +37,7 @@ const Scan = () => {
 	const sessionId = localStorage.getItem("username")
 
 	const [img, setImg] = useState("")
+	const [isWating, setIsWaiting] = useState(false)
 
 	const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -75,6 +79,7 @@ const Scan = () => {
 	}, [])
 
 	async function set() {
+		setIsWaiting(true)
 		let endDate;
 		let isMessageReceived = false;
 		console.log(`receive started`)
@@ -100,6 +105,7 @@ const Scan = () => {
 					.then(async (res) => {
 						if (res.body != undefined || res.body != null) {
 							var string = new TextDecoder().decode(res.body);
+							setIsWaiting(false)
 							setImg(string)
 							isMessageReceived = true;
 						}
@@ -120,6 +126,7 @@ const Scan = () => {
 				break;
 			}
 		}
+		setIsWaiting(false)
 	}
 
 	return (<div className="renderscan_bg" >
@@ -143,7 +150,7 @@ const Scan = () => {
 				<img src={RenderScanImg} alt="" width="500" style={{ zIndex: "2" }} />
 			</div>
 		</div>
-		<div style={{ textAlign: 'center', fontSize: "3rem", fontWeight: 'bold', color: "#ffffff", padding: "3rem 0", height: "25vh" }}>Scan this word</div>
+		<div style={{ textAlign: 'center', fontSize: "3rem", fontWeight: 'bold', color: "#ffffff", padding: "3rem 0", height: "17vh" }}>Scan this word</div>
 		<div className="renderscan_main_grid">
 			<div style={{ display: "flex", flexDirection: 'column', justifyContent: 'center', rowGap: "2rem" }}>
 				<div style={{ position: 'relative' }}>
@@ -151,18 +158,35 @@ const Scan = () => {
 					<div style={{ position: 'absolute', left: "1rem", top: "-2rem" }}>
 						<img src={SpaceShipSvg} className="renderscan_img_deco render_flight_animation" />
 					</div>
-					<div style={{ position: "absolute", right: "50%", left: "42%", width: "100%", margin: "auto", bottom: "-1rem" }} >
-						{img !== "" ? <div
-							alt="play"
-							onClick={save}
-							className='btn btn-primary'
-						>Submit</div> :
-							<img
-								alt="play"
-								onClick={set}
-								src={Play1Png}
-								className='h-24 w-24 cursor-pointer'
-							/>
+					<div style={{ position: "absolute", right: "50%", left: "36.5%", width: "100%", margin: "auto", bottom: "-9.6rem" }} >
+						{
+							isWating ? <div>
+								<img
+									alt="play"
+									onClick={set}
+									src={ProcessPng}
+									width="200"
+									className='render_grab'
+								/>
+							</div> :
+								<div>
+									{img !== "" ? <img
+										alt="play"
+										onClick={save}
+										src={SubmitPng}
+										width="200"
+										className='render_grab'
+									/> :
+										<img
+											alt="play"
+											onClick={set}
+											src={GrabPng}
+											width="200"
+											className='render_grab'
+										/>
+									}
+								</div>
+
 						}
 					</div>
 

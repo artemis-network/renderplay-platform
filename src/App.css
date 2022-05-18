@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Macondo&family=Poppins:wght@100&display=swap");
+
 html,
 * {
   margin: 0;
@@ -162,7 +164,7 @@ html {
     display: flex;
     justify-content: center;
     flex-direction: row;
-    column-gap: 12rem;
+    column-gap: 2rem;
   }
   .renderscan_astro {
     position: absolute;
@@ -175,7 +177,7 @@ html {
     width: 120px;
   }
   .renderscan_how_to_play {
-    width: 520px;
+    width: 650px;
   }
   .renderscan_bottom_bar {
     width: 100vw;
@@ -201,10 +203,29 @@ html {
   }
 }
 
+@keyframes scale_up {
+  50% {
+    transform: scale(1.05);
+  }
+}
+
 .render_flight_animation {
   animation: render_flight 2s reverse ease-in-out infinite;
 }
 
 .render_camera_animation {
   animation: flick 2s reverse ease-in-out infinite;
+}
+
+.render_grab {
+  transition: all 0.5s;
+  transform: scale(1);
+  cursor: pointer;
+  transform: translateY(-1.75rem);
+}
+
+.render_grab:hover {
+  transition: all 0.5s;
+  transform: scale(1.2);
+  transform: translateY(-1.75rem);
 }

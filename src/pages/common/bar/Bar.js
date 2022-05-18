@@ -109,10 +109,9 @@ const Bar = (props) => {
 				{!props.isGame ? <img src={Logo} width="30px" alt=""></img> : null}
 				{!props.isGame ? <div>Renderverse</div> :
 					<div className="neu neu_end">
-
 						<ArrowLeftIcon
 							color='white'
-							className="h-10 w-10 mx-0 cursor-pointer dark:stroke-white no_border"
+							className="h-8 w-8 mx-0 cursor-pointer dark:stroke-white no_border"
 							onClick={back}
 						/>
 					</div>

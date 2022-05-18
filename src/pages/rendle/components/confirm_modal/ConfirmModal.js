@@ -11,11 +11,11 @@ const ConfirmModal = (props) => {
 			<div className="custom_modal_close" style={{ position: "relative" }}>
 				<XCircleIcon onClick={props.modalClose} className='h-12 w-12 cursor-pointer' color="#ffeeee" />
 			</div>
-			<div className='custom_modal_content' style={{ background: "#ffffff", color: "#321e43", padding: "1rem 0rem", rowGap:0, borderBottomLeftRadius: "2vh", borderBottomRightRadius: "2vh" }}>
+			<div className='custom_modal_content' style={{ background: "#ffffff", color: "#321e43", padding: "1rem 0rem", rowGap: 0, borderBottomLeftRadius: "2vh", borderBottomRightRadius: "2vh" }}>
 				<div className='custom_modal_body'>
-				<div className='custom_modal_header' style={{ fontSize: "1.25rem", color: "#321e43" }}>Are you sure?</div>
+					<div className='custom_modal_header' style={{ fontSize: "1.25rem", color: "#321e43" }}>Are you sure?</div>
 					<div style={{ fontSize: '1rem', }}>
-						Entering in the contest will deduct {props.gameConfig.entryfee} REND
+						Entering in the contest will deduct {props.gameConfig.entryFee} REND
 					</div>
 				</div>
 				<div className='custom_modal_footer'>

@@ -107,7 +107,7 @@ const ContestCard = (props) => {
 		else
 			return <div className="contest__card__header">
 				<ClockIcon
-					color="#F10086"
+					color="#FF8D29"
 					className="h-6 w-6 m-2 cursor-pointer dark:stroke-red"
 				/>
 				<div style={{ color: "#ffffff", display: "flex", columnGap: "5.7rem" }}>

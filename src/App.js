@@ -31,7 +31,7 @@ const App = () => {
       const loginTime = new Date(JSON.parse(session)).getTime()
       const now = new Date(Date.now()).getTime()
       const isExpired = now - loginTime
-      if (isExpired > 1000 * 60 * 60 * 1) logout()
+      if (isExpired > 1000 * 60 * 60 * 24) logout()
     }
   }, [])
 
