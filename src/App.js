@@ -4,18 +4,21 @@ import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
 
 import "./App.css";
 
-const RendleHunt = lazy(() => import("./components/RenderHunt"))
-const Wordle = lazy(() => import('./pages/Wordle/Wordle'));
-const Login = lazy(() => import('./pages/Login'));
-const Signup = lazy(() => import('./pages/Signup'));
-const WordleGameContainer = lazy(() => import('./pages/WordleGameContainer/WordleGameContainer'));
-const ComingSoon = lazy(() => import('./components/CommingSoon'));
-const HangMan = lazy(() => import('./components/HangMan'));
+const Rendle = lazy(() => import('./pages/rendle/Rendle'));
+const RendleGame = lazy(() => import('./pages/rendle/game/RendleGame'));
+
+const RenderScan = lazy(() => import("./pages/renderscan/RenderScan"))
+const RenderScanGame = lazy(() => import("./pages/renderscan/RenderScanGame"))
+
+const Signup = lazy(() => import('./pages/auth/Signup'));
+const Login = lazy(() => import('./pages/auth/Login'));
+
+const Raffle = lazy(() => import('./pages/raffle/Raffle'));
+const HangMan = lazy(() => import('./pages/hangman/HangMan'));
 
 import Loader from "react-js-loader";
-import Scan from './components/Scan';
 
-function App() {
+const App = () => {
 
   const session = localStorage.getItem("session")
   const logout = () => {
@@ -41,15 +44,19 @@ function App() {
       }>
         <Router>
           <Redirect to="/rendle" from="/" />
-          <Route exact component={Wordle} path="/rendle" />
-          <Route exact component={WordleGameContainer} path="/rendle/game" />
-          <Route exact component={Scan} path="/rendle-hunt" />
+
+          <Route exact component={Rendle} path="/rendle" />
+          <Route exact component={RendleGame} path="/rendle/game" />
+
+          <Route exact component={RenderScan} path="/renderscan" />
+          <Route exact component={RenderScanGame} path="/renderscan/game" />
+
           <Route exact component={HangMan} path="/hangman" />
+
           <Route exact component={Login} path='/login' />
           <Route exact component={Signup} path='/signup' />
-          <Route exact component={RendleHunt} path='/scan' />
-          {/* <Route exact component={ComingSoon} path='/sc' /> */}
-          <Route exact component={ComingSoon} path='/raffle' />
+
+          <Route exact component={Raffle} path='/raffle' />
         </Router>
       </Suspense>
     </div >
