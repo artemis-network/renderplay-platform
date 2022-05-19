@@ -14,6 +14,8 @@ import { getRenderScanTypes, enterRenderScanGame } from '../../service/rendersca
 import ConfirmModal from './components/modals/ConfirmModal';
 import InsufficentFunds from './components/modals/InsufficentFundsModal';
 
+import './RenderScan.css'
+
 const defaultOptions_FREE = {
 	loop: true,
 	autoplay: true,
@@ -90,129 +92,97 @@ const RenderScan = () => {
 	const InsufficentModalClose = () => setInsufficent(false);
 	const InsufficentModalOpen = () => setInsufficent(true)
 
-	return (<div style={{ background: "#321e43", }}>
-		<Bar />
-		<ConfirmModal show={show} gameData={renderScanTypes[index]} modalOpen={ModalOpen} modalClose={ModalClose} play={() => enterContest(index, true)} />
-		<InsufficentFunds show={Insufficent} modalOpen={InsufficentModalOpen} modalClose={InsufficentModalClose} />
-		<div style={{ display: "flex", justifyContent: 'center', alignItems: "center", flexDirection: "row", paddingTop: "4rem" }}>
+	return (
+		<div style={{ background: "#321e43", }}>
+			<Bar />
+			<ConfirmModal show={show} gameData={renderScanTypes[index]} modalOpen={ModalOpen} modalClose={ModalClose} play={() => enterContest(index, true)} />
+			<InsufficentFunds show={Insufficent} modalOpen={InsufficentModalOpen} modalClose={InsufficentModalClose} />
 
-			<div style={{ position: "relative" }}>
-				<Lottie
-					style={{ width: "40rem", zIndex: 0, position: "relative" }}
-					options={defaultOptions_FREE}
-				/>
-				<img
-					alt="play"
-					src={Play1Png}
-					onClick={() => ModalOpen(0, false)}
-					className='h-56 w-56 cursor-pointer'
-					style={{
-						position: "absolute",
-						margin: "auto",
-						left: 0,
-						right: 0,
-						bottom: "-6rem",
-						zIndex: 2,
-					}}
-					color="green" />
-				<div style={{ display: "flex", justifyContent: "center" }}>
-					<div style={{
-						position: "absolute", height: "8.3vh", width: "500px",
-						background: "#2A7579",
-						zIndex: 1, borderBottomLeftRadius: "4vh", borderBottomRightRadius: "4vh", bottom: "-4.5rem"
-					}}>
-						<div style={{ width: "100%", columnGap: "12rem", display: "flex", justifyContent: "center", fontSize: "1.1rem", fontFamily: "'Macondo', cursive", fontWeight: "bold", color: "white", textAlign: "center", lineHeight: "2rem" }}>
-							<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", width: "50%" }}>
-								<div>
-									Entry fee
+			<div className='renderscan_types'>
+				<div style={{ display: "flex", position: "relative", justifyContent: 'center', flexDirection: "column" }}>
+					<Lottie
+						className="renderscan_type_1_size"
+						options={defaultOptions_FREE}
+					/>
+					<img
+						alt="play"
+						src={Play1Png}
+						onClick={() => ModalOpen(0, false)}
+						className='cursor-pointer renderscan_type_button'
+						color="green" />
+					<div style={{ display: "flex", justifyContent: "center" }}>
+						<div className='renderscan_bottom_info'>
+							<div className='renderscan_bottom_content'>
+								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", width: "50%" }}>
+									<div>
+										Entry fee
+									</div>
+									<div >
+										<span>0 </span>
+										<span style={{ fontSize: ".85rem" }}>REND</span>
+									</div>
 								</div>
-								<div >
-									<span>0 </span>
-									<span style={{ fontSize: ".85rem" }}>REND</span>
-								</div>
-							</div>
-							<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", width: "50%" }}>
-								<div>
-									Now Playing
-								</div>
-								<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
-									<div style={{ background: "#21ac94", width: "50%", borderRadius: "2vh", }}>
-										500
+								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", width: "50%" }}>
+									<div>
+										Now Playing
+									</div>
+									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
+										<div style={{ background: "#21ac94", width: "50%", borderRadius: "2vh", }}>
+											500
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div style={{
-						position: "absolute", height: "10vh", width: "470px",
-						background: "#359297",
-						color: "white",
-						zIndex: -1, borderBottomLeftRadius: "4vh", borderBottomRightRadius: "4vh", bottom: "-8.5rem"
-					}}>
-						<p style={{ fontSize: "1.65rem", fontFamily: "'Macondo', cursive", fontWeight: "bold", color: "white", textAlign: "center", lineHeight: "7.5rem" }}>Play & win upto 10000 REND</p>
+						<div className='renderscan_bottom_part_2' style={{ background: "#359297", }}>
+							<p className='renderscan_bottom_part_2_text'>Play & win upto 10000 REND</p>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div style={{ position: "relative" }}>
-				<Lottie
-					style={{ width: "38.5rem", zIndex: 0, position: "relative" }}
-					options={defaultOptions_PAID}
-				/>
-				<img
-					alt="play"
-					onClick={() => ModalOpen(1, false)}
-					src={Play2Png}
-					className='h-56 w-56 cursor-pointer'
-					style={{
-						position: "absolute",
-						margin: "auto",
-						left: 0,
-						right: 0,
-						bottom: "-6rem",
-						zIndex: 2
-					}}
-					color="green" />
-				<div style={{ display: "flex", justifyContent: "center" }}>
-					<div style={{
-						position: "absolute", height: "8.3vh", width: "500px",
-						background: "rgb(109, 29, 175)",
-						zIndex: 1, borderBottomLeftRadius: "4vh", borderBottomRightRadius: "4vh", bottom: "-4rem"
-					}}>
-						<div style={{ width: "100%", columnGap: "12rem", display: "flex", justifyContent: "center", fontSize: "1.1rem", fontFamily: "'Macondo', cursive", fontWeight: "bold", color: "white", textAlign: "center", lineHeight: "2rem" }}>
-							<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", width: "50%" }}>
-								<div>
-									Entry fee
-								</div>
-								<div >
-									<span>1000 </span>
-									<span style={{ fontSize: ".85rem" }}>REND</span>
-								</div>
-							</div>
-							<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", width: "50%" }}>
 
-								<div>
-									Now Playing
+				<div style={{ display: "flex", position: "relative", justifyContent: 'center', flexDirection: "column" }}>
+					<Lottie
+						className="renderscan_type_2_size"
+						options={defaultOptions_PAID}
+					/>
+					<img
+						alt="play"
+						onClick={() => ModalOpen(1, false)}
+						src={Play2Png}
+						className='cursor-pointer renderscan_type_button'
+						color="green" />
+					<div style={{ display: "flex", justifyContent: "center", margin: "4rem 0 0 0" }}>
+						<div className='renderscan_bottom_info'>
+							<div className='renderscan_bottom_content'>
+								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", width: "50%" }}>
+									<div>
+										Entry fee
+									</div>
+									<div >
+										<span>1000 </span>
+										<span style={{ fontSize: ".85rem" }}>REND</span>
+									</div>
 								</div>
-								<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
-									<div style={{ background: "#21ac94", width: "50%", borderRadius: "2vh" }}>
-										200
+								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", width: "50%" }}>
+
+									<div>
+										Now Playing
+									</div>
+									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
+										<div style={{ background: "#21ac94", width: "50%", borderRadius: "2vh" }}>
+											200
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div style={{
-						position: "absolute", height: "10vh", width: "470px",
-						background: "#973EE0",
-						color: "white",
-						zIndex: -1, borderBottomLeftRadius: "4vh", borderBottomRightRadius: "4vh", bottom: "-8rem"
-					}}>
-						<p style={{ fontSize: "1.65rem", fontFamily: "'Macondo', cursive", fontWeight: "bold", color: "white", textAlign: "center", lineHeight: "7.5rem" }}>Play & win upto 50000 REND</p>
+						<div className="renderscan_bottom_part_2" style={{ background: "#973EE0", }}>
+							<p className="renderscan_bottom_part_2_text">Play & win upto 50000 REND</p>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div >)
+		</div >)
 
 }
 

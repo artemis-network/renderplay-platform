@@ -1,0 +1,165 @@
+.renderscan_bg {
+  width: auto;
+  background-image: url("../../assets/renderscan/back2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-origin: border-box;
+  background-position: center;
+}
+
+.render_title {
+  display: flex;
+  align-self: center;
+  width: 200px;
+}
+
+.render_word {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  z-index: 10;
+  margin-top: 2rem;
+}
+
+.renderscan_main_grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  column-gap: 0;
+  row-gap: 0;
+  padding: 4rem 0;
+}
+
+.renderscan_img_holder {
+  width: 300px;
+}
+
+.renderscan_how_to_play {
+  width: 300px;
+}
+
+.renderscan_img_deco {
+  width: 70px;
+}
+
+.astro_img {
+  display: none;
+}
+
+.renderscan_bottom_bar {
+  display: none;
+}
+
+.render_grab {
+  width: 150px;
+  transition: all 0.5s;
+  transform: scale(1);
+  cursor: pointer;
+  transform: translateY(-1.75rem);
+}
+
+@media screen and (min-width: 750px) {
+  .renderscan_img_holder {
+    width: 500px;
+  }
+  .renderscan_how_to_play {
+    width: 500px;
+  }
+  .astro_img {
+    display: 200px;
+  }
+  .renderscan_img_deco {
+    width: 120px;
+  }
+  .render_grab {
+    width: 180px;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .render_word {
+    font-size: 2.5rem;
+    padding: 1rem 0;
+  }
+  .renderscan_main_grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 5rem;
+  }
+  .renderscan_bg {
+    width: auto;
+    background-image: url("../../assets/renderscan/back3.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-origin: border-box;
+    background-position: center;
+  }
+  .render_title {
+    display: flex;
+    align-self: center;
+    width: 400px;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .renderscan_img_holder,
+  .renderscan_how_to_play {
+    width: 600px;
+  }
+
+  .renderscan_bottom_bar {
+    width: 100vw;
+    z-index: 4;
+  }
+
+  .renderscan_bg {
+    width: auto;
+    background-image: url("../../assets/renderscan/back1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-origin: border-box;
+    background-position: center;
+  }
+}
+
+@keyframes render_flight {
+  from {
+    transform: rotate(360deg) translateX(15px) rotate(-360deg);
+  }
+  to {
+    transform: rotate(0deg) translateX(15px) rotate(0deg);
+  }
+}
+
+@keyframes flick {
+  50% {
+    transform: rotate(15deg);
+  }
+}
+
+@keyframes scale_up {
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.render_flight_animation {
+  animation: render_flight 2s reverse ease-in-out infinite;
+}
+
+.render_camera_animation {
+  animation: flick 2s reverse ease-in-out infinite;
+}
+
+.render_grab {
+}
+
+.render_grab:hover {
+  transition: all 0.5s;
+  transform: scale(1.2);
+  transform: translateY(-1.75rem);
+}

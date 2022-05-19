@@ -4,6 +4,8 @@ import DropSvg from '../../assets/renderscan/black frame.svg'
 import HowToPlaySvg from '../../assets/renderscan/hp.svg'
 import Astro from '../../assets/renderscan/Artboard 4.svg'
 
+import BottomBar from '../../assets/renderscan/footer.svg'
+
 import GrabPng from '../../assets/renderscan/grab.svg'
 import ProcessPng from '../../assets/renderscan/processing.svg'
 import SubmitPng from '../../assets/renderscan/submit.svg'
@@ -22,6 +24,8 @@ const { delay, ServiceBusClient } = require("@azure/service-bus");
 import { getRenderScanPlayerStatus, saveRenderScanGame } from '../../service/renderscan.service'
 
 import { GameModal } from "./components/modals/GameModal";
+
+import './RenderScanGame.css'
 
 const Scan = () => {
 
@@ -147,25 +151,37 @@ const Scan = () => {
 				style={{ zIndex: 3, position: "absolute", left: "1.5rem" }}
 			/>
 			<div style={{ display: "flex", justifyContent: "center" }}>
-				<img src={RenderScanImg} alt="" width="500" style={{ zIndex: "2" }} />
+				<img src={RenderScanImg} alt="" className="render_title" style={{ zIndex: "2" }} />
 			</div>
 		</div>
-		<div style={{ textAlign: 'center', fontSize: "3rem", fontWeight: 'bold', color: "#ffffff", padding: "3rem 0", height: "17vh" }}>Scan this word</div>
+		<div className="render_word">Scan this word</div>
 		<div className="renderscan_main_grid">
 			<div style={{ display: "flex", flexDirection: 'column', justifyContent: 'center', rowGap: "2rem" }}>
-				<div style={{ position: 'relative' }}>
-					<img src={DropSvg} className="renderscan_img_holder" />
-					<div style={{ position: 'absolute', left: "1rem", top: "-2rem" }}>
-						<img src={SpaceShipSvg} className="renderscan_img_deco render_flight_animation" />
+				<div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+					<div style={{ position: 'relative', }}>
+						<img src={DropSvg} className="renderscan_img_holder" />
+						<div style={{ position: 'absolute', left: "1rem", top: "-1rem" }}>
+							<img src={SpaceShipSvg} className="renderscan_img_deco render_flight_animation" />
+						</div>
+						<div style={{ position: 'absolute', right: "0", bottom: "0rem" }}>
+							<img src={CameraSvg} className="renderscan_img_deco render_camera_animation" />
+						</div>
+						{img ? <div style={{ position: "absolute", right: "50%", left: "20%", width: "62%", margin: "auto", bottom: "2.5rem" }} >
+							<img style={{
+								height: "auto",
+								width: "auto",
+								transform: "rotate(-270deg)"
+							}} src={img} />
+						</div> : null}
 					</div>
-					<div style={{ position: "absolute", right: "50%", left: "36.5%", width: "100%", margin: "auto", bottom: "-9.6rem" }} >
+
+					<div style={{ display: "flex", justifyContent: "center" }}>
 						{
 							isWating ? <div>
 								<img
 									alt="play"
 									onClick={set}
 									src={ProcessPng}
-									width="200"
 									className='render_grab'
 								/>
 							</div> :
@@ -174,14 +190,12 @@ const Scan = () => {
 										alt="play"
 										onClick={save}
 										src={SubmitPng}
-										width="200"
 										className='render_grab'
 									/> :
 										<img
 											alt="play"
 											onClick={set}
 											src={GrabPng}
-											width="200"
 											className='render_grab'
 										/>
 									}
@@ -190,19 +204,10 @@ const Scan = () => {
 						}
 					</div>
 
-					{img ? <div style={{ position: "absolute", right: "50%", left: "20%", width: "62%", margin: "auto", bottom: "2.5rem" }} >
-						<img style={{
-							height: "auto",
-							width: "auto",
-							transform: "rotate(-270deg)"
-						}} src={img} />
-					</div> : null}
-					<div style={{ position: 'absolute', right: "0", bottom: "0rem" }}>
-						<img src={CameraSvg} className="renderscan_img_deco render_camera_animation" />
-					</div>
+
 				</div>
 			</div>
-			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
+			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}>
 				<img src={HowToPlaySvg} className="renderscan_how_to_play" />
 			</div>
 		</div>
@@ -211,7 +216,7 @@ const Scan = () => {
 			<img src={Astro} className="astro_img" />
 		</div>
 
-		<img className="renderscan_bottom_bar" />
+		<img src={BottomBar} className="renderscan_bottom_bar" />
 
 	</div >)
 
