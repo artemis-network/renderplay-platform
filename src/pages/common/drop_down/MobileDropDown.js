@@ -10,16 +10,7 @@ import './MobileDropDown.css'
 const MobileDropDown = (props) => {
 
 	const logout = () => {
-		localStorage.removeItem("username")
-		localStorage.removeItem("publicToken")
-		localStorage.removeItem('accessToken')
-		localStorage.removeItem('gameState')
-		localStorage.removeItem('gameConfig')
-		localStorage.removeItem('isResultPosted')
-		localStorage.removeItem('gameStats')
-		localStorage.removeItem('session')
-		localStorage.removeItem('transcation')
-		localStorage.removeItem('userId')
+		localStorage.clear()
 		window.location.reload()
 	}
 

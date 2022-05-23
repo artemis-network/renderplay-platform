@@ -16,7 +16,7 @@ import RenderScanImg from '../../assets/renderscan/renderscan.svg'
 import SpaceShipSvg from '../../assets/renderscan/Artboard 5.svg'
 import CameraSvg from '../../assets/renderscan/Artboard 6.svg'
 
-import { ArrowLeftIcon } from "@heroicons/react/solid";
+import { ArrowLeftIcon, ClockIcon } from "@heroicons/react/solid";
 import { useHistory } from "react-router";
 
 const { delay, ServiceBusClient } = require("@azure/service-bus");
@@ -24,6 +24,8 @@ const { delay, ServiceBusClient } = require("@azure/service-bus");
 import { getRenderScanPlayerStatus, saveRenderScanGame } from '../../service/renderscan.service'
 
 import { GameModal } from "./components/modals/GameModal";
+import { SaveModal } from "./components/modals/SaveModal";
+import { ConfirmSaveModal } from './components/modals/ConfirmSaveModal'
 
 import './RenderScanGame.css'
 
@@ -42,6 +44,8 @@ const Scan = () => {
 
 	const [img, setImg] = useState("")
 	const [isWating, setIsWaiting] = useState(false)
+	const [match, setMatch] = useState(false)
+	const [confirm, setConfirm] = useState(true)
 
 	const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -54,16 +58,18 @@ const Scan = () => {
 		getRenderScanPlayerStatus(data)
 			.then((res) => {
 				setIsSubmitted(res.data.isSubmitted)
-				console.log(res.data)
 			})
 			.catch((err) => { console.log(err) })
 	}
 
 	const closeModal = () => {
-		if (isSubmitted) return history.push("/renderscan")
+		return history.push("/renderscan")
 	}
 
+	const openConfirm = () => setConfirm(true)
+
 	const save = () => {
+		setConfirm(false)
 		const contest = JSON.parse(localStorage.getItem("renderScanData"))
 		const data = {
 			contestId: contest.contestId,
@@ -72,8 +78,7 @@ const Scan = () => {
 		}
 		saveRenderScanGame(data)
 			.then((res) => {
-				console.log(res)
-				return history.push("/renderscan")
+				setMatch(true)
 			})
 			.catch((err) => { console.log(err) })
 	}
@@ -135,6 +140,8 @@ const Scan = () => {
 
 	return (<div className="renderscan_bg" >
 		<GameModal isOpen={isSubmitted} handleClose={closeModal} />
+		<SaveModal isOpen={match} handleClose={() => setMatch(!match)} />
+		<ConfirmSaveModal show={confirm} play={save} modalClose={() => setConfirm(!confirm)} />
 		<div style={{
 			display: "flex",
 			padding: "0 1rem",
@@ -188,7 +195,7 @@ const Scan = () => {
 								<div>
 									{img !== "" ? <img
 										alt="play"
-										onClick={save}
+										onClick={openConfirm}
 										src={SubmitPng}
 										className='render_grab'
 									/> :
@@ -207,11 +214,11 @@ const Scan = () => {
 
 				</div>
 			</div>
-			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}>
+			<div style={{ display: "flex", justifyContent: 'flex-start', alignItems: 'flex-start', }}>
 				<img src={HowToPlaySvg} className="renderscan_how_to_play" />
 			</div>
-		</div>
 
+		</div>
 		<div className="renderscan_astro">
 			<img src={Astro} className="astro_img" />
 		</div>

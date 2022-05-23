@@ -20,18 +20,13 @@ const defaultOptions_FREE = {
 	loop: true,
 	autoplay: true,
 	animationData: FREE,
-	rendererSettings: {
-		preserveAspectRatio: 'xMidYMid slice'
-	}
+
 };
 
 const defaultOptions_PAID = {
 	loop: true,
 	autoplay: true,
 	animationData: PAID,
-	rendererSettings: {
-		preserveAspectRatio: 'xMidYMid slice'
-	}
 };
 
 const Bar = lazy(() => import("../common/bar/Bar"));
@@ -108,77 +103,55 @@ const RenderScan = () => {
 						alt="play"
 						src={Play1Png}
 						onClick={() => ModalOpen(0, false)}
-						className='cursor-pointer renderscan_type_button'
+						className='cursor-pointer renderscan_type_1_button'
 						color="green" />
 					<div style={{ display: "flex", justifyContent: "center" }}>
-						<div className='renderscan_bottom_info'>
-							<div className='renderscan_bottom_content'>
+						<div className='renderscan_bottom_1_info'>
+							<div className='renderscan_bottom_1_content'>
 								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", width: "50%" }}>
-									<div>
-										Entry fee
-									</div>
-									<div >
-										<span>0 </span>
-										<span style={{ fontSize: ".85rem" }}>REND</span>
+									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
+										<span>1000 </span>
+										<span style={{ fontSize: ".7rem", alignItems: "center", margin: "0 .2rem" }}>REND</span>
 									</div>
 								</div>
 								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", width: "50%" }}>
-									<div>
-										Now Playing
-									</div>
 									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
-										<div style={{ background: "#21ac94", width: "50%", borderRadius: "2vh", }}>
-											500
-										</div>
+										200
 									</div>
 								</div>
 							</div>
-						</div>
-						<div className='renderscan_bottom_part_2' style={{ background: "#359297", }}>
-							<p className='renderscan_bottom_part_2_text'>Play & win upto 10000 REND</p>
 						</div>
 					</div>
 				</div>
 
 				<div style={{ display: "flex", position: "relative", justifyContent: 'center', flexDirection: "column" }}>
 					<Lottie
-						className="renderscan_type_2_size"
+						className="renderscan_type_1_size"
 						options={defaultOptions_PAID}
 					/>
 					<img
 						alt="play"
 						onClick={() => ModalOpen(1, false)}
 						src={Play2Png}
-						className='cursor-pointer renderscan_type_button'
+						className='cursor-pointer renderscan_type_2_button'
 						color="green" />
 					<div style={{ display: "flex", justifyContent: "center", margin: "4rem 0 0 0" }}>
-						<div className='renderscan_bottom_info'>
-							<div className='renderscan_bottom_content'>
+						<div className='renderscan_bottom_2_info'>
+							<div className='renderscan_bottom_2_content'>
 								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", width: "50%" }}>
-									<div>
-										Entry fee
-									</div>
-									<div >
+									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
 										<span>1000 </span>
-										<span style={{ fontSize: ".85rem" }}>REND</span>
+										<span style={{ fontSize: ".7rem", alignItems: "center", margin: "0 .2rem" }}>REND</span>
 									</div>
 								</div>
 								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", width: "50%" }}>
-
-									<div>
-										Now Playing
-									</div>
 									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
-										<div style={{ background: "#21ac94", width: "50%", borderRadius: "2vh" }}>
-											200
-										</div>
+										200
 									</div>
 								</div>
 							</div>
 						</div>
-						<div className="renderscan_bottom_part_2" style={{ background: "#973EE0", }}>
-							<p className="renderscan_bottom_part_2_text">Play & win upto 50000 REND</p>
-						</div>
+
 					</div>
 				</div>
 			</div>

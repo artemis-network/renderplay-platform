@@ -1,4 +1,5 @@
 .renderscan_bg {
+  height: 100vh;
   width: auto;
   background-image: url("../../assets/renderscan/back2.png");
   background-repeat: no-repeat;
@@ -44,11 +45,11 @@
   width: 70px;
 }
 
-.astro_img {
+.renderscan_bottom_bar {
   display: none;
 }
 
-.renderscan_bottom_bar {
+.astro_img {
   display: none;
 }
 
@@ -67,14 +68,20 @@
   .renderscan_how_to_play {
     width: 500px;
   }
-  .astro_img {
-    display: 200px;
-  }
   .renderscan_img_deco {
     width: 120px;
   }
   .render_grab {
     width: 180px;
+  }
+  .renderscan_bg {
+    height: 115vh;
+    width: auto;
+    background-image: url("../../assets/renderscan/back3.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-origin: border-box;
+    background-position: center;
   }
 }
 
@@ -90,33 +97,46 @@
     flex-direction: row;
     column-gap: 5rem;
   }
-  .renderscan_bg {
-    width: auto;
-    background-image: url("../../assets/renderscan/back3.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-origin: border-box;
-    background-position: center;
-  }
+
   .render_title {
     display: flex;
     align-self: center;
     width: 400px;
   }
-}
-
-@media screen and (min-width: 1400px) {
-  .renderscan_img_holder,
-  .renderscan_how_to_play {
-    width: 600px;
+  .renderscan_bg {
+    height: 100vh;
   }
 
   .renderscan_bottom_bar {
+    position: absolute;
+    bottom: 0;
+    display: flex;
     width: 100vw;
     z-index: 4;
   }
+  .renderscan_astro {
+    right: 2rem;
+    position: absolute;
+    bottom: 0;
+    z-index: 5;
+  }
+  .astro_img {
+    display: block;
+    width: 150px;
+    z-index: 5;
+  }
+}
 
+@media screen and (min-width: 1400px) {
+  .renderscan_main_grid {
+    column-gap: 4rem;
+  }
+  .renderscan_img_holder,
+  .renderscan_how_to_play {
+    width: 650px;
+  }
   .renderscan_bg {
+    height: 100vh;
     width: auto;
     background-image: url("../../assets/renderscan/back1.png");
     background-repeat: no-repeat;
@@ -124,6 +144,26 @@
     background-origin: border-box;
     background-position: center;
   }
+}
+
+@media screen and (min-width: 1600px) {
+  .renderscan_main_grid {
+    column-gap: 12rem;
+  }
+}
+
+.render_flight_animation {
+  animation: render_flight 2s reverse ease-in-out infinite;
+}
+
+.render_camera_animation {
+  animation: flick 2s reverse ease-in-out infinite;
+}
+
+.render_grab:hover {
+  transition: all 0.5s;
+  transform: scale(1.2);
+  transform: translateY(-1.75rem);
 }
 
 @keyframes render_flight {
@@ -145,21 +185,4 @@
   50% {
     transform: scale(1.05);
   }
-}
-
-.render_flight_animation {
-  animation: render_flight 2s reverse ease-in-out infinite;
-}
-
-.render_camera_animation {
-  animation: flick 2s reverse ease-in-out infinite;
-}
-
-.render_grab {
-}
-
-.render_grab:hover {
-  transition: all 0.5s;
-  transform: scale(1.2);
-  transform: translateY(-1.75rem);
 }

@@ -1,9 +1,8 @@
-import { Button, Modal } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
 import { XCircleIcon } from '@heroicons/react/solid'
 
-const ConfirmModal = (props) => {
+export const ConfirmSaveModal = (props) => {
 	return (
-
 		<Modal
 			style={{ color: "#321e43", }}
 			centered
@@ -15,7 +14,7 @@ const ConfirmModal = (props) => {
 				<div className='custom_modal_body'>
 					<div className='custom_modal_header' style={{ fontSize: "1.25rem", color: "#321e43" }}>Are you sure?</div>
 					<div style={{ fontSize: '1rem', }}>
-						Entering in the contest will deduct {props.entryFee} REND
+						Submit the Scan
 					</div>
 				</div>
 				<div className='custom_modal_footer'>
@@ -35,5 +34,3 @@ const ConfirmModal = (props) => {
 
 	);
 }
-
-export default ConfirmModal

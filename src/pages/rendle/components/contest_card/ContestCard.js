@@ -1,6 +1,6 @@
+
 import React, { useState } from 'react'
 import Countdown from "react-countdown"
-import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
 
 import { useHistory } from 'react-router-dom'
 
@@ -14,38 +14,75 @@ import { enterContest } from '../../../../service/rendles.service'
 import ConfirmModal from '../confirm_modal/ConfirmModal'
 import InsufficentFunds from '../in_sufficent_fund_modals/InsufficentFunds'
 
+import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
+
 import './ContestCard.css'
 
 const ContestCard = (props) => {
 
 	const history = useHistory()
-	const [show, setShow] = useState(false);
-	const [Insufficent, setInsufficent] = useState(false)
 
-	const InsufficentModalClose = () => setInsufficent(false);
-	const InsufficentModalOpen = () => setInsufficent(true)
+	const [confirmModal, setConfirmModal] = useState(false);
+	const [InsufficentModal, setInsufficentModal] = useState(false)
 
-	const ModalClose = () => setShow(false);
-	const ModalOpen = () => {
+	const InsufficentModalClose = () => setInsufficentModal(false);
+	const InsufficentModalOpen = () => setInsufficentModal(true)
+
+
+
+	const ConfirmModalOpen = () => {
 		const userId = localStorage.getItem("userId")
 		if (userId !== null) {
 			const data = {
 				contestId: props.contestId,
 				gameType: props.gameType,
 				userId: userId,
-				confirm: false
+				request: true
 			}
 			enterContest(data).then((res) => {
-				if (res.data.message === "PAID") {
+				// if user already in contest [ALREADY_IN_CONTEST]
+				if (res.data.status === "[ALREADY_IN_CONTEST]") {
+					localStorage.setItem("gameStateId", res.data.gameStateId)
 					localStorage.setItem("gameConfig", JSON.stringify(props))
-					return history.push("/rendle/game")
+					return history.push("/game")
 				}
-				if (res.data.error)
-					return setInsufficent(res.data.error)
-				else
-					return setShow(true);
-			}).catch(err => console.log(err))
-		} else return history.push("/login")
+				// if user has insufficient  [INSUFFICIENT_FUNDS]
+				if (res.data.status === "[INSUFFICENT_FUNDS]") {
+					return setInsufficent(true)
+				}
+				// if user cleared all criteriea [APPROVED]
+				if (res.data.status === "[APPROVED]") {
+					setConfirmModal(true)
+				}
+			})
+		}
+		else return history.push("/login")
+	}
+	const ConfirmModalClose = () => setConfirmModal(false);
+
+	const enterContestAction = () => {
+		const userId = localStorage.getItem("userId")
+		const data = {
+			contestId: props.contestId,
+			gameType: props.gameType,
+			userId: userId,
+			request: false
+		}
+		enterContest(data).then((res) => {
+			// if user already in contest [ALREADY_IN_CONTEST]
+			if (res.data.status === "[ALREADY_IN_CONTEST]") {
+				localStorage.setItem("gameStateId", res.data.gameStateId)
+				localStorage.setItem("gameConfig", JSON.stringify(props))
+				return history.push("/game")
+			}
+			// if user has insufficient [INSUFFICIENT_FUNDS]
+			if (res.data.status === "[INSUFFICENT_FUNDS]") {
+				return setInsufficent(true)
+			}
+			localStorage.setItem("gameConfig", JSON.stringify(props))
+			setConfirmModal(false)
+			return history.push("/game")
+		})
 	}
 
 	const cssFinder = () => "_" + (props.index + 1)
@@ -61,27 +98,6 @@ const ContestCard = (props) => {
 		return time.getTime() - now.getTime()
 	}
 
-
-	const gameConfig = () => {
-		const userId = localStorage.getItem("userId")
-		const data = {
-			contestId: props.contestId,
-			gameType: props.gameType,
-			userId: userId,
-			confirm: true
-		}
-		enterContest(data).then((res) => {
-			if (res.data.message === "PAID") {
-				localStorage.setItem("gameConfig", JSON.stringify(props))
-				return history.push("/rendle/game")
-			}
-			if (res.data.error)
-				return setInsufficent(res.data.error)
-			localStorage.setItem("gameConfig", JSON.stringify(props))
-			setShow(false)
-			return history.push("/rendle/game")
-		})
-	}
 
 	const Expired = () => <div className="contest__card__header">
 		<BanIcon
@@ -130,8 +146,8 @@ const ContestCard = (props) => {
 	}
 	return (
 		<div style={{ background: `#321E43` }} className={"c-mobile-view"}>
-			<ConfirmModal show={show} gameConfig={props} modalOpen={ModalOpen} modalClose={ModalClose} play={() => gameConfig()} />
-			<InsufficentFunds show={Insufficent} modalOpen={InsufficentModalOpen} modalClose={InsufficentModalClose} />
+			<ConfirmModal show={confirmModal} entryFee={props.entryFee} modalOpen={ConfirmModalOpen} modalClose={ConfirmModalClose} play={enterContestAction} />
+			<InsufficentFunds show={InsufficentModal} modalOpen={InsufficentModalOpen} modalClose={InsufficentModalClose} />
 			{/* CONTROLLERS */}
 			<input style={{ display: "none" }} type="checkbox" id={"u-mobile__button" + cssFinder()} name={"u-mobile__button" + cssFinder()} />
 			<input style={{ display: "none" }} type="checkbox" id={"u-topbar__button" + cssFinder()} name={"u-topbar__button" + cssFinder()} />
@@ -212,7 +228,7 @@ const ContestCard = (props) => {
 					<img
 						alt="play"
 						src={PlayPng}
-						onClick={() => ModalOpen()}
+						onClick={() => ConfirmModalOpen()}
 						className='h-24 w-24 cursor-pointer'
 						style={{
 							position: "absolute",

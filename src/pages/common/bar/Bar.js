@@ -63,16 +63,7 @@ const Bar = (props) => {
 	}, [])
 
 	const logout = () => {
-		localStorage.removeItem("username")
-		localStorage.removeItem("publicToken")
-		localStorage.removeItem('accessToken')
-		localStorage.removeItem('gameState')
-		localStorage.removeItem('gameConfig')
-		localStorage.removeItem('isResultPosted')
-		localStorage.removeItem('gameStats')
-		localStorage.removeItem('session')
-		localStorage.removeItem('userId')
-		localStorage.removeItem('transaction')
+		localStorage.clear()
 		window.location.reload()
 	}
 
@@ -105,7 +96,7 @@ const Bar = (props) => {
 			</div>
 		</div>
 		<nav style={{ background: "#6D1DAF", padding: "1rem ", gridTemplateColumns: "1fr 2fr 1fr", minHeight: "10.5vh" }} className="nav_desktop" >
-			<Link to="/rendle" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
+			<Link to="/" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
 				{!props.isGame ? <img src={Logo} width="30px" alt=""></img> : null}
 				{!props.isGame ? <div>Renderverse</div> :
 					<div className="neu neu_end">
@@ -120,7 +111,7 @@ const Bar = (props) => {
 			{
 				!props.isGame ?
 					<div className='neu' style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }}>
-						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/rendle"} >Rendle</NavLink>
+						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/"} >Rendle</NavLink>
 						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/renderscan"} >Renderscan</NavLink>
 						{/* <NavLink className="neu_link" activeClassName='neu_link__active' to={"/hangman"} >Hang-man</NavLink> */}
 						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/raffle"} >Raffle</NavLink>
@@ -138,7 +129,7 @@ const Bar = (props) => {
 		</nav>
 		<div className='nav_mobile'>
 			<div style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: "2rem", alignItems: "center", width: "100%", padding: "0 2rem" }}>
-				<Link to="/rendle" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
+				<Link to="/" style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold", display: "flex", position: "relative", justifyContent: "flex-start", columnGap: ".5rem", alignItems: "center" }}>
 					{!props.isGame ? <img src={Logo} width="30px" alt=""></img> : null}
 					{!props.isGame ? <div>Renderverse</div> :
 						<ArrowNarrowLeftIcon onClick={back} className="neu neu_end rounded-xl p-1 w-12 h-12 cursor-pointer" color="white" />

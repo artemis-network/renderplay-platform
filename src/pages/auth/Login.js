@@ -25,14 +25,12 @@ const Login = () => {
   });
 
   const handleSuccess = (data) => {
-    let uname = data.profileObj.email
-    const split = uname.split("@")
     const data_c = {
       token: data.tokenId,
     }
     loginGoogle(data_c).then((res => {
       createSession(res.data);
-      history.push("/rendle")
+      history.push("/")
     })).catch(err => console.log(err))
 
   };
@@ -57,7 +55,7 @@ const Login = () => {
               message: res.data.message,
             });
           } else {
-            history.push("/rendle");
+            history.push("/");
             window.location.reload();
           }
         })

@@ -40,13 +40,13 @@ const Wordle = () => {
 				<Bar isGame={false} />
 				<Container>
 					<div className="contest">
-						{rendleGameTypes.rendles.map((game, i) => <div key={game.contest_id} className={game.css}>
+						{rendleGameTypes.rendles.map((game, i) => <div key={game.contestId} className={game.css}>
 							<ContestCard  {...game} key={i} index={i} />
 						</div>)}
 					</div>
 
 					<div className="contest_mobile">
-						{rendleGameTypes.mobileViewRendles.map((game, i) => <div key={game.contest_id} className={game.css}>
+						{rendleGameTypes.mobileViewRendles.map((game, i) => <div key={game.contestId} className={game.css}>
 							<ContestCard  {...game} key={i} index={i} />
 						</div>)}
 					</div>

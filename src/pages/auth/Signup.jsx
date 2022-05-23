@@ -62,7 +62,6 @@ const Signup = () => {
     onSubmit: (values) => {
       register(values)
         .then((res) => {
-          console.log(res.data);
           if (res.data.errorType === "USER_ALREADY_EXIST") {
             setStatus({
               status: res.data.status,

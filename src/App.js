@@ -43,10 +43,9 @@ const App = () => {
         </div>
       }>
         <Router>
-          <Redirect to="/rendle" from="/" />
 
-          <Route exact component={Rendle} path="/rendle" />
-          <Route exact component={RendleGame} path="/rendle/game" />
+          <Route exact component={Rendle} path="/" />
+          <Route exact component={RendleGame} path="/game" />
 
           <Route exact component={RenderScan} path="/renderscan" />
           <Route exact component={RenderScanGame} path="/renderscan/game" />

@@ -5,8 +5,6 @@ import { useHistory } from 'react-router-dom'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
 
-import Background from '../../../assets/rendle/rendle_game/background.png'
-
 import { useAlert } from './context/AlertContext'
 import { AlertContainer } from './components/alerts/AlertContainer'
 
@@ -25,6 +23,7 @@ import { FiveLetterGuesses } from './constants/config/fiveLetterGuesses'
 import { sixLetterGuesses } from './constants/config/sixLetterGuesses'
 import { SevenLetterGuesses } from './constants/config/sevenLetterGuesses'
 
+import Countdown from "react-countdown"
 
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
@@ -32,10 +31,41 @@ import { saveRendleGame, getContestantStatus, getGuesses, updateGuesses } from '
 
 
 import { InformationCircleIcon } from '@heroicons/react/outline'
+import { ClockIcon } from '@heroicons/react/solid'
 
 const Bar = lazy(() => import("../../common/bar/Bar"))
 
 const RendleGame = () => {
+
+  const timerFormatter = (time) => {
+    time = String(time)
+    if (time.length === 1)
+      time = "0" + time
+    return time
+  }
+
+  const counter = ({ hours, minutes, seconds, completed }) => {
+
+    return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
+      <ClockIcon
+        color="#FF8D29"
+        className="h-6 w-6 m-2 cursor-pointer dark:stroke-red"
+      />
+      <div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
+        {"Ends in"} <div style={{ fontSize: ".8rem" }}>
+          <div>
+            <span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+              {timerFormatter(minutes)}
+            </span>
+            <span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+              {timerFormatter(seconds)}
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  }
 
   const history = useHistory()
 
@@ -97,17 +127,20 @@ const RendleGame = () => {
     saveGameStateToLocalStorage({ guesses, solution })
   }, [guesses, solution])
 
+  const expiredIn = (t) => {
+    const now = new Date(Date.now())
+    const time = new Date(t)
+    return time.getTime() + (1000 * 60 * 10) - now.getTime();
+  }
+
   useEffect(() => {
     if (userId) {
-      getContestantStatus({ userId: userId, gameType: data.gameType, contestId: data.contestId })
+      getContestantStatus({ userId: userId, contestId: data.contestId })
         .then(res => {
-
-          console.log(res.data)
-          const isFirstGame = res.data.isFirstGame
+          const isGameCompleted = res.data.isGameCompleted
           const isSameContest = data.contestId === res.data.contestId
 
-
-          if (isFirstGame || !isSameContest) {
+          if (!isGameCompleted || !isSameContest) {
             let guesses = JSON.parse(localStorage.getItem("gameState"))
 
             guesses = guesses.guesses.length
@@ -150,25 +183,30 @@ const RendleGame = () => {
             setIsGameWon(res.data.isWon)
             setIsGameLost(!res.data.isWon)
           }
+
+          const time = expiredIn(res.data.startedOn)
+          localStorage.setItem("timer", time)
+
+          if (res.data.words.length <= 0) return
+          else {
+            const new_guesses = {
+              solution: solution,
+              guesses: res.data.words
+            }
+            if (!isGameWon && !isGameLost) setGuesses([...res.data.words])
+            localStorage.setItem("gameState", JSON.stringify(new_guesses))
+          }
+
         })
         .catch(err => { console.log(err) })
-    } else return history.push("/rendle")
+    } else return history.push("/")
 
 
 
-    getGuesses({ userId: localStorage.getItem("userId") }).then((res_ => {
-      if (res_.data.guesses.length <= 0) return
-      else {
-        const new_guesses = {
-          solution: solution,
-          guesses: res_.data.guesses
-        }
-        if (!isGameWon && !isGameLost) setGuesses([...res_.data.guesses])
-        localStorage.setItem("gameState", JSON.stringify(new_guesses))
-      }
-    }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameWon, isGameLost, showSuccessAlert, history])
+
+
 
 
   const onChar = (value) => {
@@ -246,7 +284,7 @@ const RendleGame = () => {
 
   const returnToWordle = () => {
     setIsGameModalOpen(false)
-    history.push("/rendle")
+    history.push("/")
   }
 
   return (
@@ -261,6 +299,8 @@ const RendleGame = () => {
             onClick={() => setIsInfoModalOpen(true)}
           />
         </div>
+        <Countdown renderer={counter} date={Date.now() + JSON.parse(localStorage.getItem("timer"))} />
+
 
         <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
           <div className="grow_keyboard">
