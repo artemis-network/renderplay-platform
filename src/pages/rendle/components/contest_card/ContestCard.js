@@ -29,7 +29,6 @@ const ContestCard = (props) => {
 	const InsufficentModalOpen = () => setInsufficentModal(true)
 
 
-
 	const ConfirmModalOpen = () => {
 		const userId = localStorage.getItem("userId")
 		if (userId !== null) {
@@ -48,7 +47,7 @@ const ContestCard = (props) => {
 				}
 				// if user has insufficient  [INSUFFICIENT_FUNDS]
 				if (res.data.status === "[INSUFFICENT_FUNDS]") {
-					return setInsufficent(true)
+					return setInsufficentModal(true)
 				}
 				// if user cleared all criteriea [APPROVED]
 				if (res.data.status === "[APPROVED]") {
@@ -77,7 +76,7 @@ const ContestCard = (props) => {
 			}
 			// if user has insufficient [INSUFFICIENT_FUNDS]
 			if (res.data.status === "[INSUFFICENT_FUNDS]") {
-				return setInsufficent(true)
+				return setInsufficentModal(true)
 			}
 			localStorage.setItem("gameConfig", JSON.stringify(props))
 			setConfirmModal(false)

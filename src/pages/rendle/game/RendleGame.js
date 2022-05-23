@@ -82,6 +82,8 @@ const RendleGame = () => {
   const [WORDS, SET_WORDS] = useState([])
   const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
   const [isGameFinished, setIsGameFinished] = useState(false)
+  const [timer, setTimer] = useState(null)
+  const [startedAt, setStartedAt] = useState("")
 
   const [solution, setSolution] = useState("")
 
@@ -130,7 +132,7 @@ const RendleGame = () => {
   const expiredIn = (t) => {
     const now = new Date(Date.now())
     const time = new Date(t)
-    return time.getTime() + (1000 * 60 * 10) - now.getTime();
+    return time.getTime() - now.getTime();
   }
 
   useEffect(() => {
@@ -146,10 +148,15 @@ const RendleGame = () => {
             guesses = guesses.guesses.length
             let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
 
+            const time = res.data.expiresIn
+            setTimer(() => <Countdown renderer={counter} date={Date.now() + expiredIn(time)} />)
+            setStartedAt(time);
+
             if (isGameLost) {
               const data = {
                 userId: localStorage.getItem("userId"),
                 username: localStorage.getItem("username"),
+                completedIn: new Date(Date.now()),
                 chances: guesses,
                 gameType: gameConfig.gameType,
                 contestId: gameConfig.contestId,
@@ -167,6 +174,7 @@ const RendleGame = () => {
               const data = {
                 userId: localStorage.getItem("userId"),
                 username: localStorage.getItem("username"),
+                completedIn: new Date(Date.now()),
                 chances: guesses,
                 gameType: gameConfig.gameType,
                 contestId: gameConfig.contestId,
@@ -184,8 +192,6 @@ const RendleGame = () => {
             setIsGameLost(!res.data.isWon)
           }
 
-          const time = expiredIn(res.data.startedOn)
-          localStorage.setItem("timer", time)
 
           if (res.data.words.length <= 0) return
           else {
@@ -196,18 +202,10 @@ const RendleGame = () => {
             if (!isGameWon && !isGameLost) setGuesses([...res.data.words])
             localStorage.setItem("gameState", JSON.stringify(new_guesses))
           }
-
         })
         .catch(err => { console.log(err) })
     } else return history.push("/")
-
-
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameWon, isGameLost, showSuccessAlert, history])
-
-
-
 
   const onChar = (value) => {
     const condition_1 = unicodeLength(`${currentGuess}${value}`) <= MAX_WORD_LENGTH
@@ -299,8 +297,7 @@ const RendleGame = () => {
             onClick={() => setIsInfoModalOpen(true)}
           />
         </div>
-        <Countdown renderer={counter} date={Date.now() + JSON.parse(localStorage.getItem("timer"))} />
-
+        {timer}
 
         <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
           <div className="grow_keyboard">

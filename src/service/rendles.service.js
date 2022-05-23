@@ -23,6 +23,9 @@ export const loadRendleGames = async () => {
 		const rendles = await rendleGameTypesApi();
 		let data = rendles.data.rendleGameTypes
 
+		let temp = []
+		let temp_m = []
+
 		data[0].img = FiveRendleImg
 		data[0].line = Line2Img
 		data[0].banner = RendleFive
@@ -35,37 +38,38 @@ export const loadRendleGames = async () => {
 		data[2].line = Line2Img
 		data[2].banner = RendleSeven
 
-		// for (let i in data) {
-		// 	const now = new Date(Date.now())
-		// 	const time = new Date(data[i].starts_on)
-		// 	const isLive = time.getTime() - now.getTime()
+		if (data) {
+			for (let i = 0; i < data.length; i++) {
+				const now = new Date(Date.now())
+				const time = new Date(data[i].startsOn)
+				const isLive = time.getTime() - now.getTime()
 
-		// 	if (isLive < 0 && isLive > -1000 * 60 * 60 * 8) {
-		// 		temp[1] = data[i]
-		// 		temp[1].css = "_scale"
-		// 		temp_m[0] = data[i]
-		// 		temp_m[0].css = "_scale"
-		// 	}
-		// 	if (isLive < - 1000 * 60 * 60 * 8) {
-		// 		temp[0] = data[i]
-		// 		temp[0].css = "_fade"
-		// 		temp_m[2] = data[i]
-		// 		temp_m[2].css = "_fade"
-		// 	}
-		// 	if (isLive > 0) {
-		// 		temp[2] = data[i]
-		// 		temp[2].css = "_fade"
-		// 		temp_m[1] = data[i]
-		// 		temp_m[1].css = "_fade"
-		// 	}
-
-		// 	if (isLive) data[i].live = true
-		// 	else data[i].live = false
-		// }
+				if (isLive < 0 && isLive > -1000 * 60 * 60 * 8) {
+					temp[1] = data[i]
+					temp[1].css = "_scale"
+					temp_m[0] = data[i]
+					temp_m[0].css = "_scale"
+				}
+				if (isLive < - 1000 * 60 * 60 * 8) {
+					temp[0] = data[i]
+					temp[0].css = "_fade"
+					temp_m[2] = data[i]
+					temp_m[2].css = "_fade"
+				}
+				if (isLive > 0) {
+					temp[2] = data[i]
+					temp[2].css = "_fade"
+					temp_m[1] = data[i]
+					temp_m[1].css = "_fade"
+				}
+				if (isLive) data[i].live = true
+				else data[i].live = false
+			}
+		}
 
 		return {
-			mobileViewRendles: [...data],
-			rendles: [...data]
+			mobileViewRendles: [...temp_m],
+			rendles: [...temp]
 		}
 
 	} catch (error) {
