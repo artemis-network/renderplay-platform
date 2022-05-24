@@ -35,13 +35,29 @@ const RenderScan = () => {
 
 	const history = useHistory()
 
-	const [show, setShow] = useState(false);
 	const [index, setIndex] = useState(null);
 	const [renderScanTypes, setRendleGameTypes] = useState([])
-	const scanPage = () => history.push("/renderscan/game")
+
+	const [confirmModal, setConfirmModal] = useState(false);
+	const [insufficentModal, setInsufficentModal] = useState(false)
+
+	const confirmModalClose = () => setConfirmModal(false);
+	const confirmModalOpen = (index) => {
+		const userId = localStorage.getItem("userId")
+		if (userId !== null) {
+			return enterContest(index, true)
+		} else return history.push("/login")
+	}
+
+	const insufficentModalClose = () => setInsufficentModal(false);
+	const insufficentModalOpen = () => setInsufficentModal(true)
+
+	const scanPage = () => history.push("/renderscan/lobby")
 
 	useEffect(() => {
-		getRenderScanTypes().then((resp) => setRendleGameTypes([...resp.data.renderScanTypes])).catch((err) => console.log(err))
+		getRenderScanTypes()
+			.then((resp) => setRendleGameTypes([...resp.data.renderScanTypes]))
+			.catch((err) => console.log(err))
 	}, [])
 
 
@@ -50,109 +66,77 @@ const RenderScan = () => {
 		const data = {
 			userId: localStorage.getItem("userId"),
 			contestId: renderScanTypes[index].contestId,
-			entryFee: renderScanTypes[index].entryFee,
-			confirm: confirm
+			request: confirm
 		}
 		enterRenderScanGame(data).then(
 			(res) => {
 				console.log(res.data)
-				if (res.data.message === "PAID") {
+				// if user cleared all criteriea [APPROVED]
+				if (res.data.status === "[APPROVED]") {
+					return setConfirmModal(true);
+				}
+				// if user already in contest [ALREADY_IN_CONTEST]
+				if (res.data.status === "[ALREADY_IN_CONTEST]" || res.data.status === "[PAID]") {
 					const renderScanDetails = {
+						startsOn: renderScanTypes[index].startsOn,
 						contestId: renderScanTypes[index].contestId,
 						index: index
 					}
 					localStorage.setItem("renderScanData", JSON.stringify(renderScanDetails))
 					return scanPage()
 				}
-				if (res.data.error)
+				// if user has insufficient  [INSUFFICIENT_FUNDS]
+				if (res.data.status === "[INSUFFICENT_FUNDS]") {
 					return setInsufficent(res.data.error)
-				else
-					return setShow(true);
+				}
 			}
 		).catch(
 			(err) => { console.log(err) }
 		)
 	}
 
-	const ModalClose = () => setShow(false);
-	const ModalOpen = (index, confirm) => {
-		const userId = localStorage.getItem("userId")
-		if (userId !== null) {
-			return enterContest(index, confirm)
-		} else return history.push("/login")
-	}
 
-	const [Insufficent, setInsufficent] = useState(false)
-
-	const InsufficentModalClose = () => setInsufficent(false);
-	const InsufficentModalOpen = () => setInsufficent(true)
 
 	return (
 		<div style={{ background: "#321e43", }}>
 			<Bar />
-			<ConfirmModal show={show} gameData={renderScanTypes[index]} modalOpen={ModalOpen} modalClose={ModalClose} play={() => enterContest(index, true)} />
-			<InsufficentFunds show={Insufficent} modalOpen={InsufficentModalOpen} modalClose={InsufficentModalClose} />
-
+			<ConfirmModal
+				show={confirmModal}
+				gameData={renderScanTypes[index]}
+				modalOpen={() => confirmModalOpen(index)}
+				modalClose={confirmModalClose}
+				play={() => enterContest(index, false)}
+			/>
+			<InsufficentFunds
+				show={insufficentModal}
+				modalOpen={insufficentModalOpen}
+				modalClose={insufficentModalClose}
+			/>
 			<div className='renderscan_types'>
 				<div style={{ display: "flex", position: "relative", justifyContent: 'center', flexDirection: "column" }}>
 					<Lottie
-						className="renderscan_type_1_size"
+						className="renderscan_type_size"
 						options={defaultOptions_FREE}
 					/>
 					<img
 						alt="play"
 						src={Play1Png}
-						onClick={() => ModalOpen(0, false)}
-						className='cursor-pointer renderscan_type_1_button'
+						onClick={() => confirmModalOpen(0, true)}
+						className='cursor-pointer renderscan_type_button'
 						color="green" />
-					<div style={{ display: "flex", justifyContent: "center" }}>
-						<div className='renderscan_bottom_1_info'>
-							<div className='renderscan_bottom_1_content'>
-								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", width: "50%" }}>
-									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
-										<span>1000 </span>
-										<span style={{ fontSize: ".7rem", alignItems: "center", margin: "0 .2rem" }}>REND</span>
-									</div>
-								</div>
-								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", width: "50%" }}>
-									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
-										200
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
 
 				<div style={{ display: "flex", position: "relative", justifyContent: 'center', flexDirection: "column" }}>
 					<Lottie
-						className="renderscan_type_1_size"
+						className="renderscan_type_size"
 						options={defaultOptions_PAID}
 					/>
 					<img
 						alt="play"
-						onClick={() => ModalOpen(1, false)}
+						onClick={() => confirmModalOpen(1, false)}
 						src={Play2Png}
-						className='cursor-pointer renderscan_type_2_button'
+						className='cursor-pointer renderscan_type_button'
 						color="green" />
-					<div style={{ display: "flex", justifyContent: "center", margin: "4rem 0 0 0" }}>
-						<div className='renderscan_bottom_2_info'>
-							<div className='renderscan_bottom_2_content'>
-								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", width: "50%" }}>
-									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
-										<span>1000 </span>
-										<span style={{ fontSize: ".7rem", alignItems: "center", margin: "0 .2rem" }}>REND</span>
-									</div>
-								</div>
-								<div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", width: "50%" }}>
-									<div style={{ padding: ".2rem 0", display: "flex", justifyContent: 'center' }}>
-										200
-									</div>
-								</div>
-							</div>
-						</div>
-
-					</div>
 				</div>
 			</div>
 		</div >)

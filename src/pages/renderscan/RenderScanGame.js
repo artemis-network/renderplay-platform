@@ -62,10 +62,7 @@ const Scan = () => {
 			.catch((err) => { console.log(err) })
 	}
 
-	const closeModal = () => {
-		return history.push("/renderscan")
-	}
-
+	const closeModal = () => history.push("/renderscan")
 	const openConfirm = () => setConfirm(true)
 
 	const save = () => {

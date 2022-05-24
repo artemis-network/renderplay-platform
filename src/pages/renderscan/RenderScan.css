@@ -7,73 +7,35 @@
   row-gap: 8rem;
 }
 
-.renderscan_type_1_size {
+.renderscan_type_size {
   width: 100px;
   z-index: 0;
   position: relative;
 }
 
-.renderscan_type_1_button {
-  width: 180px;
+.renderscan_type_button {
+  width: 120px;
   position: absolute;
   margin: auto;
   left: 0;
   right: 0;
-  bottom: 3.5rem;
+  bottom: 2.2rem;
   z-index: 2;
-}
-
-.renderscan_type_2_button {
-  width: 180px;
-  position: absolute;
-  margin: auto;
-  left: 0;
-  right: 0;
-  bottom: 7rem;
-  z-index: 2;
-}
-
-.renderscan_bottom_1_info {
-  position: absolute;
-  width: 330px;
-  bottom: 2.1rem;
-}
-
-.renderscan_bottom_1_content {
-  width: 100%;
-  column-gap: 16rem;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-family: Macondo, cursive;
-  font-weight: bold;
-  color: white;
-  text-align: center;
-}
-
-.renderscan_bottom_2_info {
-  position: absolute;
-  width: 330px;
-  bottom: 6.1rem;
-}
-
-.renderscan_bottom_2_content {
-  width: 100%;
-  column-gap: 16rem;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-family: Macondo, cursive;
-  font-weight: bold;
-  color: white;
-  text-align: center;
 }
 
 @media screen and (min-width: 548px) {
   .renderscan_types {
     padding: 4rem 6rem;
+  }
+
+  .renderscan_type_button {
+    width: 150px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 2.8rem;
+    z-index: 2;
   }
 }
 
@@ -81,19 +43,61 @@
   .renderscan_types {
     padding: 4rem 12rem;
   }
+
+  .renderscan_type_button {
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 4em;
+    z-index: 2;
+  }
 }
 
 @media screen and (min-width: 1000px) {
+  .renderscan_type_button {
+    width: 140px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 2em;
+    z-index: 2;
+  }
   .renderscan_types {
-    padding: 4rem 28rem;
+    padding: 4rem 16rem;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
     column-gap: 2rem;
   }
+}
 
-  .renderscan_bottom_part_2 {
-    width: 400px;
+@media screen and (min-width: 1200px) {
+  .renderscan_type_button {
+    width: 140px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 3em;
+    z-index: 2;
+  }
+  .renderscan_types {
+    padding: 4rem 18rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 2rem;
+  }
+}
+
+@media screen and (min-width: 1700px) {
+  .renderscan_type_button {
+    width: 180px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 5em;
+    z-index: 2;
   }
 }

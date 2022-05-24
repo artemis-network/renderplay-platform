@@ -8,8 +8,8 @@ const Rendle = lazy(() => import('./pages/rendle/Rendle'));
 const RendleGame = lazy(() => import('./pages/rendle/game/RendleGame'));
 
 const RenderScan = lazy(() => import("./pages/renderscan/RenderScan"))
-const RenderScanLobby = lazy(() => import('./pages/renderscan/RenderScanLobby'));
 const RenderScanGame = lazy(() => import("./pages/renderscan/RenderScanGame"))
+import { RenderScanLobby } from './pages/renderscan/RenderScanLobby'
 
 const Signup = lazy(() => import('./pages/auth/Signup'));
 const Login = lazy(() => import('./pages/auth/Login'));
