@@ -45,7 +45,7 @@ const Scan = () => {
 	const [img, setImg] = useState("")
 	const [isWating, setIsWaiting] = useState(false)
 	const [match, setMatch] = useState(false)
-	const [confirm, setConfirm] = useState(true)
+	const [confirm, setConfirm] = useState(false)
 
 	const [isSubmitted, setIsSubmitted] = useState(false)
 

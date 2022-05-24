@@ -1,6 +1,5 @@
 import Bar from '../common/bar/Bar'
 import Countdown from "react-countdown"
-import { ClockIcon } from '@heroicons/react/solid'
 import { useHistory } from 'react-router'
 
 
@@ -23,7 +22,8 @@ export const RenderScanLobby = () => {
 	}
 
 	const counter = ({ hours, minutes, seconds, completed }) => {
-		if (completed) return history.push("/renderscan/game")
+		if (completed)
+			return <button className='btn btn-primary' onClick={() => history.push("/renderscan/game")}>Enter</button>
 
 		return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
 			<div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
