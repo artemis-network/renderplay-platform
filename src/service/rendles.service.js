@@ -38,7 +38,7 @@ export const loadRendleGames = async () => {
 		data[2].line = Line2Img
 		data[2].banner = RendleSeven
 
-		if (data) {
+		if (data[0]) {
 			for (let i = 0; i < data.length; i++) {
 				const now = new Date(Date.now())
 				const time = new Date(data[i].startsOn)

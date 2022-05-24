@@ -8,6 +8,7 @@ const Rendle = lazy(() => import('./pages/rendle/Rendle'));
 const RendleGame = lazy(() => import('./pages/rendle/game/RendleGame'));
 
 const RenderScan = lazy(() => import("./pages/renderscan/RenderScan"))
+const RenderScanLobby = lazy(() => import('./pages/renderscan/RenderScanLobby'));
 const RenderScanGame = lazy(() => import("./pages/renderscan/RenderScanGame"))
 
 const Signup = lazy(() => import('./pages/auth/Signup'));
@@ -46,6 +47,7 @@ const App = () => {
 
           <Route exact component={Rendle} path="/" />
           <Route exact component={RendleGame} path="/game" />
+          <Route exact component={RenderScanLobby} path="/renderscan/lobby" />
 
           <Route exact component={RenderScan} path="/renderscan" />
           <Route exact component={RenderScanGame} path="/renderscan/game" />

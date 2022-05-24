@@ -14,7 +14,7 @@ export const Cell = ({
   const isHighContrast = false
 
   const classes = classnames(
-    'lg:w-16 lg:h-16 2xl:h-20 2xl:w-20 sm:w-16 sm:h-16 h-16 w-16 border-solid border-2 flex items-center justify-center mx-0.5 text-4xl font-bold rounded text-white',
+    'lg:w-16 lg:h-16 2xl:h-18 2xl:w-18 sm:w-16 sm:h-16 h-16 w-16 border-solid border-2 flex items-center justify-center mx-0.5 text-4xl font-bold rounded text-white',
     {
       'bg-dark border-slate-50':
         !status,

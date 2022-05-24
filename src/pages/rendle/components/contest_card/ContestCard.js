@@ -19,8 +19,10 @@ import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } fro
 import './ContestCard.css'
 
 const ContestCard = (props) => {
+	console.log(props)
 
 	const history = useHistory()
+
 
 	const [confirmModal, setConfirmModal] = useState(false);
 	const [InsufficentModal, setInsufficentModal] = useState(false)

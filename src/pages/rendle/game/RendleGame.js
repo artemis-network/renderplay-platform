@@ -1,5 +1,8 @@
 import { useState, useEffect, lazy } from 'react'
 import { useHistory } from 'react-router-dom'
+import Background1 from '../../../assets/rendle/rendle/1.png'
+import Background2 from '../../../assets/rendle/rendle/2.png'
+import Background3 from '../../../assets/rendle/rendle/3.png'
 
 
 import { Grid } from './components/grid/Grid'
@@ -29,8 +32,6 @@ import { default as GraphemeSplitter } from 'grapheme-splitter'
 
 import { saveRendleGame, getContestantStatus, getGuesses, updateGuesses } from '../../../service/rendles.service'
 
-
-import { InformationCircleIcon } from '@heroicons/react/outline'
 import { ClockIcon } from '@heroicons/react/solid'
 
 const Bar = lazy(() => import("../../common/bar/Bar"))
@@ -83,7 +84,7 @@ const RendleGame = () => {
   const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
   const [isGameFinished, setIsGameFinished] = useState(false)
   const [timer, setTimer] = useState(null)
-  const [startedAt, setStartedAt] = useState("")
+  const [background, setBackground] = useState(Background1)
 
   const [solution, setSolution] = useState("")
 
@@ -98,18 +99,21 @@ const RendleGame = () => {
       SET_VALID_GUESSES(FiveLetterGuesses)
       const { solution } = getWordOfDay(fiveLetterList)
       setSolution(solution)
+      // setBackground(Background1)
     }
     if (data.gameType === 6) {
       SET_WORDS(sixLetterList)
       SET_VALID_GUESSES(sixLetterGuesses)
       const { solution } = getWordOfDay(sixLetterList)
       setSolution(solution)
+      // setBackground(Background2)
     }
     if (data.gameType === 7) {
       SET_WORDS(sevenLetterList)
       SET_VALID_GUESSES(SevenLetterGuesses)
       const { solution } = getWordOfDay(sevenLetterList)
       setSolution(solution)
+      // setBackground(Background3)
     }
 
   }, [MAX_WORD_LENGTH, data.gameType, solution])
@@ -150,7 +154,6 @@ const RendleGame = () => {
 
             const time = res.data.expiresIn
             setTimer(() => <Countdown renderer={counter} date={Date.now() + expiredIn(time)} />)
-            setStartedAt(time);
 
             if (isGameLost) {
               const data = {
@@ -289,7 +292,7 @@ const RendleGame = () => {
     <div>
       <Bar isGame={true} />
       <div className="h-screen flex flex-col" style={{ background: "#321E43" }}>
-        <div className='p-5'>
+        {/* <div className='p-5'>
           <InformationCircleIcon
             color='white'
             style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
@@ -297,7 +300,7 @@ const RendleGame = () => {
             onClick={() => setIsInfoModalOpen(true)}
           />
         </div>
-        {timer}
+        {timer} */}
 
         <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
           <div className="grow_keyboard">
@@ -333,7 +336,7 @@ const RendleGame = () => {
           <AlertContainer />
         </div>
       </div>
-      {/* <img src={Background} style={{ position: "absolute", bottom: "-8rem", backgroundSize: "cover" }} /> */}
+      <img src={background} style={{ position: "absolute", bottom: "0rem", backgroundSize: "cover" }} />
     </div>
   )
 }
