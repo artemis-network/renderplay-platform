@@ -4,6 +4,8 @@ import Background1 from '../../../assets/rendle/rendle/1.png'
 import Background2 from '../../../assets/rendle/rendle/2.png'
 import Background3 from '../../../assets/rendle/rendle/3.png'
 
+import Timer from '../../../assets/rendle/rendle_game/timer.json'
+
 
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
@@ -32,7 +34,18 @@ import { default as GraphemeSplitter } from 'grapheme-splitter'
 
 import { saveRendleGame, getContestantStatus, getGuesses, updateGuesses } from '../../../service/rendles.service'
 
-import { ClockIcon } from '@heroicons/react/solid'
+import { InformationCircleIcon } from '@heroicons/react/solid'
+
+import Lottie from 'lottie-react-web'
+
+const defaultOptions_Timer = {
+  loop: true,
+  autoplay: true,
+  animationData: Timer,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
+  }
+};
 
 const Bar = lazy(() => import("../../common/bar/Bar"))
 
@@ -47,10 +60,10 @@ const RendleGame = () => {
 
   const counter = ({ hours, minutes, seconds, completed }) => {
 
-    return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
-      <ClockIcon
-        color="#FF8D29"
-        className="h-6 w-6 m-2 cursor-pointer dark:stroke-red"
+    return <div style={{ dsplay: "flex", justifyContent: "center", flexDirection: "row", margin: "0 2rem" }}>
+      <Lottie
+        style={{ height: "4rem", width: "4rem", paddingBottom: "2rem" }}
+        options={defaultOptions_Timer}
       />
       <div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
         {"Ends in"} <div style={{ fontSize: ".8rem" }}>
@@ -134,7 +147,7 @@ const RendleGame = () => {
   }, [guesses, solution])
 
   const expiredIn = (t) => {
-    const now = new Date(Date.now())
+    const now = new Date()
     const time = new Date(t)
     return time.getTime() - now.getTime();
   }
@@ -159,7 +172,7 @@ const RendleGame = () => {
               const data = {
                 userId: localStorage.getItem("userId"),
                 username: localStorage.getItem("username"),
-                completedIn: new Date(Date.now()),
+                completedIn: new Date(),
                 chances: guesses,
                 gameType: gameConfig.gameType,
                 contestId: gameConfig.contestId,
@@ -177,7 +190,7 @@ const RendleGame = () => {
               const data = {
                 userId: localStorage.getItem("userId"),
                 username: localStorage.getItem("username"),
-                completedIn: new Date(Date.now()),
+                completedIn: new Date(),
                 chances: guesses,
                 gameType: gameConfig.gameType,
                 contestId: gameConfig.contestId,
@@ -292,7 +305,7 @@ const RendleGame = () => {
     <div>
       <Bar isGame={true} />
       <div className="h-screen flex flex-col" style={{ background: "#321E43" }}>
-        {/* <div className='p-5'>
+        <div className='p-5'>
           <InformationCircleIcon
             color='white'
             style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
@@ -300,7 +313,7 @@ const RendleGame = () => {
             onClick={() => setIsInfoModalOpen(true)}
           />
         </div>
-        {timer} */}
+        {timer}
 
         <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
           <div className="grow_keyboard">

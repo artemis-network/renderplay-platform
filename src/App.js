@@ -21,18 +21,19 @@ import Loader from "react-js-loader";
 
 const App = () => {
 
-  const session = localStorage.getItem("session")
   const logout = () => {
     localStorage.clear()
     window.location.reload()
   }
 
   useEffect(() => {
+    const session = localStorage.getItem("session")
     if (session !== null) {
-      const loginTime = new Date(JSON.parse(session)).getTime()
-      const now = new Date(Date.now()).getTime()
-      const isExpired = now - loginTime
-      if (isExpired > 1000 * 60 * 60 * 24) logout()
+      // const loginTime = new Date(JSON.parse(session)).getTime()
+      // const now = new Date().getTime()
+      // const isExpired = now - loginTime
+      // console.log(isExpired)
+      // if (isExpired > 1000 * 60 * 60 * 24) logout()
     }
   }, [])
 

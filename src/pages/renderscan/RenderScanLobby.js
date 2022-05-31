@@ -1,18 +1,26 @@
 import Bar from '../common/bar/Bar'
-import Countdown from "react-countdown"
 import { useHistory } from 'react-router'
+import { useCountdown } from '../common/timer/useCountDown'
+import { useEffect, useState } from 'react'
+import { getRenderScanQuizQuestion } from '../../service/renderscan.service'
 
 
 export const RenderScanLobby = () => {
 
 	const history = useHistory();
 
-	const expiredIn = () => {
-		const data = JSON.parse(localStorage.getItem("renderScanData"));
-		const now = new Date(Date.now())
-		const time = new Date(data.startsOn)
-		return time.getTime() - now.getTime();
-	}
+	const data = JSON.parse(localStorage.getItem("renderScanData"));
+	const [expiresAt, setExpiresAt] = useState(new Date(data.startsOn))
+
+
+	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
+
+	useEffect(() => {
+		const d = { contestId: data.contestId };
+		getRenderScanQuizQuestion(d).then((resp) => {
+			setExpiresAt(resp.data.lobbyTime)
+		}).catch(err => console.log(err))
+	}, [])
 
 	const timerFormatter = (time) => {
 		time = String(time)
@@ -21,8 +29,8 @@ export const RenderScanLobby = () => {
 		return time
 	}
 
-	const counter = ({ hours, minutes, seconds, completed }) => {
-		if (completed)
+	const Counter = () => {
+		if (isFinished)
 			return <button className='btn btn-primary' onClick={() => history.push("/renderscan/game")}>Enter</button>
 
 		return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
@@ -47,7 +55,7 @@ export const RenderScanLobby = () => {
 		<Bar />
 		<div style={{ display: "flex", justifyContent: 'center', flexDirection: "column", rowGap: "2rem", alignItems: 'center' }}>
 			<div style={{ fontSize: "4rem", color: "white", margin: "4rem 2rem", }}>Renderscan Lobby</div>
-			<Countdown renderer={counter} date={Date.now() + expiredIn()} />
+			<Counter />
 		</div>
 	</div>)
 

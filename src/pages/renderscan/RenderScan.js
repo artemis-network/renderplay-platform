@@ -1,148 +1,62 @@
-import { lazy, useEffect, useState } from 'react';
-import { useHistory } from 'react-router'
+import React, { useEffect, useState, lazy } from 'react'
 
-import Lottie from 'lottie-react-web'
+import { Container } from 'react-bootstrap'
+import { getRenderScanGameTypes } from '../../service/renderscan.service'
 
-import FREE from '../../assets/renderscan/free.json'
-import PAID from '../../assets/renderscan/paid.json'
+import Png1 from '../../assets/renderscan/1.png'
+import Png2 from '../../assets/renderscan/2.png'
+import Png3 from '../../assets/renderscan/3.png'
+import Png4 from '../../assets/renderscan/4.png'
+import Png5 from '../../assets/renderscan/5.png'
+import Png6 from '../../assets/renderscan/6.png'
+import Png7 from '../../assets/renderscan/7.png'
+import Png8 from '../../assets/renderscan/8.png'
+import Png9 from '../../assets/renderscan/9.png'
+import Line from '../../assets/rendle/rendle/line1.webp'
 
-import Play1Png from '../../assets/renderscan/2.svg'
-import Play2Png from '../../assets/renderscan/1.svg'
-
-import { getRenderScanTypes, enterRenderScanGame } from '../../service/renderscan.service'
-
-import ConfirmModal from './components/modals/ConfirmModal';
-import InsufficentFunds from './components/modals/InsufficentFundsModal';
+const ContestCard = lazy(() => import('../rendle/components/contest_card/ContestCard'))
+const Bar = lazy(() => import("../common/bar/Bar"))
+const Footer = lazy(() => import("../common/footer/Footer"))
 
 import './RenderScan.css'
 
-const defaultOptions_FREE = {
-	loop: true,
-	autoplay: true,
-	animationData: FREE,
+const Wordle = () => {
 
-};
-
-const defaultOptions_PAID = {
-	loop: true,
-	autoplay: true,
-	animationData: PAID,
-};
-
-const Bar = lazy(() => import("../common/bar/Bar"));
-
-const RenderScan = () => {
-
-	const history = useHistory()
-
-	const [index, setIndex] = useState(null);
-	const [renderScanTypes, setRendleGameTypes] = useState([])
-
-	const [confirmModal, setConfirmModal] = useState(false);
-	const [insufficentModal, setInsufficentModal] = useState(false)
-
-	const confirmModalClose = () => setConfirmModal(false);
-	const confirmModalOpen = (index) => {
-		const userId = localStorage.getItem("userId")
-		if (userId !== null) {
-			return enterContest(index, true)
-		} else return history.push("/login")
-	}
-
-	const insufficentModalClose = () => setInsufficentModal(false);
-	const insufficentModalOpen = () => setInsufficentModal(true)
-
-	const scanPage = () => history.push("/renderscan/lobby")
-
-	useEffect(() => {
-		getRenderScanTypes()
-			.then((resp) => setRendleGameTypes([...resp.data.renderScanTypes]))
-			.catch((err) => console.log(err))
-	}, [])
-
-
-	const enterContest = (index, confirm) => {
-		setIndex(index)
-		const data = {
-			userId: localStorage.getItem("userId"),
-			contestId: renderScanTypes[index].contestId,
-			request: confirm
+	const [renderScanGameTypes, setRenderScanGameTypes] = useState(
+		{
+			renderscans: [
+				{ img: Png1, line: Line },
+				{ img: Png2, line: Line },
+				{ img: Png3, line: Line },
+				{ img: Png4, line: Line },
+				{ img: Png5, line: Line },
+				{ img: Png6, line: Line },
+				{ img: Png7, line: Line },
+				{ img: Png8, line: Line },
+				{ img: Png9, line: Line },
+			],
 		}
-		enterRenderScanGame(data).then(
-			(res) => {
-				console.log(res.data)
-				// if user cleared all criteriea [APPROVED]
-				if (res.data.status === "[APPROVED]") {
-					return setConfirmModal(true);
-				}
-				// if user already in contest [ALREADY_IN_CONTEST]
-				if (res.data.status === "[ALREADY_IN_CONTEST]" || res.data.status === "[PAID]") {
-					const renderScanDetails = {
-						startsOn: renderScanTypes[index].startsOn,
-						contestId: renderScanTypes[index].contestId,
-						index: index
-					}
-					localStorage.setItem("renderScanData", JSON.stringify(renderScanDetails))
-					return scanPage()
-				}
-				// if user has insufficient  [INSUFFICIENT_FUNDS]
-				if (res.data.status === "[INSUFFICENT_FUNDS]") {
-					return setInsufficent(res.data.error)
-				}
-			}
-		).catch(
-			(err) => { console.log(err) }
-		)
-	}
+	)
+	useEffect(() => {
+		getRenderScanGameTypes()
+			.then((response) => {
+				console.log(response)
+			}).catch(err => console.log(err))
 
+	}, [renderScanGameTypes.length])
 
-
-	return (
-		<div style={{ background: "#321e43", }}>
-			<Bar />
-			<ConfirmModal
-				show={confirmModal}
-				gameData={renderScanTypes[index]}
-				modalOpen={() => confirmModalOpen(index)}
-				modalClose={confirmModalClose}
-				play={() => enterContest(index, false)}
-			/>
-			<InsufficentFunds
-				show={insufficentModal}
-				modalOpen={insufficentModalOpen}
-				modalClose={insufficentModalClose}
-			/>
-			<div className='renderscan_types'>
-				<div style={{ display: "flex", position: "relative", justifyContent: 'center', flexDirection: "column" }}>
-					<Lottie
-						className="renderscan_type_size"
-						options={defaultOptions_FREE}
-					/>
-					<img
-						alt="play"
-						src={Play1Png}
-						onClick={() => confirmModalOpen(0, true)}
-						className='cursor-pointer renderscan_type_button'
-						color="green" />
+	return (<div >
+		<div className="container__bg">
+			<Bar isGame={false} />
+			<Container>
+				<div className="contest">
+					{renderScanGameTypes.renderscans.map((game, i) => <div key={game.contestId} className={game.css}>
+						<ContestCard  {...game} key={i} index={i} />
+					</div>)}
 				</div>
-
-				<div style={{ display: "flex", position: "relative", justifyContent: 'center', flexDirection: "column" }}>
-					<Lottie
-						className="renderscan_type_size"
-						options={defaultOptions_PAID}
-					/>
-					<img
-						alt="play"
-						onClick={() => confirmModalOpen(1, false)}
-						src={Play2Png}
-						className='cursor-pointer renderscan_type_button'
-						color="green" />
-				</div>
-			</div>
-		</div >)
-
+			</Container>
+		</div>
+		<Footer />
+	</div>)
 }
-
-
-
-export default RenderScan
+export default Wordle

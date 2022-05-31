@@ -15,7 +15,7 @@ export const createSession = (data) => {
   localStorage.setItem("accessToken", data.accessToken);
   localStorage.setItem("username", data.username);
   localStorage.setItem("userId", data.userId);
-  localStorage.setItem("session", Date.now());
+  localStorage.setItem("session", new Date());
 };
 
 export const getWallet = async (data) =>

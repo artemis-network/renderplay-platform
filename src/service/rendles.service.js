@@ -22,6 +22,7 @@ export const loadRendleGames = async () => {
 	try {
 		const rendles = await rendleGameTypesApi();
 		let data = rendles.data.rendleGameTypes
+		console.log(data)
 
 		let temp = []
 		let temp_m = []
@@ -68,8 +69,8 @@ export const loadRendleGames = async () => {
 		}
 
 		return {
-			mobileViewRendles: [...temp_m],
-			rendles: [...temp]
+			mobileViewRendles: [...data],
+			rendles: [...data]
 		}
 
 	} catch (error) {
