@@ -2,17 +2,8 @@ import React, { useEffect, useState, lazy } from 'react'
 
 import { Container } from 'react-bootstrap'
 import { getRenderScanGameTypes } from '../../service/renderscan.service'
-
-import Png1 from '../../assets/renderscan/1.png'
-import Png2 from '../../assets/renderscan/2.png'
-import Png3 from '../../assets/renderscan/3.png'
-import Png4 from '../../assets/renderscan/4.png'
-import Png5 from '../../assets/renderscan/5.png'
-import Png6 from '../../assets/renderscan/6.png'
-import Png7 from '../../assets/renderscan/7.png'
-import Png8 from '../../assets/renderscan/8.png'
-import Png9 from '../../assets/renderscan/9.png'
-import Line from '../../assets/rendle/rendle/line1.webp'
+import gsap from 'gsap';
+import { ScrollTrigger } from 'react-gsap'
 
 const ContestCard = lazy(() => import('../rendle/components/contest_card/ContestCard'))
 const Bar = lazy(() => import("../common/bar/Bar"))
@@ -22,25 +13,29 @@ import './RenderScan.css'
 
 const Wordle = () => {
 
-	const [renderScanGameTypes, setRenderScanGameTypes] = useState(
-		{
-			renderscans: [
-				{ img: Png1, line: Line },
-				{ img: Png2, line: Line },
-				{ img: Png3, line: Line },
-				{ img: Png4, line: Line },
-				{ img: Png5, line: Line },
-				{ img: Png6, line: Line },
-				{ img: Png7, line: Line },
-				{ img: Png8, line: Line },
-				{ img: Png9, line: Line },
-			],
-		}
-	)
+	const [renderScanGameTypes, setRenderScanGameTypes] = useState([])
 	useEffect(() => {
+
+		// gsap.registerPlugin(ScrollTrigger);
+
+		// let sections = gsap.utils.toArray(".contest_game_card");
+
+		// gsap.to(sections, {
+		// 	xPercent: -100 * (sections.length - 1),
+		// 	ease: "none",
+		// 	scrollTrigger: {
+		// 		trigger: ".contest_scroll",
+		// 		pin: true,
+		// 		scrub: 1,
+		// 		snap: 1 / (sections.length - 1),
+		// 		end: () => "+=" + document.querySelector(".contest_scroll").offsetWidth
+		// 	}
+		// });
+
+
 		getRenderScanGameTypes()
 			.then((response) => {
-				console.log(response)
+				setRenderScanGameTypes([...response])
 			}).catch(err => console.log(err))
 
 	}, [renderScanGameTypes.length])
@@ -49,8 +44,8 @@ const Wordle = () => {
 		<div className="container__bg">
 			<Bar isGame={false} />
 			<Container>
-				<div className="contest">
-					{renderScanGameTypes.renderscans.map((game, i) => <div key={game.contestId} className={game.css}>
+				<div className="contest contest_scroll">
+					{renderScanGameTypes.map((game, i) => <div key={game.contestId} className={game.css + " contest_game_card"}>
 						<ContestCard  {...game} key={i} index={i} />
 					</div>)}
 				</div>

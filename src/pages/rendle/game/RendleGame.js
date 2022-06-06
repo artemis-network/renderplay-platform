@@ -105,6 +105,7 @@ const RendleGame = () => {
   const data = JSON.parse(localStorage.getItem("gameConfig"))
 
   useEffect(() => {
+    console.log(data.gameType)
     SET_MAX(data.gameType)
     SET_MAX_CHALLENGES(data.gameType)
     if (data.gameType === 5) {
@@ -154,16 +155,17 @@ const RendleGame = () => {
 
   useEffect(() => {
     if (userId) {
-      getContestantStatus({ userId: userId, contestId: data.contestId })
+      getContestantStatus({ userId: userId, contestId: data._id })
         .then(res => {
           const isGameCompleted = res.data.isGameCompleted
-          const isSameContest = data.contestId === res.data.contestId
+          const isSameContest = data._id === res.data.contestId
 
           if (!isGameCompleted || !isSameContest) {
             let guesses = JSON.parse(localStorage.getItem("gameState"))
 
             guesses = guesses.guesses.length
             let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
+            console.log(gameConfig)
 
             const time = res.data.expiresIn
             setTimer(() => <Countdown renderer={counter} date={Date.now() + expiredIn(time)} />)
@@ -175,7 +177,7 @@ const RendleGame = () => {
                 completedIn: new Date(),
                 chances: guesses,
                 gameType: gameConfig.gameType,
-                contestId: gameConfig.contestId,
+                contestId: gameConfig._id,
                 isWon: false
               }
               saveRendleGame(data).then(res => {
@@ -193,7 +195,7 @@ const RendleGame = () => {
                 completedIn: new Date(),
                 chances: guesses,
                 gameType: gameConfig.gameType,
-                contestId: gameConfig.contestId,
+                contestId: gameConfig._id,
                 isWon: true
               }
               saveRendleGame(data).then(res => {
@@ -269,14 +271,14 @@ const RendleGame = () => {
       if (gameStateId !== undefined || gameStateId !== null) {
         word_data = {
           userId: localStorage.getItem("userId"),
-          constestId: data.contestId,
+          constestId: data._id,
           word: currentGuess,
           gameStateId: gameStateId
         }
       } else {
         word_data = {
           userId: localStorage.getItem("userId"),
-          constestId: data.contestId,
+          constestId: data._id,
           word: currentGuess,
           gameStateId: null
         }

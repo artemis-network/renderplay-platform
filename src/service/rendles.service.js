@@ -21,8 +21,7 @@ const rendleGameTypesApi = async () => await axios.get(`${rendlePrefix}`)
 export const loadRendleGames = async () => {
 	try {
 		const rendles = await rendleGameTypesApi();
-		let data = rendles.data.rendleGameTypes
-		console.log(data)
+		let data = rendles.data.rendleContests
 
 		let temp = []
 		let temp_m = []
@@ -69,8 +68,8 @@ export const loadRendleGames = async () => {
 		}
 
 		return {
-			mobileViewRendles: [...data],
-			rendles: [...data]
+			mobileViewRendles: [...temp_m],
+			rendles: [...temp]
 		}
 
 	} catch (error) {

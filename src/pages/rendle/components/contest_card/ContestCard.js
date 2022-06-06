@@ -34,8 +34,8 @@ const ContestCard = (props) => {
 		const userId = localStorage.getItem("userId")
 		if (userId !== null) {
 			const data = {
-				contestId: props.contestId,
-				gameType: props.gameType,
+				contestId: props._id,
+				gameType: props.gameType.gameType,
 				userId: userId,
 				request: true
 			}
@@ -63,8 +63,8 @@ const ContestCard = (props) => {
 	const enterContestAction = () => {
 		const userId = localStorage.getItem("userId")
 		const data = {
-			contestId: props.contestId,
-			gameType: props.gameType,
+			contestId: props._id,
+			gameType: props.gameType.gameType,
 			userId: userId,
 			request: false
 		}

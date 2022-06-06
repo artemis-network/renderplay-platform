@@ -28,6 +28,7 @@ const Wordle = () => {
 		localStorage.removeItem("gameConfig")
 		localStorage.removeItem("timer")
 		loadRendleGames().then(({ rendles, mobileViewRendles }) => {
+			console.log(rendles)
 			setRendleGameTypes({
 				rendles: [...rendles],
 				mobileViewRendles: [...mobileViewRendles]
