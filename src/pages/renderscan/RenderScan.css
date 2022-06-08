@@ -137,3 +137,15 @@
   justify-content: flex-end;
   margin: 0.5rem;
 }
+
+.contest_scroll {
+  overscroll-behavior: none;
+  width: 200%;
+  height: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.wrap_contest {
+  margin-left: 25vw;
+}

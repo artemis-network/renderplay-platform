@@ -13,8 +13,11 @@ import { enterContest } from '../../../../service/rendles.service'
 
 import ConfirmModal from '../confirm_modal/ConfirmModal'
 import InsufficentFunds from '../in_sufficent_fund_modals/InsufficentFunds'
+import MetaMaskWalletAddressModal from '../metamask_modal/MetaMaskModal'
 
 import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
+import { useCountdown } from '../../../common/timer/useCountDown'
+
 
 import './ContestCard.css'
 
@@ -25,26 +28,39 @@ const ContestCard = (props) => {
 
 	const [confirmModal, setConfirmModal] = useState(false);
 	const [InsufficentModal, setInsufficentModal] = useState(false)
+	const [metaMaskModal, setMetaMaskModal] = useState(false)
+
+	const [days, hours, minutes, seconds, isFinished] = useCountdown(new Date(props.expiresAt))
 
 	const InsufficentModalClose = () => setInsufficentModal(false);
 	const InsufficentModalOpen = () => setInsufficentModal(true)
 
+	const metaMaskModalClose = () => setMetaMaskModal(false);
+	const metaMaskModalOpen = () => setMetaMaskModal(true)
 
 	const ConfirmModalOpen = () => {
 		const userId = localStorage.getItem("userId")
+		const metaMaskAddress = localStorage.getItem('metaMaskWalletAddress')
+		if (
+			!metaMaskAddress ||
+			metaMaskAddress === null ||
+			metaMaskAddress === undefined ||
+			metaMaskAddress === "null" ||
+			metaMaskAddress === "undefined"
+		) return setMetaMaskModal(true)
+
+
 		if (userId !== null) {
 			const data = {
-				contestId: props._id,
-				gameType: props.gameType.gameType,
-				userId: userId,
-				request: true
+				contestId: props._id, userId: userId, request: true,
+				walletAddress: metaMaskAddress
 			}
 			enterContest(data).then((res) => {
 				// if user already in contest [ALREADY_IN_CONTEST]
 				if (res.data.status === "[ALREADY_IN_CONTEST]") {
 					localStorage.setItem("gameStateId", res.data.gameStateId)
 					localStorage.setItem("gameConfig", JSON.stringify(props))
-					return history.push("/game")
+					return history.push("/lobby")
 				}
 				// if user has insufficient  [INSUFFICIENT_FUNDS]
 				if (res.data.status === "[INSUFFICENT_FUNDS]") {
@@ -55,16 +71,19 @@ const ContestCard = (props) => {
 					setConfirmModal(true)
 				}
 			})
+			return
 		}
-		else return history.push("/login")
+		return history.push("/login")
 	}
 	const ConfirmModalClose = () => setConfirmModal(false);
 
 	const enterContestAction = () => {
 		const userId = localStorage.getItem("userId")
+
+		const metaMaskAddress = localStorage.getItem('metaMaskWalletAddress')
 		const data = {
 			contestId: props._id,
-			gameType: props.gameType.gameType,
+			walletAddress: metaMaskAddress,
 			userId: userId,
 			request: false
 		}
@@ -73,7 +92,7 @@ const ContestCard = (props) => {
 			if (res.data.status === "[ALREADY_IN_CONTEST]") {
 				localStorage.setItem("gameStateId", res.data.gameStateId)
 				localStorage.setItem("gameConfig", JSON.stringify(props))
-				return history.push("/game")
+				return history.push("/lobby")
 			}
 			// if user has insufficient [INSUFFICIENT_FUNDS]
 			if (res.data.status === "[INSUFFICENT_FUNDS]") {
@@ -81,7 +100,7 @@ const ContestCard = (props) => {
 			}
 			localStorage.setItem("gameConfig", JSON.stringify(props))
 			setConfirmModal(false)
-			return history.push("/game")
+			return history.push("/lobby")
 		})
 	}
 
@@ -148,6 +167,7 @@ const ContestCard = (props) => {
 		<div style={{ background: `#321E43` }} className={"c-mobile-view"}>
 			<ConfirmModal show={confirmModal} entryFee={props.entryFee} modalOpen={ConfirmModalOpen} modalClose={ConfirmModalClose} play={enterContestAction} />
 			<InsufficentFunds show={InsufficentModal} modalOpen={InsufficentModalOpen} modalClose={InsufficentModalClose} />
+			<MetaMaskWalletAddressModal show={metaMaskModal} modalOpen={metaMaskModalOpen} modalClose={metaMaskModalClose} />
 			{/* CONTROLLERS */}
 			<input style={{ display: "none" }} type="checkbox" id={"u-mobile__button" + cssFinder()} name={"u-mobile__button" + cssFinder()} />
 			<input style={{ display: "none" }} type="checkbox" id={"u-topbar__button" + cssFinder()} name={"u-topbar__button" + cssFinder()} />
@@ -209,10 +229,11 @@ const ContestCard = (props) => {
 								</div>
 							</div>
 							<div className={"c-card__details__bottom"}>
-
-								{
+								{!isFinished ? <div>{
 									expiredIn() < -1000 * 60 * 60 * 4 ?
 										<Expired /> : <Countdown renderer={exp_renderer} date={Date.now() + expiredIn()} />
+								}</div>
+									: <div>Game Closed</div>
 								}
 							</div>
 						</div>
@@ -224,58 +245,64 @@ const ContestCard = (props) => {
 				<SwitchVerticalIcon className='h-4 w-4 cursor-pointer' color="white" />
 			</label>
 			{
-				expiredIn() > -1000 * 60 * 60 * 4 && expiredIn() < 0 ?
-					<img
-						alt="play"
-						src={PlayPng}
-						onClick={() => ConfirmModalOpen()}
-						className='h-24 w-24 cursor-pointer'
-						style={{
-							position: "absolute",
-							margin: "auto",
-							left: 0,
-							right: 0,
-							bottom: "-2.5rem"
+				!isFinished ?
+					<div>
+						{
+							expiredIn() > -1000 * 60 * 60 * 4 && expiredIn() < 0 ?
+								<img
+									alt="play"
+									src={PlayPng}
+									onClick={() => ConfirmModalOpen()}
+									className='h-24 w-24 cursor-pointer'
+									style={{
+										position: "absolute",
+										margin: "auto",
+										left: 0,
+										right: 0,
+										bottom: "-2.5rem"
 
-						}}
-						color="green" />
-					: null
+									}}
+									color="green" />
+								: null
 
-			}
-			{
-				expiredIn() < 1000 * 60 * 60 * 4 && expiredIn() > 0 ?
-					<img
-						alt="play"
-						src={StartsPng}
-						className='h-24 w-24 cursor-pointer'
-						style={{
-							position: "absolute",
-							margin: "auto",
-							left: 0,
-							right: 0,
-							bottom: "-2.5rem"
+						}
+						{
+							expiredIn() < 1000 * 60 * 60 * 4 && expiredIn() > 0 ?
+								<img
+									alt="play"
+									src={StartsPng}
+									className='h-24 w-24 cursor-pointer'
+									style={{
+										position: "absolute",
+										margin: "auto",
+										left: 0,
+										right: 0,
+										bottom: "-2.5rem"
 
-						}}
-						color="green" />
-					: null
+									}}
+									color="green" />
+								: null
 
-			}
+						}
 
-			{
-				expiredIn() < -1000 * 60 * 60 * 8 ?
-					<img
-						alt="play"
-						src={ExpiredPng}
-						className='h-20 w-20 cursor-pointer'
-						style={{
-							position: "absolute",
-							margin: "auto",
-							left: 0,
-							right: 0,
-							bottom: "-2.5rem"
+						{
+							expiredIn() < -1000 * 60 * 60 * 8 ?
+								<img
+									alt="play"
+									src={ExpiredPng}
+									className='h-20 w-20 cursor-pointer'
+									style={{
+										position: "absolute",
+										margin: "auto",
+										left: 0,
+										right: 0,
+										bottom: "-2.5rem"
 
-						}}
-					/>
+									}}
+								/>
+								: null
+						}
+					</div>
 					: null
 			}
 		</div >

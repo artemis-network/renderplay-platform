@@ -2,8 +2,7 @@ import React, { useEffect, useState, lazy } from 'react'
 
 import { Container } from 'react-bootstrap'
 import { getRenderScanGameTypes } from '../../service/renderscan.service'
-import gsap from 'gsap';
-import { ScrollTrigger } from 'react-gsap'
+
 
 const ContestCard = lazy(() => import('../rendle/components/contest_card/ContestCard'))
 const Bar = lazy(() => import("../common/bar/Bar"))
@@ -15,26 +14,9 @@ const Wordle = () => {
 
 	const [renderScanGameTypes, setRenderScanGameTypes] = useState([])
 	useEffect(() => {
-
-		// gsap.registerPlugin(ScrollTrigger);
-
-		// let sections = gsap.utils.toArray(".contest_game_card");
-
-		// gsap.to(sections, {
-		// 	xPercent: -100 * (sections.length - 1),
-		// 	ease: "none",
-		// 	scrollTrigger: {
-		// 		trigger: ".contest_scroll",
-		// 		pin: true,
-		// 		scrub: 1,
-		// 		snap: 1 / (sections.length - 1),
-		// 		end: () => "+=" + document.querySelector(".contest_scroll").offsetWidth
-		// 	}
-		// });
-
-
 		getRenderScanGameTypes()
 			.then((response) => {
+				console.log(response)
 				setRenderScanGameTypes([...response])
 			}).catch(err => console.log(err))
 

@@ -68,8 +68,8 @@ export const loadRendleGames = async () => {
 		}
 
 		return {
-			mobileViewRendles: [...temp_m],
-			rendles: [...temp]
+			mobileViewRendles: [...data],
+			rendles: [...data]
 		}
 
 	} catch (error) {

@@ -190,6 +190,8 @@ function Wallet() {
   function ConnectButton({ handleOpenModal }) {
     const { activateBrowserWallet, account, chainId, deactivate } = useEthers();
     const etherBalance = useEtherBalance(account);
+    localStorage.setItem("metaMaskWalletAddress", account)
+
 
     const [isWrongNetwork, setIsWrongNetwork] = useState(false)
 
@@ -198,7 +200,6 @@ function Wallet() {
     }
 
     function changeNetwork() {
-
     }
 
     useEffect(() => {

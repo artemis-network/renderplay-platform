@@ -28,8 +28,6 @@ import { FiveLetterGuesses } from './constants/config/fiveLetterGuesses'
 import { sixLetterGuesses } from './constants/config/sixLetterGuesses'
 import { SevenLetterGuesses } from './constants/config/sevenLetterGuesses'
 
-import Countdown from "react-countdown"
-
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
 import { saveRendleGame, getContestantStatus, getGuesses, updateGuesses } from '../../../service/rendles.service'
@@ -37,6 +35,7 @@ import { saveRendleGame, getContestantStatus, getGuesses, updateGuesses } from '
 import { InformationCircleIcon } from '@heroicons/react/solid'
 
 import Lottie from 'lottie-react-web'
+import { useCountdown } from '../../common/timer/useCountDown'
 
 const defaultOptions_Timer = {
   loop: true,
@@ -50,38 +49,11 @@ const defaultOptions_Timer = {
 const Bar = lazy(() => import("../../common/bar/Bar"))
 
 const RendleGame = () => {
-
-  const timerFormatter = (time) => {
-    time = String(time)
-    if (time.length === 1)
-      time = "0" + time
-    return time
-  }
-
-  const counter = ({ hours, minutes, seconds, completed }) => {
-
-    return <div style={{ dsplay: "flex", justifyContent: "center", flexDirection: "row", margin: "0 2rem" }}>
-      <Lottie
-        style={{ height: "4rem", width: "4rem", paddingBottom: "2rem" }}
-        options={defaultOptions_Timer}
-      />
-      <div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
-        {"Ends in"} <div style={{ fontSize: ".8rem" }}>
-          <div>
-            <span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
-              {timerFormatter(minutes)}
-            </span>
-            <span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
-              {timerFormatter(seconds)}
-            </span>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  }
+  const userId = localStorage.getItem("userId")
+  const data = JSON.parse(localStorage.getItem("gameConfig"))
 
   const history = useHistory()
+
 
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } = useAlert()
   const [currentGuess, setCurrentGuess] = useState('')
@@ -96,16 +68,16 @@ const RendleGame = () => {
   const [WORDS, SET_WORDS] = useState([])
   const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
   const [isGameFinished, setIsGameFinished] = useState(false)
-  const [timer, setTimer] = useState(null)
+  const [timer, setTimer] = useState(new Date(new Date().getTime() + (1000 * 60 * 1)))
   const [background, setBackground] = useState(Background1)
+  const [stop, setStop] = useState(false)
 
   const [solution, setSolution] = useState("")
 
-  const userId = localStorage.getItem("userId")
-  const data = JSON.parse(localStorage.getItem("gameConfig"))
+  const [days, hours, minutes, seconds, isFinished] = useCountdown(timer);
+
 
   useEffect(() => {
-    console.log(data.gameType)
     SET_MAX(data.gameType)
     SET_MAX_CHALLENGES(data.gameType)
     if (data.gameType === 5) {
@@ -143,15 +115,8 @@ const RendleGame = () => {
 
   const clearCurrentRowClass = () => setCurrentRowClass('')
 
-  useEffect(() => {
-    saveGameStateToLocalStorage({ guesses, solution })
-  }, [guesses, solution])
+  useEffect(() => saveGameStateToLocalStorage({ guesses, solution }), [guesses, solution])
 
-  const expiredIn = (t) => {
-    const now = new Date()
-    const time = new Date(t)
-    return time.getTime() - now.getTime();
-  }
 
   useEffect(() => {
     if (userId) {
@@ -160,15 +125,21 @@ const RendleGame = () => {
           const isGameCompleted = res.data.isGameCompleted
           const isSameContest = data._id === res.data.contestId
 
+          if (isGameCompleted) {
+            if (res.data.isWon) setIsGameWon(true)
+            else setIsGameLost(true)
+            return setIsGameModalOpen(true)
+          }
+
           if (!isGameCompleted || !isSameContest) {
             let guesses = JSON.parse(localStorage.getItem("gameState"))
 
             guesses = guesses.guesses.length
             let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
-            console.log(gameConfig)
 
-            const time = res.data.expiresIn
-            setTimer(() => <Countdown renderer={counter} date={Date.now() + expiredIn(time)} />)
+            const time = res.data.expiresAt
+            console.log(res.data)
+            setTimer(time)
 
             if (isGameLost) {
               const data = {
@@ -292,6 +263,80 @@ const RendleGame = () => {
     }
   }
 
+  const timerFormatter = (time) => {
+    time = String(time)
+    if (time.length === 1)
+      time = "0" + time
+    return time
+  }
+
+  const isFinishedUpdate = () => {
+    const gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
+    const data = {
+      userId: localStorage.getItem("userId"),
+      username: localStorage.getItem("username"),
+      completedIn: new Date(),
+      chances: guesses.length,
+      gameType: gameConfig.gameType,
+      contestId: gameConfig._id,
+      isWon: false
+    }
+    saveRendleGame(data).then(res => {
+      setIsGameModalOpen(true)
+      localStorage.removeItem("gameStateId")
+      return setIsGameLost(true)
+    }).catch(err => console.log(err))
+  }
+
+
+  useEffect(() => {
+    if (stop === true) {
+      isFinishedUpdate()
+    }
+  }, [stop])
+
+
+  const Counter = () => {
+    if (isFinished) {
+      if (stop !== true) setStop(true)
+    }
+    return <div style={{
+      display: "flex", justifyContent: "flex-end", alignItems: "center", flexDirection: "row", padding: "2rem 0rem", margin: "0 4rem", zIndex: 3,
+    }}>
+
+      <div style={{ color: "#ffffff", display: "flex", }}>
+        <div style={{ fontSize: "1.25rem" }}>
+          <div>
+            <span style={{ background: "#253393", fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+              {timerFormatter(minutes)}
+            </span>
+            <span style={{ background: "#253393", fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+              {timerFormatter(seconds)}
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <div style={{}}>
+        <Lottie
+          style={{ height: "8rem", width: "8rem", }}
+          options={defaultOptions_Timer}
+        />
+      </div>
+      <div className='p-1'>
+        <InformationCircleIcon
+          color='white'
+          style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
+          className="h-12 w-12 cursor-pointer dark:stroke-white"
+          onClick={() => setIsInfoModalOpen(true)}
+        />
+      </div>
+
+    </div>
+  }
+
+
   const get_timer = () => {
     if (MAX_WORD_LENGTH === 5) return 1950
     if (MAX_WORD_LENGTH === 6) return 2425
@@ -307,15 +352,8 @@ const RendleGame = () => {
     <div>
       <Bar isGame={true} />
       <div className="h-screen flex flex-col" style={{ background: "#321E43" }}>
-        <div className='p-5'>
-          <InformationCircleIcon
-            color='white'
-            style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
-            className="h-12 w-12 cursor-pointer dark:stroke-white"
-            onClick={() => setIsInfoModalOpen(true)}
-          />
-        </div>
-        {timer}
+
+        <Counter />
 
         <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
           <div className="grow_keyboard">

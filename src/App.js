@@ -6,10 +6,12 @@ import "./App.css";
 
 const Rendle = lazy(() => import('./pages/rendle/Rendle'));
 const RendleGame = lazy(() => import('./pages/rendle/game/RendleGame'));
+import { RendleLobby } from './pages/rendle/RendleLobby'
 
 const RenderScan = lazy(() => import("./pages/renderscan/RenderScan"))
 const RenderScanGame = lazy(() => import("./pages/renderscan/RenderScanGame"))
 import { RenderScanLobby } from './pages/renderscan/RenderScanLobby'
+
 
 const Signup = lazy(() => import('./pages/auth/Signup'));
 const Login = lazy(() => import('./pages/auth/Login'));
@@ -17,7 +19,11 @@ const Login = lazy(() => import('./pages/auth/Login'));
 const Raffle = lazy(() => import('./pages/raffle/Raffle'));
 const HangMan = lazy(() => import('./pages/hangman/HangMan'));
 
+
 import Loader from "react-js-loader";
+
+
+import { gsap, ScrollTrigger } from "gsap/all";
 
 const App = () => {
 
@@ -27,6 +33,22 @@ const App = () => {
   }
 
   useEffect(() => {
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    let sections = gsap.utils.toArray(".contest_game_card");
+
+    gsap.to(sections, {
+      xPercent: -100 * (sections.length - 1),
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".contest_scroll",
+        pin: true,
+        scrub: 1,
+        snap: 1 / (sections.length - 1),
+        invalidateOnRefresh: true,
+      },
+    });
     const session = localStorage.getItem("session")
     if (session !== null) {
       // const loginTime = new Date(JSON.parse(session)).getTime()
@@ -48,10 +70,11 @@ const App = () => {
 
           <Route exact component={Rendle} path="/" />
           <Route exact component={RendleGame} path="/game" />
-          <Route exact component={RenderScanLobby} path="/renderscan/lobby" />
+          <Route exact component={RendleLobby} path="/lobby" />
 
           <Route exact component={RenderScan} path="/renderscan" />
           <Route exact component={RenderScanGame} path="/renderscan/game" />
+          <Route exact component={RenderScanLobby} path="/renderscan/lobby" />
 
           <Route exact component={HangMan} path="/hangman" />
 

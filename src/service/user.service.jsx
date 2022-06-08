@@ -20,3 +20,6 @@ export const createSession = (data) => {
 
 export const getWallet = async (data) =>
   await axios.post(`${walletPrefix}`, data, headers);
+
+export const setWalletAddress = async (data) =>
+  await axios.post(`${userPrefix}/set-wallet-address`, data);
