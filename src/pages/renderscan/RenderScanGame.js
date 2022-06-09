@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import Countdown from "react-countdown"
-
 import DropSvg from "../../assets/renderscan/black frame.svg";
 import HowToPlaySvg from "../../assets/renderscan/hp.svg";
 import Astro from "../../assets/renderscan/Artboard 4.svg";
@@ -60,10 +58,12 @@ const Scan = () => {
 	const closeModal = () => history.push("/renderscan");
 	const openConfirm = () => setConfirm(true);
 
+	const userId = localStorage.getItem("userId")
 
 	const getPlayerStatus = () => {
-		const contest = JSON.parse(localStorage.getItem("renderScanData"));
-		const data = { contestId: contest.contestId };
+		const contest = JSON.parse(localStorage.getItem("renderscanGameData"));
+		console.log(contest._id)
+		const data = { contestId: contest._id, userId: userId };
 		getRenderScanPlayerStatus(data)
 			.then((res) => setIsSubmitted(res.data.isSubmitted))
 			.catch((err) => console.log(err));
@@ -71,18 +71,21 @@ const Scan = () => {
 
 	const save = () => {
 		setConfirm(false);
-		const contest = JSON.parse(localStorage.getItem("renderScanData"));
-		const data = { contestId: contest.contestId, userId: localStorage.getItem("userId"), fileUrl: img };
+		const contest = JSON.parse(localStorage.getItem("renderscanGameData"));
+
+		console.log(contest._id)
+		const data = { contestId: contest._id, userId: localStorage.getItem("userId"), fileUrl: img };
 		saveRenderScanGame(data).then((res) => setMatch(true)).catch((err) => console.log(err));
 	};
 
 	const update = () => {
-		const contest = JSON.parse(localStorage.getItem("renderScanData"));
-		const data = { contestId: contest.contestId };
+		const contest = JSON.parse(localStorage.getItem("renderscanGameData"));
+		console.log(contest._id)
+		const data = { contestId: contest._id, userId: userId };
 		getRenderScanQuizQuestion(data).then((resp) => {
 			console.log(resp.data)
 			if (!resp.data.isGameStarted) return history.push("/renderscan/lobby")
-			setExpiresAt(resp.data.expiresAt)
+			setExpiresAt(new Date(new Date(resp.data.expiresAt).getTime() + 1000 * 5))
 			setQuestion(resp.data.question)
 		});
 		getPlayerStatus();

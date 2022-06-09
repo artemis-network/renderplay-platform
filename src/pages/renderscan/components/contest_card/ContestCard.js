@@ -9,10 +9,10 @@ import PlayPng from '../../../../assets/rendle/rendle/play.webp'
 import ExpiredPng from '../../../../assets/rendle/rendle/menu.webp'
 import StartsPng from '../../../../assets/rendle/rendle/play_disable.webp'
 
-import { enterContest } from '../../../../service/rendles.service'
+import { enterRenderScanGame, } from '../../../../service/renderscan.service'
 
-import ConfirmModal from '../confirm_modal/ConfirmModal'
-import InsufficentFunds from '../in_sufficent_fund_modals/InsufficentFunds'
+import ConfirmModal from '../modals/ConfirmModal'
+import InsufficentFunds from '../modals/InsufficentFundsModal'
 
 import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
 
@@ -32,19 +32,19 @@ const ContestCard = (props) => {
 
 	const ConfirmModalOpen = () => {
 		const userId = localStorage.getItem("userId")
+		const walletAddress = localStorage.getItem("metaMaskWalletAddress")
 		if (userId !== null) {
 			const data = {
-				contestId: props.contestId,
-				gameType: props.gameType,
+				contestId: props._id,
 				userId: userId,
+				walletAddress: walletAddress,
 				request: true
 			}
-			enterContest(data).then((res) => {
+			enterRenderScanGame(data).then((res) => {
 				// if user already in contest [ALREADY_IN_CONTEST]
 				if (res.data.status === "[ALREADY_IN_CONTEST]") {
-					localStorage.setItem("gameStateId", res.data.gameStateId)
-					localStorage.setItem("gameConfig", JSON.stringify(props))
-					return history.push("/game")
+					localStorage.setItem("renderscanGameData", JSON.stringify(props))
+					return history.push("/renderscan/lobby")
 				}
 				// if user has insufficient  [INSUFFICIENT_FUNDS]
 				if (res.data.status === "[INSUFFICENT_FUNDS]") {
@@ -52,6 +52,7 @@ const ContestCard = (props) => {
 				}
 				// if user cleared all criteriea [APPROVED]
 				if (res.data.status === "[APPROVED]") {
+					localStorage.setItem("renderscanGameData", JSON.stringify(props))
 					setConfirmModal(true)
 				}
 			})
@@ -62,26 +63,27 @@ const ContestCard = (props) => {
 
 	const enterContestAction = () => {
 		const userId = localStorage.getItem("userId")
+		const walletAddress = localStorage.getItem("metaMaskWalletAddress")
 		const data = {
-			contestId: props.contestId,
-			gameType: props.gameType,
+			contestId: props._id,
 			userId: userId,
+			walletAddress: walletAddress,
 			request: false
 		}
-		enterContest(data).then((res) => {
+		enterRenderScanGame(data).then((res) => {
 			// if user already in contest [ALREADY_IN_CONTEST]
 			if (res.data.status === "[ALREADY_IN_CONTEST]") {
-				localStorage.setItem("gameStateId", res.data.gameStateId)
-				localStorage.setItem("gameConfig", JSON.stringify(props))
-				return history.push("/game")
+				localStorage.setItem("renderscanGameData", JSON.stringify(props))
+				return history.push("/renderscan/lobby")
 			}
 			// if user has insufficient [INSUFFICIENT_FUNDS]
 			if (res.data.status === "[INSUFFICENT_FUNDS]") {
 				return setInsufficentModal(true)
 			}
-			localStorage.setItem("gameConfig", JSON.stringify(props))
+			localStorage.setItem("renderscanGameData", JSON.stringify(props))
 			setConfirmModal(false)
-			return history.push("/game")
+
+			return history.push("/renderscan/lobby")
 		})
 	}
 

@@ -16,12 +16,9 @@ import './Rendle.css'
 
 const Wordle = () => {
 
-	const [rendleGameTypes, setRendleGameTypes] = useState(
-		{
-			rendles: [],
-			mobileViewRendles: []
-		}
-	)
+	const [rendleGameTypes, setRendleGameTypes] = useState({
+		rendles: [], mobileViewRendles: []
+	})
 	useEffect(() => {
 		localStorage.removeItem("gameStateId")
 		localStorage.removeItem("gameState")

@@ -25,9 +25,6 @@ export const RendleLobby = () => {
 			}).catch(err => console.log(err))
 	}
 
-	useEffect(() => {
-		init()
-	}, [])
 
 	const timerFormatter = (time) => {
 		time = String(time)
@@ -38,9 +35,13 @@ export const RendleLobby = () => {
 
 	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
 
+	useEffect(() => {
+		init()
+		if (isFinished) return history.push("/game")
+	}, [isFinished])
+
+
 	const Counter = () => {
-		if (isFinished)
-			return <button className='btn btn-primary' onClick={() => history.push("/game")}>Enter</button>
 
 		return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
 			<div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
@@ -72,7 +73,7 @@ export const RendleLobby = () => {
 				<img src={Alaram} style={{ position: "absolute", right: "-4rem", bottom: "-4rem", }} width="150" alt="alram" />
 				<img src={ProcessPng} style={{ position: "absolute", left: "-8rem", top: "-6rem" }} width="300" alt="alram" />
 				<div style={{
-					backgroundImage: "linear-gradient(to bottom, #9901ff, #8c03e6, #7f05cd, #7207b4, #65099d)", width: "30vw", height: "50vh",
+					backgroundImage: "linear-gradient(to bottom, #9901ff, #8c03e6, #7f05cd, #7207b4, #65099d)",
 					borderRadius: "3vh",
 					border: "6px solid #C670FF",
 					padding: "3rem 0"

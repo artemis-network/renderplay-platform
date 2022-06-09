@@ -9,16 +9,16 @@ export const RenderScanLobby = () => {
 
 	const history = useHistory();
 
-	const data = JSON.parse(localStorage.getItem("renderScanData"));
-	const [expiresAt, setExpiresAt] = useState(new Date(data.startsOn))
-
+	const data = JSON.parse(localStorage.getItem("renderscanGameData"));
+	const [expiresAt, setExpiresAt] = useState(new Date(new Date().getTime() + (1000 * 60)))
 
 	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
 
 	useEffect(() => {
-		const d = { contestId: data.contestId };
+		const d = { contestId: data._id };
 		getRenderScanQuizQuestion(d).then((resp) => {
-			setExpiresAt(resp.data.lobbyTime)
+			if (resp.data.isGameEnded) return history.push("/renderscan")
+			setExpiresAt(resp.data.expiresAt)
 		}).catch(err => console.log(err))
 	}, [])
 

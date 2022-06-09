@@ -15,7 +15,7 @@ import CelebrityPngFree from '../assets/renderscan/10.png'
 import Line from '../assets/rendle/rendle/line1.webp'
 
 export const getRenderScanTypes = async () => {
-	return await axios.get(`${renderScanPrefix}`)
+	return
 }
 
 export const getRenderScanPlayerStatus = async (body) => {
@@ -36,8 +36,9 @@ export const getRenderScanQuizQuestion = async (body) => {
 
 export const getRenderScanGameTypes = async () => {
 	const modifiedTypes = [];
-	const { data: { renderScanGameTypes } } = await axios.get(`${renderScanPrefix}/types`)
-	const types = renderScanGameTypes;
+	const { data: { renderscanContests } } = await axios.get(`${renderScanPrefix}`)
+	const types = renderscanContests
+	console.log(types)
 	for (let i = 0; i < types.length; i++) {
 		modifiedTypes.push(types[i])
 		const type = await typeFinder(types[i].gameType);

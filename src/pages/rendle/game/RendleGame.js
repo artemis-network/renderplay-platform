@@ -271,21 +271,21 @@ const RendleGame = () => {
   }
 
   const isFinishedUpdate = () => {
-    const gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
-    const data = {
-      userId: localStorage.getItem("userId"),
-      username: localStorage.getItem("username"),
-      completedIn: new Date(),
-      chances: guesses.length,
-      gameType: gameConfig.gameType,
-      contestId: gameConfig._id,
-      isWon: false
-    }
-    saveRendleGame(data).then(res => {
-      setIsGameModalOpen(true)
-      localStorage.removeItem("gameStateId")
-      return setIsGameLost(true)
-    }).catch(err => console.log(err))
+    // const gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
+    // const data = {
+    //   userId: localStorage.getItem("userId"),
+    //   username: localStorage.getItem("username"),
+    //   completedIn: new Date(),
+    //   chances: guesses.length,
+    //   gameType: gameConfig.gameType,
+    //   contestId: gameConfig._id,
+    //   isWon: false
+    // }
+    // saveRendleGame(data).then(res => {
+    //   setIsGameModalOpen(true)
+    //   localStorage.removeItem("gameStateId")
+    //   return setIsGameLost(true)
+    // }).catch(err => console.log(err))
   }
 
 
@@ -301,16 +301,15 @@ const RendleGame = () => {
       if (stop !== true) setStop(true)
     }
     return <div style={{
-      display: "flex", justifyContent: "flex-end", alignItems: "center", flexDirection: "row", padding: "2rem 0rem", margin: "0 4rem", zIndex: 3,
+      display: "flex", justifyContent: "flex-end", alignItems: "center", flexDirection: "", padding: "0rem 0rem", margin: "0rem", zIndex: 3,
     }}>
-
       <div style={{ color: "#ffffff", display: "flex", }}>
         <div style={{ fontSize: "1.25rem" }}>
           <div>
-            <span style={{ background: "#253393", fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+            <span className="username" style={{ fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: "2vh" }}>
               {timerFormatter(minutes)}
             </span>
-            <span style={{ background: "#253393", fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+            <span className="username" style={{ fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: "2vh" }}>
               {timerFormatter(seconds)}
             </span>
           </div>
@@ -318,20 +317,7 @@ const RendleGame = () => {
         </div>
       </div>
 
-      <div style={{}}>
-        <Lottie
-          style={{ height: "8rem", width: "8rem", }}
-          options={defaultOptions_Timer}
-        />
-      </div>
-      <div className='p-1'>
-        <InformationCircleIcon
-          color='white'
-          style={{ display: "flex", justifyContent: "flex-end", alignSelf: "flex-end" }}
-          className="h-12 w-12 cursor-pointer dark:stroke-white"
-          onClick={() => setIsInfoModalOpen(true)}
-        />
-      </div>
+
 
     </div>
   }
@@ -349,13 +335,25 @@ const RendleGame = () => {
   }
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <Bar isGame={true} />
-      <div className="h-screen flex flex-col" style={{ background: "#321E43" }}>
-
-        <Counter />
-
-        <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
+      <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0" }}>
+        <div style={{ padding: "1rem", width: "12vw", borderRadius: "2vh", position: "absolute", left: "5rem" }} className="username">
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
+            <InformationCircleIcon
+              color='white'
+              className="h-16 w-16 cursor-pointer dark:stroke-white"
+              onClick={() => setIsInfoModalOpen(true)}
+            />
+            <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
+            <Counter />
+            <Lottie
+              style={{ height: "10rem", width: "10rem", position: "absolute", bottom: "-5rem", right: "-5rem" }}
+              options={defaultOptions_Timer}
+            />
+          </div>
+        </div>
+        <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%" }}>
           <div className="grow_keyboard">
             <Grid
               guesses={guesses}
