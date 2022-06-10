@@ -62,7 +62,6 @@ const Scan = () => {
 
 	const getPlayerStatus = () => {
 		const contest = JSON.parse(localStorage.getItem("renderscanGameData"));
-		console.log(contest._id)
 		const data = { contestId: contest._id, userId: userId };
 		getRenderScanPlayerStatus(data)
 			.then((res) => setIsSubmitted(res.data.isSubmitted))
@@ -72,20 +71,17 @@ const Scan = () => {
 	const save = () => {
 		setConfirm(false);
 		const contest = JSON.parse(localStorage.getItem("renderscanGameData"));
-
-		console.log(contest._id)
 		const data = { contestId: contest._id, userId: localStorage.getItem("userId"), fileUrl: img };
 		saveRenderScanGame(data).then((res) => setMatch(true)).catch((err) => console.log(err));
 	};
 
 	const update = () => {
 		const contest = JSON.parse(localStorage.getItem("renderscanGameData"));
-		console.log(contest._id)
 		const data = { contestId: contest._id, userId: userId };
 		getRenderScanQuizQuestion(data).then((resp) => {
 			console.log(resp.data)
 			if (!resp.data.isGameStarted) return history.push("/renderscan/lobby")
-			setExpiresAt(new Date(new Date(resp.data.expiresAt).getTime() + 1000 * 5))
+			setExpiresAt(new Date(new Date(resp.data.expiresAt).getTime() + 1000 * 3))
 			setQuestion(resp.data.question)
 		});
 		getPlayerStatus();
@@ -101,6 +97,10 @@ const Scan = () => {
 			time = "0" + time
 		return time
 	}
+
+	useEffect(() => {
+		setMatch(true)
+	}, [img])
 
 	const Counter = () => {
 		if (isFinished) return <div className="render_word">Loading next question</div>
@@ -153,6 +153,8 @@ const Scan = () => {
 			try {
 				await Promise.race([subscribePromise, delay(remainingTime)])
 					.then(async (res) => {
+						console.log(res)
+						console.log(res.body)
 						if (res.body != undefined || res.body != null) {
 							var string = new TextDecoder().decode(res.body);
 							setIsWaiting(false);

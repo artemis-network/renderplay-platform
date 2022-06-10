@@ -113,7 +113,7 @@ const ContestCard = (props) => {
 
 	const exp_renderer = ({ hours, minutes, seconds, completed }) => {
 		if (completed)
-			return <div className="contest__card__header">
+			return !props.isClosed ? <div className="contest__card__header">
 				<PlayIcon
 					color="#219f94"
 					className="h-6 w-6 m-2 cursor-pointer dark:stroke-white"
@@ -121,7 +121,11 @@ const ContestCard = (props) => {
 				<div style={{ color: "#ffffff", display: "flex", columnGap: "5.7rem" }}>
 					{"Live"}
 				</div>
-			</div >
+			</div > : <div  >
+				<div style={{ dipslay: "flex", justifyContent: "center" }}>
+					Contest closed
+				</div>
+			</div>
 		else
 			return <div className="contest__card__header">
 				<ClockIcon
@@ -211,11 +215,16 @@ const ContestCard = (props) => {
 								</div>
 							</div>
 							<div className={"c-card__details__bottom"}>
-
 								{
-									expiredIn() < -1000 * 60 * 60 * 4 ?
-										<Expired /> : <Countdown renderer={exp_renderer} date={Date.now() + expiredIn()} />
+									props.upComing ? <div>Upcoming</div> :
+										<div>
+											{
+												expiredIn() < -1000 * 60 * 60 * 2 ?
+													<Expired /> : <Countdown renderer={exp_renderer} date={Date.now() + expiredIn()} />
+											}
+										</div>
 								}
+
 							</div>
 						</div>
 					</div>
@@ -225,61 +234,63 @@ const ContestCard = (props) => {
 			<label htmlFor={"u-cards-switcher__button" + cssFinder()} className={"c-button c-switcher__button"}>
 				<SwitchVerticalIcon className='h-4 w-4 cursor-pointer' color="white" />
 			</label>
-			{
-				expiredIn() > -1000 * 60 * 60 * 4 && expiredIn() < 0 ?
-					<img
-						alt="play"
-						src={PlayPng}
-						onClick={() => ConfirmModalOpen()}
-						className='h-24 w-24 cursor-pointer'
-						style={{
-							position: "absolute",
-							margin: "auto",
-							left: 0,
-							right: 0,
-							bottom: "-2.5rem"
+			{!props.isClosed ? <div>
+				{
+					expiredIn() > -1000 * 60 * 60 * 4 && expiredIn() < 0 ?
+						<img
+							alt="play"
+							src={PlayPng}
+							onClick={() => ConfirmModalOpen()}
+							className='h-24 w-24 cursor-pointer'
+							style={{
+								position: "absolute",
+								margin: "auto",
+								left: 0,
+								right: 0,
+								bottom: "-2.5rem"
 
-						}}
-						color="green" />
-					: null
+							}}
+							color="green" />
+						: null
 
-			}
-			{
-				expiredIn() < 1000 * 60 * 60 * 4 && expiredIn() > 0 ?
-					<img
-						alt="play"
-						src={StartsPng}
-						className='h-24 w-24 cursor-pointer'
-						style={{
-							position: "absolute",
-							margin: "auto",
-							left: 0,
-							right: 0,
-							bottom: "-2.5rem"
+				}
+				{
+					expiredIn() < 1000 * 60 * 60 * 4 && expiredIn() > 0 ?
+						<img
+							alt="play"
+							src={StartsPng}
+							className='h-24 w-24 cursor-pointer'
+							style={{
+								position: "absolute",
+								margin: "auto",
+								left: 0,
+								right: 0,
+								bottom: "-2.5rem"
 
-						}}
-						color="green" />
-					: null
+							}}
+							color="green" />
+						: null
 
-			}
+				}
 
-			{
-				expiredIn() < -1000 * 60 * 60 * 8 ?
-					<img
-						alt="play"
-						src={ExpiredPng}
-						className='h-20 w-20 cursor-pointer'
-						style={{
-							position: "absolute",
-							margin: "auto",
-							left: 0,
-							right: 0,
-							bottom: "-2.5rem"
+				{
+					expiredIn() < -1000 * 60 * 60 * 8 ?
+						<img
+							alt="play"
+							src={ExpiredPng}
+							className='h-20 w-20 cursor-pointer'
+							style={{
+								position: "absolute",
+								margin: "auto",
+								left: 0,
+								right: 0,
+								bottom: "-2.5rem"
 
-						}}
-					/>
-					: null
-			}
+							}}
+						/>
+						: null
+				}
+			</div> : null}
 		</div >
 	);
 }

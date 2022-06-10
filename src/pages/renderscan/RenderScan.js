@@ -1,15 +1,18 @@
-import React, { useEffect, useState, lazy } from 'react'
+import React, { useEffect, useState, lazy, useRef } from 'react'
 
 import { Container } from 'react-bootstrap'
 import { getRenderScanGameTypes } from '../../service/renderscan.service'
 
 const ContestCard = lazy(() => import('./components/contest_card/ContestCard'))
 const Bar = lazy(() => import("../common/bar/Bar"))
-const Footer = lazy(() => import("../common/footer/Footer"))
 import './RenderScan.css'
+
+import { gsap, ScrollTrigger } from "gsap/all";
+
 
 const Wordle = () => {
 
+	const ref = useRef(null)
 	const [renderScanGameTypes, setRenderScanGameTypes] = useState([])
 	useEffect(() => {
 		getRenderScanGameTypes()
@@ -18,19 +21,37 @@ const Wordle = () => {
 			}).catch(err => console.log(err))
 	}, [])
 
+	// useEffect(() => {
+	// 	gsap.registerPlugin(ScrollTrigger);
+
+	// 	let sections = gsap.utils.toArray(".x_panel");
+
+	// 	gsap.to(sections, {
+	// 		xPercent: -100 * (sections.length - 1),
+	// 		ease: "none",
+	// 		scrollTrigger: {
+	// 			trigger: ".horizontal_container",
+	// 			pin: true,
+	// 			scrub: 1,
+	// 			snap: 1 / (sections.length - 1),
+	// 			// base vertical scrolling on how wide the container is so it feels more natural.
+	// 			end: "+=3500",
+	// 		}
+	// 	});
+	// }, [])
+
 
 	return (<div >
 		<div className="container__bg">
 			<Bar isGame={false} />
-			<Container>
-				<div style={{ display: 'grid', gridTemplateColumns: "1fr 1fr 1fr", justifyContent: 'center', padding: "6rem 6rem", rowGap: "4rem", columnGap: "4rem" }}>
-					{renderScanGameTypes.map((game, i) => <div key={game.contestId} className={game.css + " contest_game_card"}>
+			<Container >
+				<div ref={ref} className="horizontal_container" style={{ display: 'flex', justifyContent: 'center', padding: "6rem 0rem", columnGap: "2rem" }}>
+					{renderScanGameTypes.map((game, i) => <div key={game.contestId} className={game.css + " x_panel"}>
 						<ContestCard  {...game} key={i} index={i} />
 					</div>)}
 				</div>
 			</Container>
 		</div>
-		<Footer />
 	</div>)
 }
 export default Wordle

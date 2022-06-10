@@ -36,8 +36,10 @@ export const getRenderScanQuizQuestion = async (body) => {
 
 export const getRenderScanGameTypes = async () => {
 	const modifiedTypes = [];
-	const { data: { renderscanContests } } = await axios.get(`${renderScanPrefix}`)
-	const types = renderscanContests
+	// const { data: { renderscanContests } } = await axios.get(`${renderScanPrefix}`)
+	const d = await axios.get(`${renderScanPrefix}`)
+	console.log(d)
+	const types = d.data.renderscanContests
 	console.log(types)
 	for (let i = 0; i < types.length; i++) {
 		modifiedTypes.push(types[i])
