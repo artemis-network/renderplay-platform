@@ -1,7 +1,6 @@
 .renderscan_bg {
   height: 100vh;
   width: auto;
-  background-image: url("../../assets/renderscan/back2.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-origin: border-box;
@@ -77,7 +76,6 @@
   .renderscan_bg {
     height: 115vh;
     width: auto;
-    background-image: url("../../assets/renderscan/back3.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-origin: border-box;
@@ -138,7 +136,6 @@
   .renderscan_bg {
     height: 100vh;
     width: auto;
-    background-image: url("../../assets/renderscan/back1.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-origin: border-box;

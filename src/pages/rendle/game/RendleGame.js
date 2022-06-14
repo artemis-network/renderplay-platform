@@ -271,21 +271,21 @@ const RendleGame = () => {
   }
 
   const isFinishedUpdate = () => {
-    // const gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
-    // const data = {
-    //   userId: localStorage.getItem("userId"),
-    //   username: localStorage.getItem("username"),
-    //   completedIn: new Date(),
-    //   chances: guesses.length,
-    //   gameType: gameConfig.gameType,
-    //   contestId: gameConfig._id,
-    //   isWon: false
-    // }
-    // saveRendleGame(data).then(res => {
-    //   setIsGameModalOpen(true)
-    //   localStorage.removeItem("gameStateId")
-    //   return setIsGameLost(true)
-    // }).catch(err => console.log(err))
+    const gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
+    const data = {
+      userId: localStorage.getItem("userId"),
+      username: localStorage.getItem("username"),
+      completedIn: new Date(),
+      chances: guesses.length,
+      gameType: gameConfig.gameType,
+      contestId: gameConfig._id,
+      isWon: false
+    }
+    saveRendleGame(data).then(res => {
+      setIsGameModalOpen(true)
+      localStorage.removeItem("gameStateId")
+      return setIsGameLost(true)
+    }).catch(err => console.log(err))
   }
 
 

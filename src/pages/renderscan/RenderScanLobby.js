@@ -2,7 +2,7 @@ import Bar from '../common/bar/Bar'
 import { useHistory } from 'react-router'
 import { useCountdown } from '../common/timer/useCountDown'
 import { useEffect, useState } from 'react'
-import { getRenderScanQuizQuestion } from '../../service/renderscan.service'
+import { getRenderScanLobbyStatus } from '../../service/renderscan.service'
 
 
 export const RenderScanLobby = () => {
@@ -16,9 +16,9 @@ export const RenderScanLobby = () => {
 
 	useEffect(() => {
 		const d = { contestId: data._id };
-		getRenderScanQuizQuestion(d).then((resp) => {
+		getRenderScanLobbyStatus(d).then((resp) => {
 			if (resp.data.isGameEnded) return history.push("/renderscan")
-			setExpiresAt(resp.data.expiresAt)
+			setExpiresAt(resp.data.lobbyExpiresAt)
 		}).catch(err => console.log(err))
 	}, [])
 

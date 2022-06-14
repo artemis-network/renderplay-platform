@@ -20,6 +20,7 @@ export const RendleLobby = () => {
 	function init() {
 		getContestantStatus({ userId: userId, contestId: data._id })
 			.then((res) => {
+				console.log(res.data)
 				if (res.data.isGameCompleted) return history.push("/game")
 				setExpiresAt(new Date(res.data.opensAt))
 			}).catch(err => console.log(err))

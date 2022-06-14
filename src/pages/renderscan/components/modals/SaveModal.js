@@ -2,7 +2,7 @@
 import { Modal } from 'react-bootstrap'
 import { XCircleIcon } from '@heroicons/react/solid'
 
-import TryAgainLottie from '../../../../assets/renderscan/little-boy-with-a-pointing-stick.json'
+import TryAgainLottie from '../../../../assets/renderscan/lottie/little-boy-with-a-pointing-stick.json'
 
 import Lottie from 'lottie-react-web'
 

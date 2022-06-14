@@ -12,7 +12,6 @@ import { gsap, ScrollTrigger } from "gsap/all";
 
 const Wordle = () => {
 
-	const ref = useRef(null)
 	const [renderScanGameTypes, setRenderScanGameTypes] = useState([])
 	useEffect(() => {
 		getRenderScanGameTypes()
@@ -45,8 +44,8 @@ const Wordle = () => {
 		<div className="container__bg">
 			<Bar isGame={false} />
 			<Container >
-				<div ref={ref} className="horizontal_container" style={{ display: 'flex', justifyContent: 'center', padding: "6rem 0rem", columnGap: "2rem" }}>
-					{renderScanGameTypes.map((game, i) => <div key={game.contestId} className={game.css + " x_panel"}>
+				<div className="horizontal_container" style={{ display: 'flex', justifyContent: 'center', padding: "6rem 2rem", columnGap: "1rem" }}>
+					{renderScanGameTypes.map((game, i) => <div key={game.contestId} className={"x_panel"}>
 						<ContestCard  {...game} key={i} index={i} />
 					</div>)}
 				</div>

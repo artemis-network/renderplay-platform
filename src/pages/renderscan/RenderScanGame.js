@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import DropSvg from "../../assets/renderscan/black frame.svg";
-import HowToPlaySvg from "../../assets/renderscan/hp.svg";
-import Astro from "../../assets/renderscan/Artboard 4.svg";
+import GrabPng from "../../assets/renderscan/buttons/grab.svg";
+import ProcessPng from "../../assets/renderscan/buttons/processing.svg";
+import SubmitPng from "../../assets/renderscan/buttons/submit.svg";
 
-import BottomBar from "../../assets/renderscan/footer.svg";
+import HowToPlaySvg from "../../assets/renderscan/decors/items/hp.svg";
+import Astro from "../../assets/renderscan/decors/items/astronaut.svg";
+import CameraSvg from "../../assets/renderscan/decors/items/camera.svg";
+import DropSvg from "../../assets/renderscan/decors/items/black_frame.svg";
+import SpaceShipSvg from "../../assets/renderscan/decors/items/space_ship.svg";
+import RenderScanImg from "../../assets/renderscan/decors/items/renderscan.svg";
 
-import GrabPng from "../../assets/renderscan/grab.svg";
-import ProcessPng from "../../assets/renderscan/processing.svg";
-import SubmitPng from "../../assets/renderscan/submit.svg";
+import BottomBar from "../../assets/renderscan/decors/footers/footer.svg";
 
-import RenderScanImg from "../../assets/renderscan/renderscan.svg";
-
-import SpaceShipSvg from "../../assets/renderscan/Artboard 5.svg";
-import CameraSvg from "../../assets/renderscan/Artboard 6.svg";
 
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { useHistory } from "react-router";
@@ -21,10 +20,12 @@ import { useHistory } from "react-router";
 const { delay, ServiceBusClient } = require("@azure/service-bus");
 
 import {
-	getRenderScanPlayerStatus,
-	saveRenderScanGame,
-	getRenderScanQuizQuestion,
+	getRenderScanPlayerStatus, saveRenderScanGame, getRenderScanQuizQuestion,
 } from "../../service/renderscan.service";
+
+import Sports1 from '../../assets/renderscan/backgrounds/sports_1.png'
+import Sports2 from '../../assets/renderscan/backgrounds/sports_2.png'
+import Sports3 from '../../assets/renderscan/backgrounds/sports_3.png'
 
 import { GameModal } from "./components/modals/GameModal";
 import { SaveModal } from "./components/modals/SaveModal";
@@ -33,6 +34,7 @@ import { ConfirmSaveModal } from "./components/modals/ConfirmSaveModal";
 import { useCountdown } from "../common/timer/useCountDown";
 
 import "./RenderScanGame.css";
+import { useMediaQuery } from 'react-responsive'
 
 const Scan = () => {
 	const history = useHistory();
@@ -44,9 +46,11 @@ const Scan = () => {
 	const sbClient = new ServiceBusClient(connectionString);
 	const sessionId = localStorage.getItem("username");
 
-
-	const [expiresAt, setExpiresAt] = useState(new Date());
+	const t = new Date(new Date().getTime() + 1000 * 60)
+	const [expiresAt, setExpiresAt] = useState(t);
 	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
+
+	const b = JSON.parse(localStorage.getItem("renderscanGameData"))
 
 	const [question, setQuestion] = useState("");
 	const [isWating, setIsWaiting] = useState(false);
@@ -80,15 +84,17 @@ const Scan = () => {
 		const data = { contestId: contest._id, userId: userId };
 		getRenderScanQuizQuestion(data).then((resp) => {
 			console.log(resp.data)
+			console.log(new Date(resp.data.expiresAt))
 			if (!resp.data.isGameStarted) return history.push("/renderscan/lobby")
-			setExpiresAt(new Date(new Date(resp.data.expiresAt).getTime() + 1000 * 3))
 			setQuestion(resp.data.question)
+			setExpiresAt(new Date(new Date(resp.data.expiresAt).getTime()))
 		});
 		getPlayerStatus();
 	}
 
 	useEffect(() => {
 		update()
+		setMatch(true)
 	}, [isFinished]);
 
 	const timerFormatter = (time) => {
@@ -185,146 +191,176 @@ const Scan = () => {
 		setIsWaiting(false);
 	}
 
-	return (
-		<div className="renderscan_bg">
+	const isTablet = useMediaQuery({ query: '(max-width: 1440px)' })
+	const isMobile = useMediaQuery({ query: '(min-width: 750px)' })
 
-			<GameModal isOpen={isSubmitted} handleClose={closeModal} />
-			<SaveModal isOpen={match} handleClose={() => setMatch(!match)} />
-			<ConfirmSaveModal
-				show={confirm}
-				play={save}
-				modalClose={() => setConfirm(!confirm)}
-			/>
+	const Content = () => <div className="renderscan_main_grid">
+		<div
+			style={{
+				display: "flex",
+				flexDirection: "column",
+				justifyContent: "center",
+				rowGap: "2rem",
+			}}
+		>
 			<div
 				style={{
 					display: "flex",
-					padding: "0 1rem",
-					alignItems: "center",
-					background: "#6D1DAF",
+					flexDirection: "column",
 					justifyContent: "center",
-					width: "100vw",
-					height: "8vh",
 				}}
 			>
-				<ArrowLeftIcon
-					className="h-12 w-12 cursor-pointer"
-					color="white"
-					onClick={() => history.push("/renderscan")}
-					style={{ zIndex: 3, position: "absolute", left: "1.5rem" }}
-				/>
-				<div style={{ display: "flex", justifyContent: "center" }}>
-					<img
-						src={RenderScanImg}
-						alt=""
-						className="render_title"
-						style={{ zIndex: "2" }}
-					/>
-				</div>
-			</div>
-
-			<Counter />
-			<div className="renderscan_main_grid">
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column",
-						justifyContent: "center",
-						rowGap: "2rem",
-					}}
-				>
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "column",
-							justifyContent: "center",
-						}}
-					>
-						<div style={{ position: "relative" }}>
-							<img src={DropSvg} className="renderscan_img_holder" />
-							<div style={{ position: "absolute", left: "1rem", top: "-1rem" }}>
-								<img
-									src={SpaceShipSvg}
-									className="renderscan_img_deco render_flight_animation"
-								/>
-							</div>
-							<div style={{ position: "absolute", right: "0", bottom: "0rem" }}>
-								<img
-									src={CameraSvg}
-									className="renderscan_img_deco render_camera_animation"
-								/>
-							</div>
-							{img ? (
-								<div
-									style={{
-										position: "absolute",
-										right: "50%",
-										left: "20%",
-										width: "62%",
-										margin: "auto",
-										bottom: "2.5rem",
-									}}
-								>
-									<img
-										style={{
-											height: "auto",
-											width: "auto",
-											transform: "rotate(-270deg)",
-										}}
-										src={img}
-									/>
-								</div>
-							) : null}
+				<div style={{ position: "relative" }}>
+					<img src={DropSvg} className="renderscan_img_holder" />
+					<div style={{ position: "absolute", left: "1rem", top: "-1rem" }}>
+						<img
+							src={SpaceShipSvg}
+							className="renderscan_img_deco render_flight_animation"
+						/>
+					</div>
+					<div style={{ position: "absolute", right: "0", bottom: "0rem" }}>
+						<img
+							src={CameraSvg}
+							className="renderscan_img_deco render_camera_animation"
+						/>
+					</div>
+					{img ? (
+						<div
+							style={{
+								position: "absolute",
+								right: "50%",
+								left: "20%",
+								width: "62%",
+								margin: "auto",
+								bottom: "2.5rem",
+							}}
+						>
+							<img
+								style={{
+									height: "auto",
+									width: "auto",
+									transform: "rotate(-270deg)",
+								}}
+								src={img}
+							/>
 						</div>
+					) : null}
+				</div>
 
-						<div style={{ display: "flex", justifyContent: "center" }}>
-							{isWating ? (
-								<div>
-									<img
-										alt="play"
-										onClick={set}
-										src={ProcessPng}
-										className="render_grab"
-									/>
-								</div>
+				<div style={{ display: "flex", justifyContent: "center" }}>
+					{isWating ? (
+						<div>
+							<img
+								alt="play"
+								onClick={set}
+								src={ProcessPng}
+								className="render_grab"
+							/>
+						</div>
+					) : (
+						<div>
+							{img !== "" ? (
+								<img
+									alt="play"
+									onClick={openConfirm}
+									src={SubmitPng}
+									className="render_grab"
+								/>
 							) : (
-								<div>
-									{img !== "" ? (
-										<img
-											alt="play"
-											onClick={openConfirm}
-											src={SubmitPng}
-											className="render_grab"
-										/>
-									) : (
-										<img
-											alt="play"
-											onClick={set}
-											src={GrabPng}
-											className="render_grab"
-										/>
-									)}
-								</div>
+								<img
+									alt="play"
+									onClick={set}
+									src={GrabPng}
+									className="render_grab"
+								/>
 							)}
 						</div>
-					</div>
-				</div>
-				<div
-					style={{
-						display: "flex",
-						justifyContent: "flex-start",
-						alignItems: "flex-start",
-					}}
-				>
-					<img src={HowToPlaySvg} className="renderscan_how_to_play" />
+					)}
 				</div>
 			</div>
-			<div className="renderscan_astro">
-				<img src={Astro} className="astro_img" />
-			</div>
-
-			<img src={BottomBar} className="renderscan_bottom_bar" />
 		</div>
-	);
+		<div
+			style={{
+				display: "flex",
+				justifyContent: "flex-start",
+				alignItems: "flex-start",
+			}}
+		>
+			<img src={HowToPlaySvg} className="renderscan_how_to_play" />
+		</div>
+	</div>
+
+	const topContent = [
+		<GameModal isOpen={isSubmitted} handleClose={closeModal} />,
+		<SaveModal isOpen={match} handleClose={() => setMatch(!match)} />,
+		<ConfirmSaveModal
+			show={confirm}
+			play={save}
+			modalClose={() => setConfirm(!confirm)}
+		/>,
+		<div
+			style={{
+				display: "flex",
+				padding: "0 1rem",
+				alignItems: "center",
+				background: "#6D1DAF",
+				justifyContent: "center",
+				width: "100vw",
+				height: "8vh",
+			}}
+		>,
+			<ArrowLeftIcon
+				className="h-12 w-12 cursor-pointer"
+				color="white"
+				onClick={() => history.push("/renderscan")}
+				style={{ zIndex: 3, position: "absolute", left: "1.5rem" }}
+			/>,
+			<div style={{ display: "flex", justifyContent: "center" }}>
+				<img
+					src={RenderScanImg}
+					alt=""
+					className="render_title"
+					style={{ zIndex: "2" }}
+				/>,
+			</div>
+		</div>,
+		<Counter />
+	]
+
+
+	const bottomContent = [
+		<div className="renderscan_astro">,
+			<img src={Astro} className="astro_img" />
+		</div>,
+		<img src={BottomBar} className="renderscan_bottom_bar" />
+	]
+
+	const BackgroundWrapper = () => {
+
+		if (isTablet) {
+			return { isTablet } && <div className="renderscan_bg" style={{ background: `url(${Sports2})`, backgroundSize: "cover" }}>
+				{[...topContent]}
+				<Content />
+				{[...bottomContent]}
+			</div>
+		}
+
+		if (isMobile) {
+			return { isMobile } && <div className="renderscan_bg" style={{ background: `url(${Sports1})`, backgroundSize: "cover" }}>
+				{[...topContent]}
+				<Content />
+				{[...bottomContent]}
+			</div>
+		}
+
+		return <div className="renderscan_bg" style={{ background: `url(${Sports3})`, backgroundSize: "cover" }}>
+			{[...topContent]}
+			<Content />
+			{[...bottomContent]}
+		</div>
+	}
+
+	return <BackgroundWrapper />
 };
 
 export default Scan;
