@@ -14,6 +14,7 @@ import { enterContest } from '../../../../service/rendles.service'
 import ConfirmModal from '../confirm_modal/ConfirmModal'
 import InsufficentFunds from '../in_sufficent_fund_modals/InsufficentFunds'
 import MetaMaskWalletAddressModal from '../metamask_modal/MetaMaskModal'
+import WarningModal from '../warning_modal/WarningModal'
 
 import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
 import { useCountdown } from '../../../common/timer/useCountDown'
@@ -29,6 +30,7 @@ const ContestCard = (props) => {
 	const [confirmModal, setConfirmModal] = useState(false);
 	const [InsufficentModal, setInsufficentModal] = useState(false)
 	const [metaMaskModal, setMetaMaskModal] = useState(false)
+	const [warningModal, setWarningModal] = useState(false)
 
 	const [days, hours, minutes, seconds, isFinished] = useCountdown(new Date(props.expiresAt))
 
@@ -37,6 +39,9 @@ const ContestCard = (props) => {
 
 	const metaMaskModalClose = () => setMetaMaskModal(false);
 	const metaMaskModalOpen = () => setMetaMaskModal(true)
+
+	const warningModalClose = () => setWarningModal(false);
+	const warningModalOpen = () => setWarningModal(true)
 
 	const ConfirmModalOpen = () => {
 		const userId = localStorage.getItem("userId")
@@ -56,12 +61,19 @@ const ContestCard = (props) => {
 				walletAddress: metaMaskAddress
 			}
 			enterContest(data).then((res) => {
+				console.log(res.data)
+				if (res.data.isLobbyClosed) {
+					setWarningModal(true)
+					console.log("OK")
+				}
+
 				// if user already in contest [ALREADY_IN_CONTEST]
 				if (res.data.status === "[ALREADY_IN_CONTEST]") {
 					localStorage.setItem("gameStateId", res.data.gameStateId)
 					localStorage.setItem("gameConfig", JSON.stringify(props))
 					return history.push("/lobby")
 				}
+
 				// if user has insufficient  [INSUFFICIENT_FUNDS]
 				if (res.data.status === "[INSUFFICENT_FUNDS]") {
 					return setInsufficentModal(true)
@@ -168,6 +180,7 @@ const ContestCard = (props) => {
 			<ConfirmModal show={confirmModal} entryFee={props.entryFee} modalOpen={ConfirmModalOpen} modalClose={ConfirmModalClose} play={enterContestAction} />
 			<InsufficentFunds show={InsufficentModal} modalOpen={InsufficentModalOpen} modalClose={InsufficentModalClose} />
 			<MetaMaskWalletAddressModal show={metaMaskModal} modalOpen={metaMaskModalOpen} modalClose={metaMaskModalClose} />
+			<WarningModal show={warningModal} modalOpen={warningModalOpen} modalClose={warningModalClose} />
 			{/* CONTROLLERS */}
 			<input style={{ display: "none" }} type="checkbox" id={"u-mobile__button" + cssFinder()} name={"u-mobile__button" + cssFinder()} />
 			<input style={{ display: "none" }} type="checkbox" id={"u-topbar__button" + cssFinder()} name={"u-topbar__button" + cssFinder()} />

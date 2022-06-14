@@ -15,13 +15,6 @@ import GeneralPngFree from '../assets/renderscan/types/free/general_free.png'
 import CelebrityPngFree from '../assets/renderscan/types/free/celebrity_free.png'
 
 
-import SportsPngBG from '../assets/renderscan/backgrounds/sports_1.png'
-import GeographyPngBG from '../assets/renderscan/backgrounds/geography.png'
-import AnimalsPngBG from '../assets/renderscan/backgrounds/animals.png'
-import GeneralPngBG from '../assets/renderscan/backgrounds/general.png'
-import CelebrityPngBG from '../assets/renderscan/backgrounds/celebrity.png'
-
-
 import Line from '../assets/rendle/rendle/line1.webp'
 
 export const getRenderScanPlayerStatus = async (body) =>
@@ -41,11 +34,9 @@ export const getRenderScanLobbyStatus = async (body) =>
 
 export const getRenderScanGameTypes = async () => {
 	const modifiedTypes = [];
-	// const { data: { renderscanContests } } = await axios.get(`${renderScanPrefix}`)
-	const d = await axios.get(`${renderScanPrefix}`)
-	console.log(d)
-	const types = d.data.renderscanContests
-	console.log(types)
+	const { data: { renderscanContests } } = await axios.get(`${renderScanPrefix}`)
+	const types = renderscanContests
+
 	for (let i = 0; i < types.length; i++) {
 		modifiedTypes.push(types[i])
 		const type = await typeFinder(types[i].gameType);
@@ -53,27 +44,30 @@ export const getRenderScanGameTypes = async () => {
 
 		if (types[i].category === "[SPORTS]") {
 			modifiedTypes[i].img = type.sports
-			modifiedTypes[i].bg = SportsPngBG
+			modifiedTypes[i].bg = "sports"
 		}
 
 		if (types[i].category === "[GEOGRAPHY]") {
 			modifiedTypes[i].img = type.geography
-			modifiedTypes[i].bg = GeographyPngBG
+			modifiedTypes[i].bg = "geography"
 		}
 
 		if (types[i].category === "[CELEBRITY]") {
 			modifiedTypes[i].img = type.celebrity
 			modifiedTypes[i].bg = CelebrityPngBG
+			modifiedTypes[i].bg = "celebrity"
 		}
 
 		if (types[i].category === "[GENERAL]") {
 			modifiedTypes[i].img = type.general
 			modifiedTypes[i].bg = GeneralPngBG
+			modifiedTypes[i].bg = "general"
 		}
 
 		if (types[i].category === "[ANIMALS]") {
 			modifiedTypes[i].img = type.animals
 			modifiedTypes[i].bg = AnimalsPngBG
+			modifiedTypes[i].bg = "animals"
 		}
 	}
 	return modifiedTypes

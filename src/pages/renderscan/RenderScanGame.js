@@ -1,20 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import GrabPng from "../../assets/renderscan/buttons/grab.svg";
 import ProcessPng from "../../assets/renderscan/buttons/processing.svg";
 import SubmitPng from "../../assets/renderscan/buttons/submit.svg";
 
 import HowToPlaySvg from "../../assets/renderscan/decors/items/hp.svg";
-import Astro from "../../assets/renderscan/decors/items/astronaut.svg";
 import CameraSvg from "../../assets/renderscan/decors/items/camera.svg";
 import DropSvg from "../../assets/renderscan/decors/items/black_frame.svg";
 import SpaceShipSvg from "../../assets/renderscan/decors/items/space_ship.svg";
 import RenderScanImg from "../../assets/renderscan/decors/items/renderscan.svg";
 
-import BottomBar from "../../assets/renderscan/decors/footers/footer.svg";
 
-
-import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { useHistory } from "react-router";
 
 const { delay, ServiceBusClient } = require("@azure/service-bus");
@@ -23,9 +19,12 @@ import {
 	getRenderScanPlayerStatus, saveRenderScanGame, getRenderScanQuizQuestion,
 } from "../../service/renderscan.service";
 
-import Sports1 from '../../assets/renderscan/backgrounds/sports_1.png'
-import Sports2 from '../../assets/renderscan/backgrounds/sports_2.png'
-import Sports3 from '../../assets/renderscan/backgrounds/sports_3.png'
+import Sports1 from '../../assets/renderscan/backgrounds/sports/sports_1.png'
+import Sports2 from '../../assets/renderscan/backgrounds/sports/sports_2.png'
+
+import Animals1 from '../../assets/renderscan/backgrounds/animals/animals_1.png'
+import Animals2 from '../../assets/renderscan/backgrounds/animals/animals_2.png'
+
 
 import { GameModal } from "./components/modals/GameModal";
 import { SaveModal } from "./components/modals/SaveModal";
@@ -35,6 +34,7 @@ import { useCountdown } from "../common/timer/useCountDown";
 
 import "./RenderScanGame.css";
 import { useMediaQuery } from 'react-responsive'
+import { ArrowLeftIcon } from "@chakra-ui/icons";
 
 const Scan = () => {
 	const history = useHistory();
@@ -107,6 +107,31 @@ const Scan = () => {
 	useEffect(() => {
 		setMatch(true)
 	}, [img])
+
+	const [backgroundImg, setBackgroundImg] = useState({
+		img1: null,
+		img2: null
+	})
+
+	useEffect(() => {
+		const contest = JSON.parse(localStorage.getItem("renderscanGameData"));
+		console.log(contest)
+		if (contest.bg === "sports") {
+			setBackgroundImg({
+				img1: Sports2,
+				img2: Sports1,
+			})
+		}
+
+		if (contest.bg === "animals") {
+			setBackgroundImg({
+				img1: Animals2,
+				img2: Animals1
+			})
+
+		}
+
+	}, [])
 
 	const Counter = () => {
 		if (isFinished) return <div className="render_word">Loading next question</div>
@@ -191,8 +216,8 @@ const Scan = () => {
 		setIsWaiting(false);
 	}
 
-	const isTablet = useMediaQuery({ query: '(max-width: 1440px)' })
-	const isMobile = useMediaQuery({ query: '(min-width: 750px)' })
+	const isMobile = useMediaQuery({ query: '(min-width: 500px)' })
+	const isTablet = useMediaQuery({ query: '(min-width: 1200px)' })
 
 	const Content = () => <div className="renderscan_main_grid">
 		<div
@@ -328,35 +353,24 @@ const Scan = () => {
 	]
 
 
-	const bottomContent = [
-		<div className="renderscan_astro">,
-			<img src={Astro} className="astro_img" />
-		</div>,
-		<img src={BottomBar} className="renderscan_bottom_bar" />
-	]
-
 	const BackgroundWrapper = () => {
 
-		if (isTablet) {
-			return { isTablet } && <div className="renderscan_bg" style={{ background: `url(${Sports2})`, backgroundSize: "cover" }}>
-				{[...topContent]}
-				<Content />
-				{[...bottomContent]}
-			</div>
-		}
+		return <div className="renderscan_bg" >
 
-		if (isMobile) {
-			return { isMobile } && <div className="renderscan_bg" style={{ background: `url(${Sports1})`, backgroundSize: "cover" }}>
-				{[...topContent]}
-				<Content />
-				{[...bottomContent]}
-			</div>
-		}
+			{!isTablet ? <img src={backgroundImg.img1} style={{
+				height: "100vh",
+				width: "100vw",
+				position: "absolute",
+			}} /> : null}
 
-		return <div className="renderscan_bg" style={{ background: `url(${Sports3})`, backgroundSize: "cover" }}>
+			{isTablet ? <img src={backgroundImg.img2} style={{
+				height: "100vh",
+				width: "100vw",
+				position: "absolute",
+			}} /> : null}
+
 			{[...topContent]}
 			<Content />
-			{[...bottomContent]}
 		</div>
 	}
 

@@ -1,10 +1,10 @@
 .renderscan_bg {
-  height: 100vh;
-  width: auto;
+  background-position: center;
+  background-clip: border-box;
   background-repeat: no-repeat;
   background-size: cover;
-  background-origin: border-box;
-  background-position: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 .render_title {
@@ -73,14 +73,6 @@
   .render_grab {
     width: 180px;
   }
-  .renderscan_bg {
-    height: 115vh;
-    width: auto;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-origin: border-box;
-    background-position: center;
-  }
 }
 
 @media screen and (min-width: 1100px) {
@@ -100,9 +92,6 @@
     display: flex;
     align-self: center;
     width: 400px;
-  }
-  .renderscan_bg {
-    height: 100vh;
   }
 
   .renderscan_bottom_bar {
@@ -132,14 +121,6 @@
   .renderscan_img_holder,
   .renderscan_how_to_play {
     width: 650px;
-  }
-  .renderscan_bg {
-    height: 100vh;
-    width: auto;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-origin: border-box;
-    background-position: center;
   }
 }
 
