@@ -42,7 +42,7 @@ export const RendleLobby = () => {
 
 	const Counter = () => {
 
-		const count = (seconds > 0) && (minutes > 0) && hours <= (1000 * 60 * 60 * 1)
+		const count = (minutes > 0) && hours <= (1000 * 60 * 60 * 1)
 
 		return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
 			{count ?
@@ -60,7 +60,7 @@ export const RendleLobby = () => {
 					</div>
 				</div>
 				:
-				<div style={{ color: "white", fontSize: "1.25rem", fontWeight: "bold" }}>Loading...</div>
+				<div style={{ color: "white", fontSize: "1.25rem", fontWeight: "bold" }}>Please    wait    while    loading...</div>
 			}
 		</div >
 	}

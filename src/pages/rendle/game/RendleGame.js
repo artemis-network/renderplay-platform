@@ -298,7 +298,7 @@ const RendleGame = () => {
 
   const Counter = () => {
 
-    const count = (seconds > 0) && (minutes > 0) && hours <= (1000 * 60 * 60 * 1)
+    const count = (minutes > 0) && hours <= (1000 * 60 * 60 * 1)
 
     if (isFinished)
       if (stop !== true) setStop(true)

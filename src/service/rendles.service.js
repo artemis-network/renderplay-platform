@@ -25,6 +25,7 @@ export const loadRendleGames = async () => {
 	try {
 		const rendles = await rendleGameTypesApi();
 		let data = rendles.data.rendleContests
+		console.log(rendles.data)
 		const now = new Date(rendles.data.currentTime)
 
 		let temp = []
