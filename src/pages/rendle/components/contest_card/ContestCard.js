@@ -19,9 +19,6 @@ import WarningModal from '../warning_modal/WarningModal'
 import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
 import { useCountdown } from '../../../common/timer/useCountDown'
 
-
-import './ContestCard.css'
-
 const ContestCard = (props) => {
 
 	const history = useHistory()

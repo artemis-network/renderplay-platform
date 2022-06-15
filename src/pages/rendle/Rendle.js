@@ -10,7 +10,6 @@ const ContestCard = lazy(() => import('./components/contest_card/ContestCard'))
 const Bar = lazy(() => import("../common/bar/Bar"))
 const Footer = lazy(() => import("../common/footer/Footer"))
 
-import './Rendle.css'
 
 const Wordle = () => {
 

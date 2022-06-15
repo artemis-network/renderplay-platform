@@ -298,7 +298,8 @@ const RendleGame = () => {
 
   const Counter = () => {
 
-    const count = (minutes > 0) && hours <= (1000 * 60 * 60 * 1)
+    const count = (minutes === 0 && seconds < 0)
+    console.log(count)
 
     if (isFinished)
       if (stop !== true) setStop(true)
@@ -308,7 +309,7 @@ const RendleGame = () => {
     }}>
       <div style={{ color: "#ffffff", display: "flex", }}>
         <div style={{ fontSize: "1.25rem" }}>
-          {count ?
+          {!count ?
             <div>
               <span className="username" style={{ fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: "2vh" }}>
                 {timerFormatter(minutes)}

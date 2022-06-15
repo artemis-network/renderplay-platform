@@ -42,10 +42,11 @@ export const RendleLobby = () => {
 
 	const Counter = () => {
 
-		const count = (minutes > 0) && hours <= (1000 * 60 * 60 * 1)
+		const count = (minutes === 0 && seconds < 0)
+		console.log(count)
 
 		return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
-			{count ?
+			{!count ?
 				<div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
 					<div style={{ fontSize: "1.25rem" }}>
 						Game starts in
