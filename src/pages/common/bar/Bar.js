@@ -1,5 +1,3 @@
-/* eslint-disable */
-/* eslint-disable react/no-direct-mutation-state */
 import { useEffect, useState } from "react";
 
 import { Link, NavLink } from 'react-router-dom';
@@ -61,11 +59,6 @@ const Bar = (props) => {
 				}).catch(err => console.log(err))
 		}
 	}, [])
-
-	const logout = () => {
-		localStorage.clear()
-		window.location.reload()
-	}
 
 	const toggleNav = () => {
 		if (toggle) setToggleClass({

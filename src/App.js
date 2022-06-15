@@ -2,15 +2,17 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
 
+import RendleGame from './pages/rendle/game/RendleGame'
+
 import "./App.css";
 
 const Rendle = lazy(() => import('./pages/rendle/Rendle'));
-const RendleGame = lazy(() => import('./pages/rendle/game/RendleGame'));
 import { RendleLobby } from './pages/rendle/RendleLobby'
 
 const RenderScan = lazy(() => import("./pages/renderscan/RenderScan"))
 const RenderScanGame = lazy(() => import("./pages/renderscan/RenderScanGame"))
 import { RenderScanLobby } from './pages/renderscan/RenderScanLobby'
+
 
 
 const Signup = lazy(() => import('./pages/auth/Signup'));

@@ -6,11 +6,9 @@ import { loadRendleGames } from '../../service/rendles.service'
 
 import { AlertProvider } from './game/context/AlertContext'
 
-
 const ContestCard = lazy(() => import('./components/contest_card/ContestCard'))
 const Bar = lazy(() => import("../common/bar/Bar"))
 const Footer = lazy(() => import("../common/footer/Footer"))
-
 
 import './Rendle.css'
 
@@ -25,7 +23,6 @@ const Wordle = () => {
 		localStorage.removeItem("gameConfig")
 		localStorage.removeItem("timer")
 		loadRendleGames().then(({ rendles, mobileViewRendles }) => {
-			console.log(rendles)
 			setRendleGameTypes({
 				rendles: [...rendles],
 				mobileViewRendles: [...mobileViewRendles]
@@ -39,13 +36,13 @@ const Wordle = () => {
 				<Bar isGame={false} />
 				<Container>
 					<div className="contest">
-						{rendleGameTypes.rendles.map((game, i) => <div key={game.contestId} className={game.css}>
+						{rendleGameTypes.rendles.map((game, i) => <div key={game._id} className={game.css}>
 							<ContestCard  {...game} key={i} index={i} />
 						</div>)}
 					</div>
 
 					<div className="contest_mobile">
-						{rendleGameTypes.mobileViewRendles.map((game, i) => <div key={game.contestId} className={game.css}>
+						{rendleGameTypes.mobileViewRendles.map((game, i) => <div key={game._id} className={game.css}>
 							<ContestCard  {...game} key={i} index={i} />
 						</div>)}
 					</div>

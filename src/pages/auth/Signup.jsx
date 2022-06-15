@@ -11,6 +11,7 @@ import PasswordStrengthBar from "react-password-strength-bar";
 
 import Logo from "../../assets/logo.webp";
 import { LockClosedIcon, UserCircleIcon } from "@heroicons/react/outline";
+import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
 
 const isValidUsername = (username) => /^[a-z0-9]{6}$/.test(username);
 
@@ -102,6 +103,7 @@ const Signup = () => {
     error: false,
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div style={{ background: "#321E43" }}>
       <Bar />
@@ -184,24 +186,55 @@ const Signup = () => {
                 <div> </div>
               )}
             </div>
-            <div className="field">
-              <span>
-                <LockClosedIcon className="h-7 w-7" color="white" />
-              </span>
-              <input
-                id="password"
-                type="password"
-                placeholder="Password"
-                value={form.values.password}
-                onChange={form.handleChange}
-                onFocus={form.handleChange}
-                autoComplete="off"
-              />
-              {form.touched.password || form.errors.password ? (
-                <div style={error}> {form.errors.password} </div>
-              ) : null}
-            </div>
-
+            {!showPassword ? (
+              <div className="field" style={{ position: "relative" }}>
+                <span>
+                  <LockClosedIcon className="h-6 w-6" color="white" />
+                </span>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Password"
+                  value={form.values.password}
+                  onChange={form.handleChange}
+                  autoComplete="off"
+                />
+                <div style={{ position: "absolute", right: "1%", top: "30%" }}>
+                  <EyeIcon
+                    onClick={() => setShowPassword(true)}
+                    className="h-6 w-6 cursor-pointer"
+                    color="white"
+                  />
+                </div>
+                {form.touched.password || form.errors.password ? (
+                  <div style={error}> {form.errors.password} </div>
+                ) : null}
+              </div>
+            ) : (
+              <div className="field" style={{ position: "relative" }}>
+                <span>
+                  <LockClosedIcon className="h-6 w-6" color="white" />
+                </span>
+                <input
+                  type="text"
+                  id="password"
+                  placeholder="Password"
+                  value={form.values.password}
+                  onChange={form.handleChange}
+                  autoComplete="off"
+                />
+                <div style={{ position: "absolute", right: "1%", top: "30%" }}>
+                  <EyeOffIcon
+                    onClick={() => setShowPassword(false)}
+                    className="h-6 w-6 cursor-pointer"
+                    color="white"
+                  />
+                </div>
+                {form.touched.password || form.errors.password ? (
+                  <div style={error}> {form.errors.password} </div>
+                ) : null}
+              </div>
+            )}
             <PasswordStrengthBar password={form.values.password} />
             <div className="field">
               <span>

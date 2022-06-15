@@ -1,5 +1,3 @@
-/* eslint-disable */
-/* eslint-disable react/no-direct-mutation-state */
 import {
   ChakraProvider,
   useDisclosure,
@@ -17,8 +15,8 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
-import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
+import { useEthers, useEtherBalance } from "@usedapp/core";
 import { DAppProvider } from "@usedapp/core";
 import { useEffect, useRef } from "react";
 import Jazzicon from "@metamask/jazzicon";
@@ -179,7 +177,9 @@ function Identicon() {
       ref.current.innerHTML = "";
       ref.current.appendChild(Jazzicon(16, parseInt(account.slice(2, 10), 16)));
     }
-  }, [account]);
+  }, [
+    account
+  ]);
 
   return <StyledIdenticon ref={ref} />;
 }
@@ -210,7 +210,9 @@ function Wallet() {
         console.log(e)
         return setIsWrongNetwork(true)
       }
-    }, [chainId])
+    }, [
+      chainId
+    ])
 
     return account !== undefined ? (
       <Box
@@ -293,7 +295,7 @@ function Wallet() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <DAppProvider config={{}}>
+    <DAppProvider >
       <ChakraProvider  >
         <ConnectButton handleOpenModal={onOpen} />
         <AccountModal isOpen={isOpen} onClose={onClose} />
@@ -302,4 +304,4 @@ function Wallet() {
   );
 }
 
-export default Wallet;
+export default Wallet;  

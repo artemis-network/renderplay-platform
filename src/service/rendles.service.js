@@ -45,7 +45,7 @@ export const loadRendleGames = async () => {
 		const nonExpiredRendles = []
 
 		for (let i = 0; i < data.length; i++) {
-			if (data[i].expiresAt === null) {
+			if (data[i].isExpired === true) {
 				temp[0] = data[i]
 				temp[0].css = "_fade"
 				temp_m[2] = data[i]
@@ -54,7 +54,6 @@ export const loadRendleGames = async () => {
 				nonExpiredRendles.push(data[i])
 			}
 		}
-
 
 		const rendle1Expiration = calculateExpirationTime(now, nonExpiredRendles[0].expiresAt)
 		const rendle2Expiration = calculateExpirationTime(now, nonExpiredRendles[1].expiresAt)
@@ -82,9 +81,6 @@ export const loadRendleGames = async () => {
 				temp_m[1] = nonExpiredRendles[1]
 				temp_m[1].css = "_fade"
 			}
-
-			console.log(temp)
-
 		} else {
 			if (rendle1Expiration > 0) {
 				temp[1] = nonExpiredRendles[0]

@@ -10,8 +10,9 @@ import Logo from '../../assets/logo.webp'
 
 const Bar = lazy(() => import("../common/bar/Bar"));
 
-import { UserCircleIcon, LockClosedIcon } from '@heroicons/react/outline'
+import { UserCircleIcon, LockClosedIcon, EyeIcon } from '@heroicons/react/outline'
 import './Form.css'
+import { EyeOffIcon } from "@heroicons/react/solid";
 
 const Login = () => {
 
@@ -23,6 +24,8 @@ const Login = () => {
     errorType: "",
     error: false,
   });
+
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSuccess = (data) => {
     const data_c = {
@@ -111,19 +114,44 @@ const Login = () => {
                 autoComplete="off"
               />
             </div>
-            <div className="field">
-              <span>
-                <LockClosedIcon className="h-6 w-6" color="white" />
-              </span>
-              <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                value={form.values.password}
-                onChange={form.handleChange}
-                autoComplete="off"
-              />
-            </div>
+
+            {
+              !showPassword ?
+                <div className="field" style={{ position: "relative" }}>
+                  <span>
+                    <LockClosedIcon className="h-6 w-6" color="white" />
+                  </span>
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    value={form.values.password}
+                    onChange={form.handleChange}
+                    autoComplete="off"
+                  />
+                  <div style={{ position: "absolute", right: "1%", top: "30%", }}>
+                    <EyeIcon onClick={() => setShowPassword(true)} className="h-6 w-6 cursor-pointer" color="white" />
+                  </div >
+                </div>
+                :
+                <div className="field" style={{ position: "relative" }}>
+                  <span>
+                    <LockClosedIcon className="h-6 w-6" color="white" />
+                  </span>
+                  <input
+                    type="text"
+                    id="password"
+                    placeholder="Password"
+                    value={form.values.password}
+                    onChange={form.handleChange}
+                    autoComplete="off"
+                  />
+                  <div style={{ position: "absolute", right: "1%", top: "30%", }}>
+                    <EyeOffIcon onClick={() => setShowPassword(false)} className="h-6 w-6 cursor-pointer" color="white" />
+                  </div >
+                </div>
+            }
+
 
             <div style={{ padding: "2rem 0 0 0" }} className="d-flex justify-content-between">
               <div className="mb-3">

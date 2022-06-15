@@ -1,8 +1,6 @@
 import { useState, useEffect, lazy } from 'react'
 import { useHistory } from 'react-router-dom'
 import Background1 from '../../../assets/rendle/rendle/1.png'
-import Background2 from '../../../assets/rendle/rendle/2.png'
-import Background3 from '../../../assets/rendle/rendle/3.png'
 
 import Timer from '../../../assets/rendle/rendle_game/timer.json'
 
@@ -68,7 +66,7 @@ const RendleGame = () => {
   const [WORDS, SET_WORDS] = useState([])
   const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
   const [isGameFinished, setIsGameFinished] = useState(false)
-  const [timer, setTimer] = useState(new Date(new Date().getTime() + (1000 * 60 * 1)))
+  const [timer, setTimer] = useState(new Date(new Date().getTime() + (1000 * 60 * 60 * 1)))
   const [background, setBackground] = useState(Background1)
   const [stop, setStop] = useState(false)
 
@@ -122,6 +120,7 @@ const RendleGame = () => {
     if (userId) {
       getContestantStatus({ userId: userId, contestId: data._id })
         .then(res => {
+
           const isGameCompleted = res.data.isGameCompleted
           const isSameContest = data._id === res.data.contestId
 
@@ -131,6 +130,8 @@ const RendleGame = () => {
             return setIsGameModalOpen(true)
           }
 
+          if (!res.data.isOpened) return history.push("/lobby")
+
           if (!isGameCompleted || !isSameContest) {
             let guesses = JSON.parse(localStorage.getItem("gameState"))
 
@@ -138,7 +139,6 @@ const RendleGame = () => {
             let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
 
             const time = res.data.expiresAt
-            console.log(res.data)
             setTimer(time)
 
             if (isGameLost) {
@@ -297,28 +297,30 @@ const RendleGame = () => {
 
 
   const Counter = () => {
-    if (isFinished) {
+
+    const count = (seconds > 0) && (minutes > 0) && hours <= (1000 * 60 * 60 * 1)
+
+    if (isFinished)
       if (stop !== true) setStop(true)
-    }
+
     return <div style={{
       display: "flex", justifyContent: "flex-end", alignItems: "center", flexDirection: "", padding: "0rem 0rem", margin: "0rem", zIndex: 3,
     }}>
       <div style={{ color: "#ffffff", display: "flex", }}>
         <div style={{ fontSize: "1.25rem" }}>
-          <div>
-            <span className="username" style={{ fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: "2vh" }}>
-              {timerFormatter(minutes)}
-            </span>
-            <span className="username" style={{ fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: "2vh" }}>
-              {timerFormatter(seconds)}
-            </span>
-          </div>
-
+          {count ?
+            <div>
+              <span className="username" style={{ fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: "2vh" }}>
+                {timerFormatter(minutes)}
+              </span>
+              <span className="username" style={{ fontSize: "2rem", margin: "0 .15rem", padding: ".25rem", borderRadius: "2vh" }}>
+                {timerFormatter(seconds)}
+              </span>
+            </div> :
+            <div style={{ color: "white", fontSize: "1.25rem", fontWeight: "bold" }}>Loading...</div>
+          }
         </div>
       </div>
-
-
-
     </div>
   }
 

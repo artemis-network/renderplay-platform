@@ -45,7 +45,7 @@ export const GameModal = ({
     {
       isGameFinished ? (<div>
         <Lottie
-          style={{ height: "14rem", width: "14rem", paddingBottom: "2rem" }}
+          style={{ height: "14rem", width: "14rem", paddingbottom: "2rem" }}
           options={defaultOptions_DONE}
         />
         <div className='custom_modal_header'>
@@ -59,7 +59,7 @@ export const GameModal = ({
       isGameLost && !isGameFinished ? (
         <div>
           <Lottie
-            style={{ height: "14rem", width: "14rem" }}
+            style={{ height: "14rem", width: "14rem", paddingBottom: "2rem" }}
             options={defaultOptions_LOST}
           />
           <div className='custom_modal_header'>

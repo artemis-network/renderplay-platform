@@ -5,12 +5,14 @@ import { CameraIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './DropDown.css'
+import { useHistory } from 'react-router'
 
 const CustomDropDown = () => {
 
+	const history = useHistory()
 	const logout = () => {
+		history.push("/")
 		localStorage.clear()
-		window.location.reload()
 	}
 
 	const [toggle, setToggle] = useState("custom_drop_down close")

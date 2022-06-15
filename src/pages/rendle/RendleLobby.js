@@ -8,6 +8,13 @@ import { ClockIcon } from "@heroicons/react/outline";
 import Alaram from '../../assets/rendle/rendle/alram.webp'
 import ProcessPng from '../../assets/rendle/rendle/process.png'
 
+const timerFormatter = (time) => {
+	time = String(time)
+	if (time.length === 1)
+		time = "0" + time
+	return time
+}
+
 export const RendleLobby = () => {
 
 	const history = useHistory();
@@ -15,49 +22,46 @@ export const RendleLobby = () => {
 	const data = JSON.parse(localStorage.getItem("gameConfig"));
 	const userId = localStorage.getItem("userId")
 
-	const [expiresAt, setExpiresAt] = useState(new Date(new Date().getTime() + (1000 * 60 * 1)))
+	const [expiresAt, setExpiresAt] = useState(new Date().getTime() + (1000 * 60 * 60 * 1))
+	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
 
 	function init() {
 		getContestantStatus({ userId: userId, contestId: data._id })
 			.then((res) => {
 				console.log(res.data)
-				if (res.data.isGameCompleted) return history.push("/game")
 				setExpiresAt(new Date(res.data.opensAt))
+				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game")
 			}).catch(err => console.log(err))
 	}
 
-
-	const timerFormatter = (time) => {
-		time = String(time)
-		if (time.length === 1)
-			time = "0" + time
-		return time
-	}
-
-	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
-
 	useEffect(() => {
 		init()
-		if (isFinished) return history.push("/game")
+		if (isFinished === true) return history.push("/game")
 	}, [isFinished])
 
 
 	const Counter = () => {
 
+		const count = (seconds > 0) && (minutes > 0) && hours <= (1000 * 60 * 60 * 1)
+
 		return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
-			<div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
-				<div style={{ fontSize: "1.25rem" }}>
-					Game starts in
-					<span style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0 1rem" }}>
-						{timerFormatter(minutes)}
-					</span>
-					<span>minutes</span>
-					<span style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0 1rem" }}>
-						{timerFormatter(seconds)}
-					</span>
-					<span>seconds</span>
+			{count ?
+				<div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
+					<div style={{ fontSize: "1.25rem" }}>
+						Game starts in
+						<span style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0 1rem" }}>
+							{timerFormatter(minutes)}
+						</span>
+						<span>minutes</span>
+						<span style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0 1rem" }}>
+							{timerFormatter(seconds)}
+						</span>
+						<span>seconds</span>
+					</div>
 				</div>
-			</div>
+				:
+				<div style={{ color: "white", fontSize: "1.25rem", fontWeight: "bold" }}>Loading...</div>
+			}
 		</div >
 	}
 
@@ -87,8 +91,6 @@ export const RendleLobby = () => {
 					</div>
 				</div>
 			</div>
-
-
 		</div>
 
 	</div >)
