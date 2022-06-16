@@ -804,6 +804,11 @@ input[name="u-topbar__button_3"]:checked
   display: none;
 }
 
+.rendle_timer_ipad {
+  display: flex;
+  justify-content: center;
+}
+
 @media screen and (min-width: 1366px) {
   .rendle_timer_desktop {
     display: block;
@@ -811,9 +816,4 @@ input[name="u-topbar__button_3"]:checked
   .rendle_timer_ipad {
     display: none;
   }
-}
-
-.rendle_timer_ipad {
-  display: flex;
-  justify-content: center;
 }
