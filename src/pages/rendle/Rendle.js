@@ -6,7 +6,7 @@ import { loadRendleGames } from '../../service/rendles.service'
 
 import { AlertProvider } from './game/context/AlertContext'
 
-const ContestCard = lazy(() => import('./components/contest_card/ContestCard'))
+const ContestCard = lazy(() => import('./ContestCard'))
 const Bar = lazy(() => import("../common/bar/Bar"))
 const Footer = lazy(() => import("../common/footer/Footer"))
 

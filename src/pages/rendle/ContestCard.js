@@ -4,25 +4,20 @@ import Countdown from "react-countdown"
 
 import { useHistory } from 'react-router-dom'
 
-import Controller from '../../../../assets/rendle/rendle/joystick.webp'
-import PlayPng from '../../../../assets/rendle/rendle/play.webp'
-import ExpiredPng from '../../../../assets/rendle/rendle/menu.webp'
-import StartsPng from '../../../../assets/rendle/rendle/play_disable.webp'
+import Controller from '../../assets/rendle/rendle/joystick.webp'
+import PlayPng from '../../assets/rendle/rendle/play.webp'
+import ExpiredPng from '../../assets/rendle/rendle/menu.webp'
+import StartsPng from '../../assets/rendle/rendle/play_disable.webp'
 
-import { enterContest } from '../../../../service/rendles.service'
+import { enterContest } from '../../service/rendles.service'
 
-import ConfirmModal from '../confirm_modal/ConfirmModal'
-import InsufficentFunds from '../in_sufficent_fund_modals/InsufficentFunds'
-import MetaMaskWalletAddressModal from '../metamask_modal/MetaMaskModal'
-import WarningModal from '../warning_modal/WarningModal'
+import Dialog from '../common/dialog/Dialog'
 
 import { SwitchVerticalIcon, MenuIcon, XIcon, ClockIcon, PlayIcon, BanIcon } from '@heroicons/react/solid'
-import { useCountdown } from '../../../common/timer/useCountDown'
+import { useCountdown } from '../common/timer/useCountDown'
 
 const ContestCard = (props) => {
-
 	const history = useHistory()
-
 
 	const [confirmModal, setConfirmModal] = useState(false);
 	const [InsufficentModal, setInsufficentModal] = useState(false)
@@ -32,13 +27,8 @@ const ContestCard = (props) => {
 	const [days, hours, minutes, seconds, isFinished] = useCountdown(new Date(props.expiresAt))
 
 	const InsufficentModalClose = () => setInsufficentModal(false);
-	const InsufficentModalOpen = () => setInsufficentModal(true)
-
 	const metaMaskModalClose = () => setMetaMaskModal(false);
-	const metaMaskModalOpen = () => setMetaMaskModal(true)
-
 	const warningModalClose = () => setWarningModal(false);
-	const warningModalOpen = () => setWarningModal(true)
 
 	const ConfirmModalOpen = () => {
 		const userId = localStorage.getItem("userId")
@@ -174,10 +164,27 @@ const ContestCard = (props) => {
 	}
 	return (
 		<div style={{ background: `#321E43` }} className={"c-mobile-view"}>
-			<ConfirmModal show={confirmModal} entryFee={props.entryFee} modalOpen={ConfirmModalOpen} modalClose={ConfirmModalClose} play={enterContestAction} />
-			<InsufficentFunds show={InsufficentModal} modalOpen={InsufficentModalOpen} modalClose={InsufficentModalClose} />
-			<MetaMaskWalletAddressModal show={metaMaskModal} modalOpen={metaMaskModalOpen} modalClose={metaMaskModalClose} />
-			<WarningModal show={warningModal} modalOpen={warningModalOpen} modalClose={warningModalClose} />
+			<Dialog
+				show={confirmModal} close={ConfirmModalClose} action={enterContestAction}
+				message={`Entering in the contest will deduct ${props.entryFee} REND`}
+				header="Are you sure?" buttonText="Confirm"
+			/>
+			<Dialog
+				show={InsufficentModal} action={InsufficentModalClose} close={InsufficentModalClose}
+				message="You have Insufficent funds in your account" header="Sorry!"
+				buttonText="Close"
+			/>
+			<Dialog
+				show={warningModal} action={warningModalClose} close={warningModalClose}
+				message="Game registrations has been closed" header="Sorry!"
+				buttonText="Close"
+			/>
+			<Dialog
+				show={metaMaskModal} close={metaMaskModalClose} action={metaMaskModalClose}
+				message="Connect to your metamask wallet" header="Sorry!"
+				buttonText="Close"
+			/>
+
 			{/* CONTROLLERS */}
 			<input style={{ display: "none" }} type="checkbox" id={"u-mobile__button" + cssFinder()} name={"u-mobile__button" + cssFinder()} />
 			<input style={{ display: "none" }} type="checkbox" id={"u-topbar__button" + cssFinder()} name={"u-topbar__button" + cssFinder()} />

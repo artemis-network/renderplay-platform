@@ -1,56 +1,41 @@
-import { Modal } from 'react-bootstrap'
-import { XCircleIcon } from '@heroicons/react/solid'
+import {
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
+  Button, Box
+} from '@chakra-ui/react'
+
+import Lottie from 'lottie-react-web'
 
 import WON from '../../../../../assets/rendle/rendle_game/little-boy-with-thumbs-up.json'
 import LOST from '../../../../../assets/rendle/rendle_game/little-boy-crying.json'
 import DONE from '../../../../../assets/rendle/rendle_game/little-boy-with-a-pointing-stick.json'
 
-import Lottie from 'lottie-react-web'
+const defaultOptions_WON = {
+  loop: true, autoplay: true, animationData: WON, rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
+  }
+};
+const defaultOptions_LOST = {
+  loop: true, autoplay: true, animationData: LOST, rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
+  }
+};
 
-export const GameModal = ({
-  isOpen,
-  handleClose,
-  isGameLost,
-  isGameWon,
-  isGameFinished
-}) => {
+const defaultOptions_DONE = {
+  loop: true, autoplay: true, animationData: DONE, rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
+  }
+};
 
-  const defaultOptions_WON = {
-    loop: true,
-    autoplay: true,
-    animationData: WON,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  };
-  const defaultOptions_LOST = {
-    loop: true,
-    autoplay: true,
-    animationData: LOST,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  };
 
-  const defaultOptions_DONE = {
-    loop: true,
-    autoplay: true,
-    animationData: DONE,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  };
+export const GameModal = ({ isOpen, handleClose, isGameLost, isGameWon, isGameFinished, type }) => {
 
-  const Body = () => <div>
+  const Content = () => <div>
     {
       isGameFinished ? (<div>
         <Lottie
-          style={{ height: "14rem", width: "14rem", paddingbottom: "2rem" }}
+          style={{ height: "20rem", width: "20rem", paddingbottom: "2rem" }}
           options={defaultOptions_DONE}
         />
-        <div className='custom_modal_header'>
-          Try next rendle!
-        </div>
         <h2>You already participated in this contest, stay tuned for results.</h2>
       </div>
       ) : null
@@ -59,13 +44,10 @@ export const GameModal = ({
       isGameLost && !isGameFinished ? (
         <div>
           <Lottie
-            style={{ height: "14rem", width: "14rem", paddingBottom: "2rem" }}
+            style={{ height: "20rem", width: "20rem", paddingBottom: "2rem" }}
             options={defaultOptions_LOST}
           />
-          <div className='custom_modal_header'>
-            Try next rendle!
-          </div>
-          <h2>Better Luck next time!.</h2>
+          <h2>Better Luck next time!</h2>
         </div>
       ) : null
     }
@@ -73,12 +55,9 @@ export const GameModal = ({
       isGameWon && !isGameFinished ? (
         <div>
           <Lottie
-            style={{ height: "14rem", width: "14rem", paddingBottom: "2rem" }}
+            style={{ height: "20rem", width: "20rem", paddingBottom: "2rem" }}
             options={defaultOptions_WON}
           />
-          <div className='custom_modal_header'>
-            Congrats!
-          </div>
           <h2>Congrats you completed, resutls will be announced soon.</h2>
         </div>
       ) : null
@@ -86,25 +65,27 @@ export const GameModal = ({
   </div>
 
 
-
   return (
-    <Modal
-      centered
-      show={isOpen} onHide={handleClose}>
-      <div className="custom_modal_close">
-        <XCircleIcon onClick={handleClose} className='h-12 w-12 cursor-pointer' color="#ffeeee" />
-      </div>
-      <div className='custom_modal_content'>
-
-        <div className='custom_modal_body'>
-          <Body />
-        </div>
-        <div className='custom_modal_footer'>
-          <button className='custom_modal_primary' onClick={handleClose}>
-            Close
-          </button>
-        </div>
-      </div>
-    </Modal>
+    <>
+      <Modal isOpen={isOpen} onClose={handleClose} isCentered>
+        <ModalOverlay />
+        <ModalContent color={"white"} bg={"#321e43"} borderRadius="3xl">
+          <ModalHeader textAlign={"center"} fontSize={"2xl"}>
+            Try next rendle!
+          </ModalHeader>
+          <ModalCloseButton bg={"#321e43"} color={"color"} _hover={{ bg: "white", color: "#321e43" }} />
+          <ModalBody textAlign={"center"} fontSize={"larger"} >
+            <Content />
+          </ModalBody>
+          <ModalFooter justifyContent="center">
+            <Box fontSize="2xl" fontWeight="bold" borderRadius="2xl" py={3} px={12} _hover={{
+              bg: "white", color: "#321e43"
+            }} className="username" onClick={handleClose}>
+              Okay
+            </Box>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   )
 }

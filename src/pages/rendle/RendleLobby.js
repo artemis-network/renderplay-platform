@@ -28,7 +28,6 @@ export const RendleLobby = () => {
 	function init() {
 		getContestantStatus({ userId: userId, contestId: data._id })
 			.then((res) => {
-				console.log(res.data)
 				setExpiresAt(new Date(res.data.opensAt))
 				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game")
 			}).catch(err => console.log(err))
@@ -42,8 +41,7 @@ export const RendleLobby = () => {
 
 	const Counter = () => {
 
-		const count = (minutes === 0 && seconds < 0)
-		console.log(count)
+		const count = (minutes === 0 && seconds < 0) || (hours === 1)
 
 		return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
 			{!count ?

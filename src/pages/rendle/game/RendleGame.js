@@ -74,8 +74,10 @@ const RendleGame = () => {
 
   const [days, hours, minutes, seconds, isFinished] = useCountdown(timer);
 
-
   useEffect(() => {
+    const isValid = data !== null || data !== undefined || data !== "null" || data !== "undefined"
+    if (!isValid) return history.push("/")
+
     SET_MAX(data.gameType)
     SET_MAX_CHALLENGES(data.gameType)
     if (data.gameType === 5) {
@@ -341,7 +343,19 @@ const RendleGame = () => {
     <div style={{ position: "relative" }}>
       <Bar isGame={true} />
       <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0" }}>
-        <div style={{ padding: "1rem", width: "12vw", borderRadius: "2vh", position: "absolute", left: "5rem" }} className="username">
+        <div className='rendle_timer_ipad'>
+          <div className='username' style={{ padding: "1rem 2rem", display: "flex", flexDirection: "row", columnGap: "2rem", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
+            <InformationCircleIcon
+              color='white'
+              className="h-16 w-16 cursor-pointer dark:stroke-white"
+              onClick={() => setIsInfoModalOpen(true)}
+            />
+            <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
+            <Counter />
+          </div>
+        </div>
+
+        <div style={{ padding: "1rem", width: "12vw", borderRadius: "2vh", position: "absolute", left: "5rem" }} className="username rendle_timer_desktop">
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
             <InformationCircleIcon
               color='white'
@@ -386,6 +400,7 @@ const RendleGame = () => {
             isGameLost={isGameLost}
             isGameWon={isGameWon}
             isGameFinished={isGameFinished}
+            type={data.gameType}
           />
           <AlertContainer />
         </div>
