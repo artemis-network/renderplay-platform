@@ -74,7 +74,7 @@ const RendleGame = () => {
             return setIsGameModalOpen(true)
           }
 
-          if (!res.data.isOpened) return history.push("/lobby")
+          if (!res.data.isOpened) return history.push("/lobby/" + params.contestId)
 
           if (!isGameCompleted || !isSameContest) {
             const time = res.data.expiresAt
@@ -266,68 +266,71 @@ const RendleGame = () => {
   return (
     <div style={{ position: "relative" }}>
       <Bar isGame={true} />
-      <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0" }}>
-        <div className='rendle_timer_ipad'>
-          <div className='username' style={{ padding: "1rem 2rem", display: "flex", flexDirection: "row", columnGap: "2rem", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
-            <InformationCircleIcon
-              color='white'
-              className="h-16 w-16 cursor-pointer dark:stroke-white"
-              onClick={() => setIsInfoModalOpen(true)}
-            />
-            <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
-            <Counter />
+      {isGameWon || isGameLost ?
+        <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0" }}>
+          <div className='rendle_timer_ipad'>
+            <div className='username' style={{ padding: "1rem 2rem", display: "flex", flexDirection: "row", columnGap: "2rem", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
+              <InformationCircleIcon
+                color='white'
+                className="h-16 w-16 cursor-pointer dark:stroke-white"
+                onClick={() => setIsInfoModalOpen(true)}
+              />
+              <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
+              <Counter />
+            </div>
           </div>
-        </div>
 
-        <div style={{ padding: "1rem", width: "12vw", borderRadius: "2vh", position: "absolute", left: "5rem" }} className="username rendle_timer_desktop">
-          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
-            <InformationCircleIcon
-              color='white'
-              className="h-16 w-16 cursor-pointer dark:stroke-white"
-              onClick={() => setIsInfoModalOpen(true)}
-            />
-            <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
-            <Counter />
-            <Lottie
-              style={{ height: "10rem", width: "10rem", position: "absolute", bottom: "-5rem", right: "-5rem" }}
-              options={defaultOptions_Timer}
-            />
+          <div style={{ padding: "1rem", width: "12vw", borderRadius: "2vh", position: "absolute", left: "5rem" }} className="username rendle_timer_desktop">
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
+              <InformationCircleIcon
+                color='white'
+                className="h-16 w-16 cursor-pointer dark:stroke-white"
+                onClick={() => setIsInfoModalOpen(true)}
+              />
+              <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
+              <Counter />
+              <Lottie
+                style={{ height: "10rem", width: "10rem", position: "absolute", bottom: "-5rem", right: "-5rem" }}
+                options={defaultOptions_Timer}
+              />
+            </div>
           </div>
-        </div>
-        <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%" }}>
-          <div className="grow_keyboard">
-            <Grid
-              status={status}
+
+          <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%" }}>
+            <div className="grow_keyboard">
+              <Grid
+                status={status}
+                guesses={guesses}
+                currentGuess={currentGuess}
+                isRevealing={isRevealing}
+                currentRowClassName={currentRowClass}
+                MAX_CHALLENGES={MAX_CHALLENGES}
+              />
+            </div>
+            <Keyboard
+              onChar={onChar}
+              onDelete={onDelete}
+              onEnter={onEnter}
               guesses={guesses}
-              currentGuess={currentGuess}
               isRevealing={isRevealing}
-              currentRowClassName={currentRowClass}
-              MAX_CHALLENGES={MAX_CHALLENGES}
+              MAX_WORD_LENGTH={MAX_WORD_LENGTH}
             />
           </div>
-          <Keyboard
-            onChar={onChar}
-            onDelete={onDelete}
-            onEnter={onEnter}
-            guesses={guesses}
-            isRevealing={isRevealing}
-            MAX_WORD_LENGTH={MAX_WORD_LENGTH}
-          />
-          <InfoModal
-            isOpen={isInfoModalOpen}
-            handleClose={() => setIsInfoModalOpen(false)}
-          />
-          <GameModal
-            isOpen={isGameModalOpen}
-            handleClose={returnToWordle}
-            guesses={guesses}
-            isGameLost={isGameLost}
-            isGameWon={isGameWon}
-            isGameFinished={isGameFinished}
-            type={MAX_CHALLENGES}
-          />
         </div>
-      </div>
+        : null}
+      <InfoModal
+        isOpen={isInfoModalOpen}
+        handleClose={() => setIsInfoModalOpen(false)}
+      />
+      <GameModal
+        isOpen={isGameModalOpen}
+        handleClose={returnToWordle}
+        guesses={guesses}
+        isGameLost={isGameLost}
+        isGameWon={isGameWon}
+        isGameFinished={isGameFinished}
+        type={MAX_CHALLENGES}
+      />
       <img src={background} style={{ position: "absolute", bottom: "0rem", backgroundSize: "cover" }} />
     </div>
   )

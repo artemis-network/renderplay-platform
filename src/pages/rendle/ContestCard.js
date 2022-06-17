@@ -3,7 +3,9 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import Controller from '../../assets/rendle/rendle/joystick.webp'
+
 import PlayPng from '../../assets/rendle/rendle/play.webp'
+import StartsPng from '../../assets/rendle/rendle/play_disable.webp'
 
 import { enterContest } from '../../service/rendles.service'
 
@@ -30,7 +32,6 @@ const ContestCard = (props) => {
 	const startsAt = new Date(props.startsOn).getTime()
 	const expiresAt = new Date(props.expiresAt).getTime()
 	const now = new Date().getTime()
-	console.log(">.> now " + now)
 	const startTime = startsAt < now
 	const endTime = expiresAt > now
 
@@ -112,9 +113,18 @@ const ContestCard = (props) => {
 
 	const Counter = () => {
 		if (props.isExpired)
-			return <div>Game Closed</div>
+			return <div className="contest__card__header">
+				<BanIcon
+					color="#ff0000"
+					className="h-6 w-6 m-2 cursor-pointer dark:stroke-white"
+				/>
+				<div style={{ color: "#ffffff", display: "flex", columnGap: "5.7rem" }}>
+					{"Expired"}
+				</div>
+			</div >
 
-		if (isFinished && startTime && endTime) {
+
+		if (startTime && endTime) {
 			return <div className="contest__card__header">
 				<PlayIcon
 					color="#219f94"
@@ -125,29 +135,31 @@ const ContestCard = (props) => {
 				</div>
 			</div >
 		}
-		else
-			return <div className="contest__card__header">
-				<ClockIcon
-					color="#FF8D29"
-					className="h-6 w-6 m-2 cursor-pointer dark:stroke-red"
-				/>
-				<div style={{ color: "#ffffff", display: "flex", columnGap: "5.7rem" }}>
-					{"Starts in"} <div style={{ fontSize: ".8rem" }}>
-						<div>
-							<span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
-								{timerFormatter(hours)}
-							</span>
-							<span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
-								{timerFormatter(minutes)}
-							</span>
-							<span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
-								{timerFormatter(seconds)}
-							</span>
-						</div>
+		else if (startTime && !endTime)
+			return <div>Game Closed</div>
 
+		return <div className="contest__card__header">
+			<ClockIcon
+				color="#FF8D29"
+				className="h-6 w-6 m-2 cursor-pointer dark:stroke-red"
+			/>
+			<div style={{ color: "#ffffff", display: "flex", columnGap: "5.7rem" }}>
+				{"Starts in"} <div style={{ fontSize: ".8rem" }}>
+					<div>
+						<span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+							{timerFormatter(hours)}
+						</span>
+						<span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+							{timerFormatter(minutes)}
+						</span>
+						<span style={{ background: "#253393", fontSize: "1rem", margin: "0 .15rem", padding: ".25rem", borderRadius: ".2vh" }}>
+							{timerFormatter(seconds)}
+						</span>
 					</div>
+
 				</div>
 			</div>
+		</div>
 	}
 	return (
 		<div style={{ background: `#321E43` }} className={"c-mobile-view "}>
@@ -248,7 +260,7 @@ const ContestCard = (props) => {
 			<label htmlFor={"u-cards-switcher__button" + cssFinder()} className={"c-button c-switcher__button"}>
 				<SwitchVerticalIcon className='h-4 w-4 cursor-pointer' color="white" />
 			</label>
-			{startTime && endTime ?
+			{startTime && !props.isExpired ?
 				<img
 					alt="play"
 					src={PlayPng}
@@ -264,6 +276,24 @@ const ContestCard = (props) => {
 					}}
 					color="green" />
 				: null
+			}
+			{
+				!startTime && !props.isExpired ?
+					<img
+						alt="play"
+						src={StartsPng}
+						onClick={() => ("")}
+						className='h-24 w-24 cursor-pointer'
+						style={{
+							position: "absolute",
+							margin: "auto",
+							left: 0,
+							right: 0,
+							bottom: "-2.5rem"
+
+						}}
+						color="green" />
+					: null
 			}
 		</div >
 	);

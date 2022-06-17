@@ -31,6 +31,7 @@ export const RendleLobby = () => {
 			.then((res) => {
 				setExpiresAt(res.data.opensAt)
 				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game/" + params.contestId)
+				// write else block here add modal invalid entry
 			}).catch(err => {
 				console.log(err.message)
 				console.log(err.stack)
