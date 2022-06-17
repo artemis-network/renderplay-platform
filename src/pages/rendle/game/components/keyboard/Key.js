@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import { REVEAL_TIME_MS } from '../../constants/settings'
 
 export const Key = ({
   children,
@@ -11,7 +10,7 @@ export const Key = ({
   MAX_WORD_LENGTH
 }) => {
 
-  const keyDelayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH
+  const keyDelayMs = 350 * MAX_WORD_LENGTH
   const isHighContrast = false
 
   const classes = classnames(

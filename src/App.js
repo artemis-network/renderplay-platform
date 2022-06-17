@@ -56,8 +56,8 @@ const App = () => {
         <Router>
 
           <Route exact component={Rendle} path="/" />
-          <Route exact component={RendleGame} path="/game" />
-          <Route exact component={RendleLobby} path="/lobby" />
+          <Route exact component={RendleGame} path="/game/:contestId" />
+          <Route exact component={RendleLobby} path="/lobby/:contestId" />
 
           <Route exact component={RenderScan} path="/renderscan" />
           <Route exact component={RenderScanGame} path="/renderscan/game" />

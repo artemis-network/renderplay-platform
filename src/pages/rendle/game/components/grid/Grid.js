@@ -3,7 +3,7 @@ import { CurrentRow } from './CurrentRow'
 import { EmptyRow } from './EmptyRow'
 
 export const Grid = ({
-  solution,
+  status,
   guesses,
   currentGuess,
   isRevealing,
@@ -15,23 +15,25 @@ export const Grid = ({
       ? Array.from(Array(MAX_CHALLENGES - 1 - guesses.length))
       : []
 
+
   return (
     <div>
       {guesses.map((guess, i) => (
         <CompletedRow
           key={i}
           guess={guess}
-          solution={solution}
+          status={status[i]}
+          gameType={MAX_CHALLENGES}
           isRevealing={isRevealing && guesses.length - 1 === i}
         />
       ))}
 
       {guesses.length < MAX_CHALLENGES && (
-        <CurrentRow guess={currentGuess} className={currentRowClassName} />
+        <CurrentRow gameType={MAX_CHALLENGES} guess={currentGuess} className={currentRowClassName} />
       )}
 
       {empties.map((_, i) => (
-        <EmptyRow key={i} />
+        <EmptyRow gameType={MAX_CHALLENGES} key={i} />
       ))}
     </div>
   )

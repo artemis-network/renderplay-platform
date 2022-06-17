@@ -12,9 +12,8 @@ import RendleSeven from '../assets/rendle/rendle/rendle_7.webp'
 
 export const enterContest = async (data) => await axios.post(`${rendlePrefix}/enter`, data, headers)
 export const saveRendleGame = async (data) => await axios.post(`${rendlePrefix}/save`, data, headers)
-export const getContestantStatus = async (data) => await axios.post(`${rendlePrefix}/status`, data, headers)
-export const updateGuesses = async (data) => await axios.post(`${rendlePrefix}/words/update`, data, headers)
-export const getGuesses = async (data) => await axios.post(`${rendlePrefix}/words`, data, headers)
+export const getContestantStatus = async (data) => await axios.post(`${rendlePrefix}/game/status`, data, headers)
+export const validateUpdateGuess = async (data) => await axios.post(`${rendlePrefix}/game/word/validate`, data, headers)
 
 const rendleGameTypesApi = async () => await axios.get(`${rendlePrefix}`)
 
@@ -25,7 +24,6 @@ export const loadRendleGames = async () => {
 	try {
 		const rendles = await rendleGameTypesApi();
 		let data = rendles.data.rendleContests
-		console.log(rendles.data)
 		const now = new Date(rendles.data.currentTime)
 
 		let temp = []

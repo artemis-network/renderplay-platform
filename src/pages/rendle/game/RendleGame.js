@@ -1,59 +1,41 @@
 import { useState, useEffect, lazy } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import Background1 from '../../../assets/rendle/rendle/1.png'
 
 import Timer from '../../../assets/rendle/rendle_game/timer.json'
 
-
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
-
-import { useAlert } from './context/AlertContext'
-import { AlertContainer } from './components/alerts/AlertContainer'
 
 import { InfoModal } from './components/modals/InfoModal'
 import { GameModal } from './components/modals/GameModal'
 
-import { NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE } from './constants/strings'
-import { REVEAL_TIME_MS } from './constants/settings'
-import { isWordInWordList, isWinningWord, getWordOfDay, unicodeLength } from './lib/words'
-import { loadGameStateFromLocalStorage, saveGameStateToLocalStorage } from './lib/localStorage'
-
-import { fiveLetterList } from './constants/config/fiveLetterList'
-import { sixLetterList } from './constants/config/sixLetterList'
-import { sevenLetterList } from './constants/config/sevenLetterList'
-import { FiveLetterGuesses } from './constants/config/fiveLetterGuesses'
-import { sixLetterGuesses } from './constants/config/sixLetterGuesses'
-import { SevenLetterGuesses } from './constants/config/sevenLetterGuesses'
+import { unicodeLength } from './lib/words'
 
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
-import { saveRendleGame, getContestantStatus, getGuesses, updateGuesses } from '../../../service/rendles.service'
+import { saveRendleGame, getContestantStatus, validateUpdateGuess } from '../../../service/rendles.service'
 
 import { InformationCircleIcon } from '@heroicons/react/solid'
 
 import Lottie from 'lottie-react-web'
 import { useCountdown } from '../../common/timer/useCountDown'
+import { useParams } from 'react-router'
 
 const defaultOptions_Timer = {
-  loop: true,
-  autoplay: true,
-  animationData: Timer,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice'
-  }
+  loop: true, autoplay: true, animationData: Timer,
+  rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
 };
 
 const Bar = lazy(() => import("../../common/bar/Bar"))
 
 const RendleGame = () => {
   const userId = localStorage.getItem("userId")
-  const data = JSON.parse(localStorage.getItem("gameConfig"))
 
   const history = useHistory()
+  const params = useParams()
 
-
-  const { showError: showErrorAlert, showSuccess: showSuccessAlert } = useAlert()
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
@@ -63,68 +45,28 @@ const RendleGame = () => {
   const [isRevealing, setIsRevealing] = useState(false)
   const [MAX_WORD_LENGTH, SET_MAX] = useState(5)
   const [MAX_CHALLENGES, SET_MAX_CHALLENGES] = useState(5)
-  const [WORDS, SET_WORDS] = useState([])
-  const [VALID_GUESSES, SET_VALID_GUESSES] = useState([])
   const [isGameFinished, setIsGameFinished] = useState(false)
   const [timer, setTimer] = useState(new Date(new Date().getTime() + (1000 * 60 * 60 * 1)))
   const [background, setBackground] = useState(Background1)
   const [stop, setStop] = useState(false)
 
-  const [solution, setSolution] = useState("")
+  const [status, setStatus] = useState([[]])
 
   const [days, hours, minutes, seconds, isFinished] = useCountdown(timer);
 
-  useEffect(() => {
-    const isValid = data !== null || data !== undefined || data !== "null" || data !== "undefined"
-    if (!isValid) return history.push("/")
-
-    SET_MAX(data.gameType)
-    SET_MAX_CHALLENGES(data.gameType)
-    if (data.gameType === 5) {
-      SET_WORDS(fiveLetterList)
-      SET_VALID_GUESSES(FiveLetterGuesses)
-      const { solution } = getWordOfDay(fiveLetterList)
-      setSolution(solution)
-      // setBackground(Background1)
-    }
-    if (data.gameType === 6) {
-      SET_WORDS(sixLetterList)
-      SET_VALID_GUESSES(sixLetterGuesses)
-      const { solution } = getWordOfDay(sixLetterList)
-      setSolution(solution)
-      // setBackground(Background2)
-    }
-    if (data.gameType === 7) {
-      SET_WORDS(sevenLetterList)
-      SET_VALID_GUESSES(SevenLetterGuesses)
-      const { solution } = getWordOfDay(sevenLetterList)
-      setSolution(solution)
-      // setBackground(Background3)
-    }
-
-  }, [MAX_WORD_LENGTH, data.gameType, solution])
-
-  const [guesses, setGuesses] = useState(() => {
-    const loaded = loadGameStateFromLocalStorage()
-    if (loaded?.solution !== solution) return []
-    const gameWasWon = loaded.guesses.includes(solution)
-    if (gameWasWon) setIsGameWon(true)
-    if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) setIsGameLost(true)
-    return loaded.guesses
-  })
-
-  const clearCurrentRowClass = () => setCurrentRowClass('')
-
-  useEffect(() => saveGameStateToLocalStorage({ guesses, solution }), [guesses, solution])
-
+  const [guesses, setGuesses] = useState([])
 
   useEffect(() => {
     if (userId) {
-      getContestantStatus({ userId: userId, contestId: data._id })
+      getContestantStatus({ userId: userId, contestId: params.contestId })
         .then(res => {
 
+          SET_MAX(res.data.gameType)
+          SET_MAX_CHALLENGES(res.data.gameType)
+          setStatus(res.data.guessStatus)
+
           const isGameCompleted = res.data.isGameCompleted
-          const isSameContest = data._id === res.data.contestId
+          const isSameContest = params.contestId === res.data.contestId
 
           if (isGameCompleted) {
             if (res.data.isWon) setIsGameWon(true)
@@ -135,12 +77,8 @@ const RendleGame = () => {
           if (!res.data.isOpened) return history.push("/lobby")
 
           if (!isGameCompleted || !isSameContest) {
-            let guesses = JSON.parse(localStorage.getItem("gameState"))
-
-            guesses = guesses.guesses.length
-            let gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
-
             const time = res.data.expiresAt
+
             setTimer(time)
 
             if (isGameLost) {
@@ -148,14 +86,13 @@ const RendleGame = () => {
                 userId: localStorage.getItem("userId"),
                 username: localStorage.getItem("username"),
                 completedIn: new Date(),
-                chances: guesses,
-                gameType: gameConfig.gameType,
-                contestId: gameConfig._id,
+                chances: res.data.words.length,
+                gameType: res.data.gameType,
+                contestId: params.contestId,
                 isWon: false
               }
               saveRendleGame(data).then(res => {
                 setIsGameModalOpen(true)
-                localStorage.removeItem("gameStateId")
                 return setIsGameLost(true)
               }).catch(err => console.log(err))
             }
@@ -166,9 +103,9 @@ const RendleGame = () => {
                 userId: localStorage.getItem("userId"),
                 username: localStorage.getItem("username"),
                 completedIn: new Date(),
-                chances: guesses,
-                gameType: gameConfig.gameType,
-                contestId: gameConfig._id,
+                chances: res.data.words.length,
+                gameType: res.data.gameType,
+                contestId: params.contestId,
                 isWon: true
               }
               saveRendleGame(data).then(res => {
@@ -183,20 +120,15 @@ const RendleGame = () => {
             setIsGameLost(!res.data.isWon)
           }
 
-
           if (res.data.words.length <= 0) return
           else {
-            const new_guesses = {
-              solution: solution,
-              guesses: res.data.words
-            }
             if (!isGameWon && !isGameLost) setGuesses([...res.data.words])
-            localStorage.setItem("gameState", JSON.stringify(new_guesses))
           }
         })
         .catch(err => { console.log(err) })
     } else return history.push("/")
-  }, [isGameWon, isGameLost, showSuccessAlert, history])
+
+  }, [isGameWon, isGameLost, history])
 
   const onChar = (value) => {
     const condition_1 = unicodeLength(`${currentGuess}${value}`) <= MAX_WORD_LENGTH
@@ -213,56 +145,49 @@ const RendleGame = () => {
 
     if (isGameWon || isGameLost) return
     const condition_1 = (unicodeLength(currentGuess) === MAX_WORD_LENGTH)
-    const condition_2 = !isWordInWordList(currentGuess, WORDS, VALID_GUESSES)
     const condition_3 = guesses.length < MAX_CHALLENGES
 
     if (!condition_1) {
-      setCurrentRowClass('jiggle')
-      return showErrorAlert(NOT_ENOUGH_LETTERS_MESSAGE, {
-        onClose: clearCurrentRowClass,
-      })
-    }
-    if (condition_2) {
-      setCurrentRowClass('jiggle')
-      return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
-        onClose: clearCurrentRowClass,
-      })
+      setCurrentRowClass("jiggle_w")
+      setTimeout(() => {
+        setCurrentRowClass("")
+      }, 1000)
+      return
     }
 
-    setIsRevealing(true)
-    setTimeout(() => {
-      setIsRevealing(false)
-    }, REVEAL_TIME_MS * MAX_WORD_LENGTH)
-
-    const winningWord = isWinningWord(currentGuess, solution)
-
-    if (condition_1 && condition_3 && !isGameWon) {
-      setGuesses([...guesses, currentGuess])
-      setCurrentGuess("")
-      const gameStateId = localStorage.getItem("gameStateId")
-      let word_data = {}
-      if (gameStateId !== undefined || gameStateId !== null) {
-        word_data = {
-          userId: localStorage.getItem("userId"),
-          constestId: data._id,
-          word: currentGuess,
-          gameStateId: gameStateId
+    validateUpdateGuess({
+      guess: currentGuess,
+      index: guesses.length + 1,
+      contestId: params.contestId,
+      userId: userId
+    })
+      .then((res => {
+        if (!res.data.isValidGuess) {
+          /// set alert here
+          setCurrentRowClass("jiggle_w")
+          setTimeout(() => {
+            setCurrentRowClass("")
+          }, 1000)
+          return
         }
-      } else {
-        word_data = {
-          userId: localStorage.getItem("userId"),
-          constestId: data._id,
-          word: currentGuess,
-          gameStateId: null
+
+        const isWinningWord = res.data.isWinningWord
+        if (condition_1 && condition_3 && !isGameWon) {
+          setIsRevealing(true)
+          setStatus([...status, res.data.guessStatus])
+          setGuesses([...guesses, currentGuess])
+          setCurrentGuess("")
+          setTimeout(() => {
+            setIsRevealing(false)
+          }, 350 * MAX_WORD_LENGTH)
+          const timer = get_timer()
+          if (isWinningWord) return setTimeout(() => setIsGameWon(true), timer)
+          if (guesses.length === MAX_CHALLENGES - 1) setTimeout(() => setIsGameLost(true), timer)
         }
-      }
-      updateGuesses(word_data).then(res => {
-        localStorage.setItem("gameStateId", res.data.gameStateId)
-      }).catch(err => console.log(err))
-      const timer = get_timer()
-      if (winningWord) return setTimeout(() => setIsGameWon(true), timer)
-      if (guesses.length === MAX_CHALLENGES - 1) setTimeout(() => setIsGameLost(true), timer)
-    }
+
+
+      }))
+      .catch(err => console.log(err))
   }
 
   const timerFormatter = (time) => {
@@ -280,7 +205,7 @@ const RendleGame = () => {
       completedIn: new Date(),
       chances: guesses.length,
       gameType: gameConfig.gameType,
-      contestId: gameConfig._id,
+      contestId: params.contestId,
       isWon: false
     }
     saveRendleGame(data).then(res => {
@@ -301,7 +226,6 @@ const RendleGame = () => {
   const Counter = () => {
 
     const count = (minutes === 0 && seconds < 0)
-    console.log(count)
 
     if (isFinished)
       if (stop !== true) setStop(true)
@@ -373,8 +297,8 @@ const RendleGame = () => {
         <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%" }}>
           <div className="grow_keyboard">
             <Grid
+              status={status}
               guesses={guesses}
-              solution={solution}
               currentGuess={currentGuess}
               isRevealing={isRevealing}
               currentRowClassName={currentRowClass}
@@ -400,9 +324,8 @@ const RendleGame = () => {
             isGameLost={isGameLost}
             isGameWon={isGameWon}
             isGameFinished={isGameFinished}
-            type={data.gameType}
+            type={MAX_CHALLENGES}
           />
-          <AlertContainer />
         </div>
       </div>
       <img src={background} style={{ position: "absolute", bottom: "0rem", backgroundSize: "cover" }} />

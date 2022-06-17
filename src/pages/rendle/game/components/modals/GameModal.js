@@ -71,16 +71,20 @@ export const GameModal = ({ isOpen, handleClose, isGameLost, isGameWon, isGameFi
         <ModalOverlay />
         <ModalContent color={"white"} bg={"#321e43"} borderRadius="3xl">
           <ModalHeader textAlign={"center"} fontSize={"2xl"}>
-            Try next rendle!
+            Try Next Rendle!
           </ModalHeader>
           <ModalCloseButton bg={"#321e43"} color={"color"} _hover={{ bg: "white", color: "#321e43" }} />
           <ModalBody textAlign={"center"} fontSize={"larger"} >
             <Content />
           </ModalBody>
           <ModalFooter justifyContent="center">
-            <Box fontSize="2xl" fontWeight="bold" borderRadius="2xl" py={3} px={12} _hover={{
-              bg: "white", color: "#321e43"
-            }} className="username" onClick={handleClose}>
+            <Box
+              marginBottom={"2"}
+              fontSize="2xl"
+              cursor={"pointer"}
+              fontWeight="bold" borderRadius="2xl" py={3} px={12} _hover={{
+                bg: "white", color: "#321e43"
+              }} className="username" onClick={handleClose}>
               Okay
             </Box>
           </ModalFooter>

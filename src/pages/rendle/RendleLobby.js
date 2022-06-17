@@ -7,6 +7,7 @@ import { getContestantStatus } from '../../service/rendles.service'
 import { ClockIcon } from "@heroicons/react/outline";
 import Alaram from '../../assets/rendle/rendle/alram.webp'
 import ProcessPng from '../../assets/rendle/rendle/process.png'
+import { useParams } from 'react-router'
 
 const timerFormatter = (time) => {
 	time = String(time)
@@ -18,24 +19,29 @@ const timerFormatter = (time) => {
 export const RendleLobby = () => {
 
 	const history = useHistory();
+	const params = useParams();
 
-	const data = JSON.parse(localStorage.getItem("gameConfig"));
 	const userId = localStorage.getItem("userId")
 
 	const [expiresAt, setExpiresAt] = useState(new Date().getTime() + (1000 * 60 * 60 * 1))
 	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
 
 	function init() {
-		getContestantStatus({ userId: userId, contestId: data._id })
+		getContestantStatus({ userId: userId, contestId: params.contestId })
 			.then((res) => {
-				setExpiresAt(new Date(res.data.opensAt))
-				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game")
-			}).catch(err => console.log(err))
+				setExpiresAt(res.data.opensAt)
+				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game/" + params.contestId)
+			}).catch(err => {
+				console.log(err.message)
+				console.log(err.stack)
+				console.log(err.name)
+				return history.push("/")
+			})
 	}
 
 	useEffect(() => {
 		init()
-		if (isFinished === true) return history.push("/game")
+		if (isFinished === true) return history.push("/game/" + params.contestId)
 	}, [isFinished])
 
 
