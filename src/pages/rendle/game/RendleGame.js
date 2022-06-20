@@ -60,6 +60,7 @@ const RendleGame = () => {
     if (userId) {
       getContestantStatus({ userId: userId, contestId: params.contestId })
         .then(res => {
+          console.log(res.data)
 
           SET_MAX(res.data.gameType)
           SET_MAX_CHALLENGES(res.data.gameType)
@@ -128,7 +129,7 @@ const RendleGame = () => {
         .catch(err => { console.log(err) })
     } else return history.push("/")
 
-  }, [isGameWon, isGameLost, history])
+  }, [isGameWon, isGameLost])
 
   const onChar = (value) => {
     const condition_1 = unicodeLength(`${currentGuess}${value}`) <= MAX_WORD_LENGTH
@@ -162,6 +163,7 @@ const RendleGame = () => {
       userId: userId
     })
       .then((res => {
+        console.log(res.data)
         if (!res.data.isValidGuess) {
           /// set alert here
           setCurrentRowClass("jiggle_w")
@@ -266,7 +268,7 @@ const RendleGame = () => {
   return (
     <div style={{ position: "relative" }}>
       <Bar isGame={true} />
-      {isGameWon || isGameLost ?
+      {!isGameWon || !isGameLost ?
         <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0" }}>
           <div className='rendle_timer_ipad'>
             <div className='username' style={{ padding: "1rem 2rem", display: "flex", flexDirection: "row", columnGap: "2rem", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
