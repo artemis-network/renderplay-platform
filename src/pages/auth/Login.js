@@ -170,11 +170,13 @@ const Login = () => {
                   </label>
                 </div>
               </div>
-              <small className="forgot-pass text-light mb-0">
-                <div className="text-light fw-medium">
-                  Forgot password ?
-                </div>
-              </small>
+              <Link to="/forgot-password">
+                <small className="forgot-pass text-light mb-0">
+                  <div className="text-light fw-medium">
+                    Forgot password ?
+                  </div>
+                </small>
+              </Link>
             </div>
 
             <button

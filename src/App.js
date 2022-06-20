@@ -17,13 +17,15 @@ import { RenderScanLobby } from './pages/renderscan/RenderScanLobby'
 
 const Signup = lazy(() => import('./pages/auth/Signup'));
 const Login = lazy(() => import('./pages/auth/Login'));
+const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
+const ChangePassword = lazy(() => import('./pages/auth/ChangePassword'));
+const EmailVerification = lazy(() => import('./pages/auth/EmailVerification'));
 
 const Raffle = lazy(() => import('./pages/raffle/Raffle'));
 const HangMan = lazy(() => import('./pages/hangman/HangMan'));
 
 
 import Loader from "react-js-loader";
-
 
 
 const App = () => {
@@ -66,7 +68,11 @@ const App = () => {
           <Route exact component={HangMan} path="/hangman" />
 
           <Route exact component={Login} path='/login' />
+          <Route exact component={ForgotPassword} path='/forgot-password/' />
+          <Route exact component={ChangePassword} path='/change-password/:token' />
+          <Route exact component={EmailVerification} path='/verify/:token' />
           <Route exact component={Signup} path='/signup' />
+
 
           <Route exact component={Raffle} path='/raffle' />
         </Router>
