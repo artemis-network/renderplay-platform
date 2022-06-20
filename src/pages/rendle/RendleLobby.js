@@ -9,6 +9,8 @@ import Alaram from '../../assets/rendle/rendle/alram.webp'
 import ProcessPng from '../../assets/rendle/rendle/process.png'
 import { useParams } from 'react-router'
 
+import Dialog from '../common/dialog/Dialog'
+
 const timerFormatter = (time) => {
 	time = String(time)
 	if (time.length === 1)
@@ -22,6 +24,7 @@ export const RendleLobby = () => {
 	const params = useParams();
 
 	const userId = localStorage.getItem("userId")
+	const [unAuth, setUnAuth] = useState(false)
 
 	const [expiresAt, setExpiresAt] = useState(new Date().getTime() + (1000 * 60 * 60 * 1))
 	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
@@ -29,6 +32,11 @@ export const RendleLobby = () => {
 	function init() {
 		getContestantStatus({ userId: userId, contestId: params.contestId })
 			.then((res) => {
+
+				if (!res.data.isValidEntry) {
+					setUnAuth(true)
+				}
+
 				setExpiresAt(res.data.opensAt)
 				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game/" + params.contestId)
 				// write else block here add modal invalid entry
@@ -72,14 +80,14 @@ export const RendleLobby = () => {
 	}
 
 
-	return (<div style={{ background: "#321e43" }}>
+	return (<div style={{ background: "#321e43", minHeight: "100vh" }}>
 		<Bar />
-		<div style={{ display: "flex", justifyContent: "center", margin: "5rem 0" }}>
-
+		{!unAuth ? <div style={{ display: "flex", justifyContent: "center", margin: "5rem 0" }}>
 			<div style={{
 				borderRadius: "3.8vh",
 				border: "6px solid gray",
-				position: "relative"
+				position: "relative",
+				minWidth: "30vw"
 			}}>
 				<img src={Alaram} style={{ position: "absolute", right: "-4rem", bottom: "-4rem", }} width="150" alt="alram" />
 				<img src={ProcessPng} style={{ position: "absolute", left: "-8rem", top: "-6rem" }} width="300" alt="alram" />
@@ -97,8 +105,13 @@ export const RendleLobby = () => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> : null}
 
+		<Dialog
+			show={unAuth} close={() => history.push("/")} action={() => history.push("/")}
+			message={`Unauthorized Access!`}
+			header="Warning" buttonText="Close"
+		/>
 	</div >)
 
 }

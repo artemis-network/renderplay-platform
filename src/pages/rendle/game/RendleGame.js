@@ -23,6 +23,8 @@ import Lottie from 'lottie-react-web'
 import { useCountdown } from '../../common/timer/useCountDown'
 import { useParams } from 'react-router'
 
+import { Box } from '@chakra-ui/react'
+
 const defaultOptions_Timer = {
   loop: true, autoplay: true, animationData: Timer,
   rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
@@ -49,6 +51,7 @@ const RendleGame = () => {
   const [timer, setTimer] = useState(new Date(new Date().getTime() + (1000 * 60 * 60 * 1)))
   const [background, setBackground] = useState(Background1)
   const [stop, setStop] = useState(false)
+  const [isGameCompleted, setIsGameCompleted] = useState(true)
 
   const [status, setStatus] = useState([[]])
 
@@ -61,7 +64,7 @@ const RendleGame = () => {
       getContestantStatus({ userId: userId, contestId: params.contestId })
         .then(res => {
           console.log(res.data)
-
+          setIsGameCompleted(res.data.isGameCompleted)
           SET_MAX(res.data.gameType)
           SET_MAX_CHALLENGES(res.data.gameType)
           setStatus(res.data.guessStatus)
@@ -267,59 +270,64 @@ const RendleGame = () => {
 
   return (
     <div style={{ position: "relative" }}>
-      <Bar isGame={true} />
-      {!isGameWon || !isGameLost ?
-        <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0" }}>
-          <div className='rendle_timer_ipad'>
-            <div className='username' style={{ padding: "1rem 2rem", display: "flex", flexDirection: "row", columnGap: "2rem", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
-              <InformationCircleIcon
-                color='white'
-                className="h-16 w-16 cursor-pointer dark:stroke-white"
-                onClick={() => setIsInfoModalOpen(true)}
-              />
-              <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
-              <Counter />
-            </div>
-          </div>
+      <Box>
 
-          <div style={{ padding: "1rem", width: "12vw", borderRadius: "2vh", position: "absolute", left: "5rem" }} className="username rendle_timer_desktop">
-            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
-              <InformationCircleIcon
-                color='white'
-                className="h-16 w-16 cursor-pointer dark:stroke-white"
-                onClick={() => setIsInfoModalOpen(true)}
-              />
-              <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
-              <Counter />
-              <Lottie
-                style={{ height: "10rem", width: "10rem", position: "absolute", bottom: "-5rem", right: "-5rem" }}
-                options={defaultOptions_Timer}
-              />
+        <Bar isGame={true} />
+      </Box>
+      <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0" }}>
+        {!isGameCompleted ?
+          <div>
+            <div className='rendle_timer_ipad'>
+              <div className='username' style={{ padding: "1rem 2rem", display: "flex", flexDirection: "row", columnGap: "2rem", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
+                <InformationCircleIcon
+                  color='white'
+                  className="h-16 w-16 cursor-pointer dark:stroke-white"
+                  onClick={() => setIsInfoModalOpen(true)}
+                />
+                <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
+                <Counter />
+              </div>
             </div>
-          </div>
 
-          <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%" }}>
-            <div className="grow_keyboard">
-              <Grid
-                status={status}
+            <div style={{ padding: "1rem", width: "12vw", borderRadius: "2vh", position: "absolute", left: "5rem" }} className="username rendle_timer_desktop">
+              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
+                <InformationCircleIcon
+                  color='white'
+                  className="h-16 w-16 cursor-pointer dark:stroke-white"
+                  onClick={() => setIsInfoModalOpen(true)}
+                />
+                <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
+                <Counter />
+                <Lottie
+                  style={{ height: "10rem", width: "10rem", position: "absolute", bottom: "-5rem", right: "-5rem" }}
+                  options={defaultOptions_Timer}
+                />
+              </div>
+            </div>
+
+            <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%" }}>
+              <div className="grow_keyboard">
+                <Grid
+                  status={status}
+                  guesses={guesses}
+                  currentGuess={currentGuess}
+                  isRevealing={isRevealing}
+                  currentRowClassName={currentRowClass}
+                  MAX_CHALLENGES={MAX_CHALLENGES}
+                />
+              </div>
+              <Keyboard
+                onChar={onChar}
+                onDelete={onDelete}
+                onEnter={onEnter}
                 guesses={guesses}
-                currentGuess={currentGuess}
                 isRevealing={isRevealing}
-                currentRowClassName={currentRowClass}
-                MAX_CHALLENGES={MAX_CHALLENGES}
+                MAX_WORD_LENGTH={MAX_WORD_LENGTH}
               />
             </div>
-            <Keyboard
-              onChar={onChar}
-              onDelete={onDelete}
-              onEnter={onEnter}
-              guesses={guesses}
-              isRevealing={isRevealing}
-              MAX_WORD_LENGTH={MAX_WORD_LENGTH}
-            />
           </div>
-        </div>
-        : null}
+          : null}
+      </div>
       <InfoModal
         isOpen={isInfoModalOpen}
         handleClose={() => setIsInfoModalOpen(false)}
