@@ -1,5 +1,5 @@
 
-let SERVER = "DEV";
+let SERVER = "PROD";
 let URL = "";
 
 if (SERVER === "DEV") URL = "http://192.168.1.41:5000";
