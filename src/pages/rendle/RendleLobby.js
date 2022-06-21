@@ -76,7 +76,7 @@ export const RendleLobby = () => {
 
 	return (<div style={{ background: "#321e43", minHeight: "100vh" }}>
 		<Bar />
-		{!unAuth ? <div style={{ display: "flex", justifyContent: "center", margin: "5rem 0" }}>
+		{!unAuth ? <div className="rendle_lobby" style={{ display: "flex", justifyContent: "center", margin: "5rem 0" }}>
 			<div style={{
 				borderRadius: "3.8vh",
 				border: "6px solid gray",

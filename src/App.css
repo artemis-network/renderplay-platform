@@ -809,12 +809,18 @@ input[name="u-topbar__button_3"]:checked
   justify-content: center;
 }
 
+.rendle_bottom {
+  display: none;
+}
 @media screen and (min-width: 1366px) {
   .rendle_timer_desktop {
     display: block;
   }
   .rendle_timer_ipad {
     display: none;
+  }
+  .rendle_bottom {
+    display: block;
   }
 }
 
@@ -845,5 +851,11 @@ input[name="u-topbar__button_3"]:checked
   40%,
   60% {
     transform: translate3d(4px, 0, 0);
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .rendle_lobby {
+    padding: 2rem;
   }
 }

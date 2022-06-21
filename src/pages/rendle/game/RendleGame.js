@@ -335,7 +335,7 @@ const RendleGame = () => {
         isGameFinished={isGameFinished}
         type={MAX_CHALLENGES}
       />
-      <img src={background} style={{ position: "absolute", bottom: "0rem", backgroundSize: "cover", zIndex: 1 }} />
+      <img className='rendle_bottom' src={background} style={{ position: "absolute", bottom: "0rem", backgroundSize: "cover", zIndex: 1 }} />
     </div>
   )
 }
