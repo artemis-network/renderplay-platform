@@ -10,10 +10,11 @@ import RendleFive from '../assets/rendle/rendle/rendle_5.webp'
 import RendleSix from '../assets/rendle/rendle/rendle_6.webp'
 import RendleSeven from '../assets/rendle/rendle/rendle_7.webp'
 
-export const enterContest = async (data) => await axios.post(`${rendlePrefix}/enter`, data, headers)
-export const saveRendleGame = async (data) => await axios.post(`${rendlePrefix}/save`, data, headers)
-export const getContestantStatus = async (data) => await axios.post(`${rendlePrefix}/game/status`, data, headers)
-export const validateUpdateGuess = async (data) => await axios.post(`${rendlePrefix}/game/word/validate`, data, headers)
+
+export const enterContest = async (data) => await axios.post(`${rendlePrefix}/enter`, data, headers())
+export const saveRendleGame = async (data) => await axios.post(`${rendlePrefix}/save`, data, headers())
+export const getContestantStatus = async (data) => await axios.post(`${rendlePrefix}/game/status`, data, headers())
+export const validateUpdateGuess = async (data) => await axios.post(`${rendlePrefix}/game/word/validate`, data, headers())
 
 const rendleGameTypesApi = async () => await axios.get(`${rendlePrefix}`)
 

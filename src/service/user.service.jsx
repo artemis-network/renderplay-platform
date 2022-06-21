@@ -20,15 +20,12 @@ export const validateToken = async (params) =>
   await axios.post(`${userPrefix}/validate/${params}`);
 
 export const createSession = (data) => {
-  localStorage.setItem("publicToken", data.publicToken);
   localStorage.setItem("accessToken", data.accessToken);
-  localStorage.setItem("username", data.username);
-  localStorage.setItem("userId", data.userId);
   localStorage.setItem("session", new Date());
 };
 
 export const getWallet = async (data) =>
-  await axios.post(`${walletPrefix}`, data, headers);
+  await axios.post(`${walletPrefix}`, data, headers());
 
 export const setWalletAddress = async (data) =>
-  await axios.post(`${userPrefix}/set-wallet-address`, data);
+  await axios.post(`${userPrefix}/set-wallet-address`, data, headers());

@@ -47,9 +47,9 @@ const Bar = (props) => {
 		return setImg(Random)
 	}, [])
 
-	const data = { userId: localStorage.getItem("userId") }
+	const data = { token: localStorage.getItem("accessToken") }
 	useEffect(() => {
-		if (data.userId !== null) {
+		if (data.token !== null) {
 			getWallet(data)
 				.then((res) => {
 					setWallet({
@@ -114,7 +114,7 @@ const Bar = (props) => {
 
 			<div style={{ display: "flex", justifyContent: "flex-end", columnGap: "2rem", alignItems: "center" }} >
 				<Wallet />
-				{localStorage.getItem("username") !== null ?
+				{localStorage.getItem("accessToken") !== null ?
 					<DropDown /> : <NavLink to={"/login"} className="neu neu_end no_border" activeClassName='neu_active'>Login</NavLink>
 				}
 			</div>
@@ -136,7 +136,7 @@ const Bar = (props) => {
 			</div>
 		</div>
 
-		{localStorage.getItem("username") && !props.isGame && !props.is_in_raffle ?
+		{localStorage.getItem("accessToken") && !props.isGame && !props.is_in_raffle ?
 			<div style={{ position: "absolute", right: 0 }} className="balance">
 				<div style={{ display: "flex", justifyContent: "flex-end", padding: "1rem 2rem", }}>
 					<div className='username' style={{ display: "flex", justifyContent: "flex-end", color: "#fbd6d2", fontWeight: "bold", padding: "1rem", borderRadius: "1vh", alignItems: "center" }}>

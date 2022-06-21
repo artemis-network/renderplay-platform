@@ -23,19 +23,17 @@ export const RendleLobby = () => {
 	const history = useHistory();
 	const params = useParams();
 
-	const userId = localStorage.getItem("userId")
 	const [unAuth, setUnAuth] = useState(false)
 
 	const [expiresAt, setExpiresAt] = useState(new Date().getTime() + (1000 * 60 * 60 * 1))
 	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
 
 	function init() {
-		getContestantStatus({ userId: userId, contestId: params.contestId })
+		getContestantStatus({ contestId: params.contestId })
 			.then((res) => {
 
-				if (!res.data.isValidEntry) {
+				if (!res.data.isValidGameEntry)
 					setUnAuth(true)
-				}
 
 				setExpiresAt(res.data.opensAt)
 				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game/" + params.contestId)
@@ -44,7 +42,7 @@ export const RendleLobby = () => {
 				console.log(err.message)
 				console.log(err.stack)
 				console.log(err.name)
-				return history.push("/")
+				// return history.push("/")
 			})
 	}
 

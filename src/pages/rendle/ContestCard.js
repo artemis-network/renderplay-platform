@@ -36,7 +36,7 @@ const ContestCard = (props) => {
 	const endTime = expiresAt > now
 
 	const ConfirmModalOpen = () => {
-		const userId = localStorage.getItem("userId")
+		const userId = localStorage.getItem("accessToken")
 		const metaMaskAddress = localStorage.getItem('metaMaskWalletAddress')
 		if (
 			!metaMaskAddress ||

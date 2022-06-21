@@ -33,7 +33,7 @@ const defaultOptions_Timer = {
 const Bar = lazy(() => import("../../common/bar/Bar"))
 
 const RendleGame = () => {
-  const userId = localStorage.getItem("userId")
+  const token = localStorage.getItem("accessToken")
 
   const history = useHistory()
   const params = useParams()
@@ -60,10 +60,9 @@ const RendleGame = () => {
   const [guesses, setGuesses] = useState([])
 
   useEffect(() => {
-    if (userId) {
-      getContestantStatus({ userId: userId, contestId: params.contestId })
+    if (token) {
+      getContestantStatus({ contestId: params.contestId })
         .then(res => {
-          console.log(res.data)
           setIsGameCompleted(res.data.isGameCompleted)
           SET_MAX(res.data.gameType)
           SET_MAX_CHALLENGES(res.data.gameType)
@@ -87,8 +86,6 @@ const RendleGame = () => {
 
             if (isGameLost) {
               const data = {
-                userId: localStorage.getItem("userId"),
-                username: localStorage.getItem("username"),
                 completedIn: new Date(),
                 chances: res.data.words.length,
                 gameType: res.data.gameType,
@@ -104,8 +101,6 @@ const RendleGame = () => {
             if (isGameWon) {
               setIsGameModalOpen(true)
               const data = {
-                userId: localStorage.getItem("userId"),
-                username: localStorage.getItem("username"),
                 completedIn: new Date(),
                 chances: res.data.words.length,
                 gameType: res.data.gameType,
@@ -163,7 +158,6 @@ const RendleGame = () => {
       guess: currentGuess,
       index: guesses.length + 1,
       contestId: params.contestId,
-      userId: userId
     })
       .then((res => {
         console.log(res.data)

@@ -63,9 +63,9 @@ const Signup = () => {
     onSubmit: (values) => {
       register(values)
         .then((res) => {
+          console.log(res.data);
           if (res.data.errorType === "USER_ALREADY_EXIST") {
             setStatus({
-              status: res.data.status,
               error: res.data.error,
               message: res.data.message,
             });
@@ -73,7 +73,6 @@ const Signup = () => {
 
           if (res.data.errorType === "NONE") {
             setStatus({
-              status: res.data.status,
               error: res.data.error,
               message:
                 "user registration successful, verification email has been sent",
@@ -88,7 +87,6 @@ const Signup = () => {
         .catch((err) => {
           console.log(err);
           setStatus({
-            status: 500,
             error: true,
             message: "Internal Server Errror",
           });
@@ -97,7 +95,6 @@ const Signup = () => {
   });
 
   const [status, setStatus] = useState({
-    status: null,
     message: "",
     errorType: "",
     error: false,
@@ -117,20 +114,18 @@ const Signup = () => {
         <div className="content">
           <img src={Logo} alt="logo" />
           <form action="#">
-            {status.status ? (
+            <div>
               <div>
-                <div>
-                  {!status.error ? (
-                    <div className="alert alert-success">{status.message}</div>
-                  ) : null}
-                </div>
-                <div>
-                  {status.error ? (
-                    <div className="alert alert-danger">{status.message}</div>
-                  ) : null}
-                </div>
+                {!status.error && status.errorType === "NONE" ? (
+                  <div className="alert alert-success">{status.message}</div>
+                ) : null}
               </div>
-            ) : null}
+              <div>
+                {status.error ? (
+                  <div className="alert alert-danger">{status.message}</div>
+                ) : null}
+              </div>
+            </div>
 
             <div className="field">
               <span>
