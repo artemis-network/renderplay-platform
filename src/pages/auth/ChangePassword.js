@@ -1,34 +1,35 @@
-import { useState, lazy } from "react";
 import { useFormik } from "formik";
-
+import { useState, lazy } from "react";
 import { useHistory, useParams } from "react-router-dom";
-
-const Bar = lazy(() => import("../common/bar/Bar"));
 
 import PasswordStrengthBar from "react-password-strength-bar";
 
 import { LockClosedIcon, } from "@heroicons/react/outline";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
 
-import './Form.css'
-
 import { changePasswordRequest } from "../../service/user.service";
+
+import Dialog from '../common/dialog/Dialog'
+
+const Bar = lazy(() => import("../common/bar/Bar"));
+
+import './Form.css'
 
 const validate = (values) => {
 	const errors = {};
 	if (!values.password) errors.password = "*requried";
 	if (values.password.length < 7) errors.password = "*min 8 characters";
-
 	if (!values.confirmPassword) errors.confirmPassword = "*requried";
 	else if (values.confirmPassword !== values.password)
 		errors.confirmPassword = "*password and confirm password are not same";
-
 	return errors;
 };
 
 const ChangePassword = () => {
 	const history = useHistory();
 	const params = useParams();
+
+	const [dialog, setDialog] = useState(false)
 
 	const form = useFormik({
 		initialValues: {
@@ -39,8 +40,8 @@ const ChangePassword = () => {
 		enableReinitialize: true,
 		onSubmit: (values) => {
 			changePasswordRequest(values, params.token).then((res) => {
-				console.log(res)
-			}).catch((err) => console.log(res))
+				setDialog(true)
+			}).catch((err) => history.push("/login"))
 		},
 	});
 
@@ -48,8 +49,14 @@ const ChangePassword = () => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	return (
-		<div style={{ background: "#321E43" }}>
+		<div style={{ background: "#321E43", minHeight: "100vh" }}>
 			<Bar />
+			<Dialog
+				show={dialog} close={() => setDialog(false)} action={() => history.push("/login")}
+				message={`Password has been changed`}
+				header="Successfully" buttonText="Take me to login page"
+				buttonColor="green" justifyButton="center"
+			/>
 			<div
 				style={{
 					display: "flex",

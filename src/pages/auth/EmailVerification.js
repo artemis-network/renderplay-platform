@@ -20,7 +20,6 @@ const EmailVerification = () => {
 
 	useEffect(() => {
 		const { token } = params
-		console.log(token)
 		validateToken(token)
 			.then((res) => update(res.data))
 			.catch(err => console.log(err))
@@ -38,14 +37,14 @@ const EmailVerification = () => {
 			>
 				<div style={{ border: `10xp solid gray` }}>
 					<div>
-						<div>
+						<div style={{ fontSize: "2rem", fontWeight: "bold" }}>
 							{status.error ? (
-								<div className="alert alert-success">{status.message} </div>
+								<div className="alert alert-success text-center">{status.message} </div>
 							) : null}
 						</div>
 						<div>
 							{!status.error ? (
-								<div className="alert alert-danger">{status.message}</div>
+								<div className="alert alert-danger text-center">{status.message}</div>
 							) : null}
 						</div>
 					</div>

@@ -38,13 +38,11 @@ const Bar = (props) => {
 	})
 
 	const [img, setImg] = useState(Random)
-	let gameConfig = localStorage.getItem("gameConfig")
+
+	let topBarImg = localStorage.getItem("topBarImg")
+
 	useEffect(() => {
-		if (gameConfig !== null) {
-			gameConfig = JSON.parse(gameConfig)
-			return setImg(gameConfig.banner)
-		}
-		return setImg(Random)
+		setImg(topBarImg)
 	}, [])
 
 	const data = { token: localStorage.getItem("accessToken") }

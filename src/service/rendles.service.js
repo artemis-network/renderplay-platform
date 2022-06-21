@@ -1,15 +1,8 @@
 import axios from 'axios'
 import { rendlePrefix, headers } from '../config';
 
-import FiveRendleImg from '../assets/rendle/rendle/5rendle.webp'
-import SixRendleImg from '../assets/rendle/rendle/6rendle.webp'
-import SevenRendleImg from '../assets/rendle/rendle/7rendle.webp'
 import Line1Img from '../assets/rendle/rendle/line1.webp'
 import Line2Img from '../assets/rendle/rendle/line2.webp'
-import RendleFive from '../assets/rendle/rendle/rendle_5.webp'
-import RendleSix from '../assets/rendle/rendle/rendle_6.webp'
-import RendleSeven from '../assets/rendle/rendle/rendle_7.webp'
-
 
 export const enterContest = async (data) => await axios.post(`${rendlePrefix}/enter`, data, headers())
 export const saveRendleGame = async (data) => await axios.post(`${rendlePrefix}/save`, data, headers())
@@ -30,17 +23,9 @@ export const loadRendleGames = async () => {
 		let temp = []
 		let temp_m = []
 
-		data[0].img = FiveRendleImg
 		data[0].line = Line2Img
-		data[0].banner = RendleFive
-
-		data[1].img = SixRendleImg
 		data[1].line = Line1Img
-		data[1].banner = RendleSix
-
-		data[2].img = SevenRendleImg
 		data[2].line = Line2Img
-		data[2].banner = RendleSeven
 
 		const nonExpiredRendles = []
 

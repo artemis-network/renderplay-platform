@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { getContestantStatus } from '../../service/rendles.service'
 import { ClockIcon } from "@heroicons/react/outline";
 import Alaram from '../../assets/rendle/rendle/alram.webp'
-import ProcessPng from '../../assets/rendle/rendle/process.png'
+import ProcessPng from '../../assets/rendle/rendle/process.webp'
 import { useParams } from 'react-router'
 
 import Dialog from '../common/dialog/Dialog'
@@ -37,12 +37,8 @@ export const RendleLobby = () => {
 
 				setExpiresAt(res.data.opensAt)
 				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game/" + params.contestId)
-				// write else block here add modal invalid entry
 			}).catch(err => {
-				console.log(err.message)
-				console.log(err.stack)
-				console.log(err.name)
-				// return history.push("/")
+				return history.push("/")
 			})
 	}
 

@@ -17,8 +17,8 @@ const Dialog = (props) => {
 					<ModalBody textAlign={"center"} fontSize={"large"} >
 						{props.message}
 					</ModalBody>
-					<ModalFooter>
-						<Button colorScheme='red' mr={3} onClick={props.action}>
+					<ModalFooter justifyContent={props.justifyButton || ""}>
+						<Button colorScheme={props.buttonColor || "red"} mr={3} onClick={props.action}>
 							{props.buttonText}
 						</Button>
 					</ModalFooter>

@@ -73,6 +73,7 @@ const ContestCard = (props) => {
 					setConfirmModal(true)
 				}
 			})
+			localStorage.setItem("topBarImg", props.rendleImages.topBarImg)
 			return
 		}
 		return history.push("/login")
@@ -96,9 +97,10 @@ const ContestCard = (props) => {
 			if (res.data.status === "[INSUFFICENT_FUNDS]") {
 				return setInsufficentModal(true)
 			}
-			localStorage.setItem("gameConfig", JSON.stringify(props))
 			setConfirmModal(false)
+			localStorage.setItem("topBarImg", props.rendleImages.topBarImg)
 			return history.push("/lobby/" + props._id)
+
 		})
 	}
 
@@ -163,26 +165,36 @@ const ContestCard = (props) => {
 	return (
 		<div style={{ background: `#321E43` }} className={"c-mobile-view "}>
 			<Dialog
+				buttonColor="green"
+				justifyButton="center"
 				show={contestOpenModal} close={() => setContestOpenModal(false)} action={() => setContestOpenModal(false)}
 				message={`Please, don't alter system time`}
 				header="Warning!" buttonText="Close"
 			/>
 			<Dialog
+				buttonColor="green"
+				justifyButton="center"
 				show={confirmModal} close={ConfirmModalClose} action={enterContestAction}
 				message={`Entering in the contest will deduct ${props.entryFee} REND`}
 				header="Are you sure?" buttonText="Confirm"
 			/>
 			<Dialog
+				buttonColor="green"
+				justifyButton="center"
 				show={InsufficentModal} action={InsufficentModalClose} close={InsufficentModalClose}
 				message="You have Insufficent funds in your account" header="Sorry!"
 				buttonText="Close"
 			/>
 			<Dialog
+				buttonColor="green"
+				justifyButton="center"
 				show={warningModal} action={warningModalClose} close={warningModalClose}
 				message="Game registrations has been closed" header="Sorry!"
 				buttonText="Close"
 			/>
 			<Dialog
+				buttonColor="green"
+				justifyButton="center"
 				show={metaMaskModal} close={metaMaskModalClose} action={metaMaskModalClose}
 				message="Connect to your metamask wallet" header="Sorry!"
 				buttonText="Close"
@@ -194,7 +206,7 @@ const ContestCard = (props) => {
 			<input style={{ display: "none" }} type="checkbox" id={"u-cards-switcher__button" + cssFinder()} name={"u-cards-switcher__button" + cssFinder()} />
 			{/* / controllers */}
 			{/* MOBILE VIEW CONTAINER */}
-			<img style={{ position: "absolute", margin: "3.2rem 0", padding: ".5rem" }} src={props.img} alt="img" />
+			<img style={{ position: "absolute", margin: "3.2rem 0", padding: ".5rem" }} src={props.rendleImages.bannerImg} alt="img" />
 			<img style={{ position: "absolute", margin: "4.5rem 0", padding: ".5rem", top: "15rem", zIndex: 4, width: "60rem" }} src={props.line} alt="img" />
 			<img style={{
 				position: "absolute",

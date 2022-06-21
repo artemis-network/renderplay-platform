@@ -199,8 +199,6 @@ const RendleGame = () => {
   const isFinishedUpdate = () => {
     const gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
     const data = {
-      userId: localStorage.getItem("userId"),
-      username: localStorage.getItem("username"),
       completedIn: new Date(),
       chances: guesses.length,
       gameType: gameConfig.gameType,
@@ -268,7 +266,7 @@ const RendleGame = () => {
 
         <Bar isGame={true} />
       </Box>
-      <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0" }}>
+      <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0", }}>
         {!isGameCompleted ?
           <div>
             <div className='rendle_timer_ipad'>
@@ -302,6 +300,7 @@ const RendleGame = () => {
             <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%" }}>
               <div className="grow_keyboard">
                 <Grid
+                  style={{ zIndex: 2 }}
                   status={status}
                   guesses={guesses}
                   currentGuess={currentGuess}
@@ -311,6 +310,7 @@ const RendleGame = () => {
                 />
               </div>
               <Keyboard
+                style={{ zIndex: 2 }}
                 onChar={onChar}
                 onDelete={onDelete}
                 onEnter={onEnter}
@@ -335,7 +335,7 @@ const RendleGame = () => {
         isGameFinished={isGameFinished}
         type={MAX_CHALLENGES}
       />
-      <img src={background} style={{ position: "absolute", bottom: "0rem", backgroundSize: "cover" }} />
+      <img src={background} style={{ position: "absolute", bottom: "0rem", backgroundSize: "cover", zIndex: 1 }} />
     </div>
   )
 }

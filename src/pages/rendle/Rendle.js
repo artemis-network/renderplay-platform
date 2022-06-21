@@ -16,6 +16,7 @@ const Wordle = () => {
 	})
 	useEffect(() => {
 		loadRendleGames().then(({ rendles, mobileViewRendles }) => {
+			console.log(rendles)
 			setRendleGameTypes({
 				rendles: [...rendles],
 				mobileViewRendles: [...mobileViewRendles]
