@@ -49,6 +49,20 @@ const validate = (values) => {
 const Signup = () => {
   const history = useHistory();
 
+  const handleRequest = (data) => {
+    setStatus({
+      error: data.error,
+      message: data.message,
+      errorType: data.errorType,
+    });
+    if (!data.error) {
+      form.resetForm();
+      setTimeout(() => {
+        history.push("/login");
+      }, 3500);
+    }
+  };
+
   const form = useFormik({
     initialValues: {
       name: "",
@@ -62,35 +76,10 @@ const Signup = () => {
     enableReinitialize: true,
     onSubmit: (values) => {
       register(values)
-        .then((res) => {
-          console.log(res.data);
-          if (res.data.errorType === "USER_ALREADY_EXIST") {
-            setStatus({
-              error: res.data.error,
-              message: res.data.message,
-            });
-          }
-
-          if (res.data.errorType === "NONE") {
-            setStatus({
-              error: res.data.error,
-              message:
-                "user registration successful, verification email has been sent",
-            });
-            form.resetForm();
-            setTimeout(() => {
-              setStatus({});
-              history.push("/login");
-            }, 2000);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setStatus({
-            error: true,
-            message: "Internal Server Errror",
-          });
-        });
+        .then((res) => handleRequest(res.data))
+        .catch((err) =>
+          setStatus({ error: true, message: "Internal Server Errror" })
+        );
     },
   });
 
@@ -116,7 +105,7 @@ const Signup = () => {
           <form action="#">
             <div>
               <div>
-                {!status.error && status.errorType === "NONE" ? (
+                {status.errorType === "NONE" ? (
                   <div className="alert alert-success">{status.message}</div>
                 ) : null}
               </div>
