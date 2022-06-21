@@ -36,7 +36,7 @@ const ContestCard = (props) => {
 	const endTime = expiresAt > now
 
 	const ConfirmModalOpen = () => {
-		const userId = localStorage.getItem("accessToken")
+		const accessToken = localStorage.getItem("accessToken")
 		const metaMaskAddress = localStorage.getItem('metaMaskWalletAddress')
 		if (
 			!metaMaskAddress ||
@@ -47,9 +47,9 @@ const ContestCard = (props) => {
 		) return setMetaMaskModal(true)
 
 
-		if (userId !== null) {
+		if (accessToken !== null) {
 			const data = {
-				contestId: props._id, userId: userId, request: true,
+				contestId: props._id, request: true,
 				walletAddress: metaMaskAddress
 			}
 			enterContest(data).then((res) => {
@@ -80,10 +80,9 @@ const ContestCard = (props) => {
 	const ConfirmModalClose = () => setConfirmModal(false);
 
 	const enterContestAction = () => {
-		const userId = localStorage.getItem("userId")
 
 		const metaMaskAddress = localStorage.getItem('metaMaskWalletAddress')
-		const data = { contestId: props._id, walletAddress: metaMaskAddress, userId: userId, request: false }
+		const data = { contestId: props._id, walletAddress: metaMaskAddress, request: false }
 
 		enterContest(data).then((res) => {
 			if (res.data.isContestOpened === false) {
