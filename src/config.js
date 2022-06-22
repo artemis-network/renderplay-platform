@@ -1,5 +1,5 @@
 
-let SERVER = "PROD";
+let SERVER = "DEV";
 let URL = "";
 
 if (SERVER === "DEV") URL = "http://localhost:5000";
@@ -12,9 +12,7 @@ const walletPrefix = URL + "/backend/v1/wallets"
 
 const headers = () => {
 	return {
-		headers: {
-			Authorization: localStorage.getItem("accessToken")
-		}
+		headers: { Authorization: localStorage.getItem("accessToken") }
 	}
 };
 

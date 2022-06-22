@@ -261,12 +261,12 @@ const RendleGame = () => {
   }
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", background: "#321E43", minHeight: "100vh", }}>
       <Box>
 
         <Bar isGame={true} />
       </Box>
-      <div style={{ position: 'relative', background: "#321E43", height: "90vh", padding: "4rem 0", }}>
+      <div style={{ position: 'relative', zIndex: 4, padding: "4rem 0", }}>
         {!isGameCompleted ?
           <div>
             <div className='rendle_timer_ipad'>
@@ -297,10 +297,10 @@ const RendleGame = () => {
               </div>
             </div>
 
-            <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%" }}>
+            <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%", zIndex: 5 }}>
               <div className="grow_keyboard">
                 <Grid
-                  style={{ zIndex: 2 }}
+                  style={{ zIndex: 5, position: "relative" }}
                   status={status}
                   guesses={guesses}
                   currentGuess={currentGuess}
@@ -310,7 +310,7 @@ const RendleGame = () => {
                 />
               </div>
               <Keyboard
-                style={{ zIndex: 2 }}
+                style={{ zIndex: 5, position: "relative" }}
                 onChar={onChar}
                 onDelete={onDelete}
                 onEnter={onEnter}
@@ -335,7 +335,7 @@ const RendleGame = () => {
         isGameFinished={isGameFinished}
         type={MAX_CHALLENGES}
       />
-      <img className='rendle_bottom' src={background} style={{ position: "absolute", bottom: "0rem", backgroundSize: "cover", zIndex: 1 }} />
+      <img className='rendle_bottom' src={background} style={{ position: "absolute", bottom: "0rem", zIndex: 2 }} />
     </div>
   )
 }
