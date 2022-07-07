@@ -54,19 +54,16 @@ export const getRenderScanGameTypes = async () => {
 
 		if (types[i].category === "[CELEBRITY]") {
 			modifiedTypes[i].img = type.celebrity
-			modifiedTypes[i].bg = CelebrityPngBG
 			modifiedTypes[i].bg = "celebrity"
 		}
 
 		if (types[i].category === "[GENERAL]") {
 			modifiedTypes[i].img = type.general
-			modifiedTypes[i].bg = GeneralPngBG
 			modifiedTypes[i].bg = "general"
 		}
 
 		if (types[i].category === "[ANIMALS]") {
 			modifiedTypes[i].img = type.animals
-			modifiedTypes[i].bg = AnimalsPngBG
 			modifiedTypes[i].bg = "animals"
 		}
 	}

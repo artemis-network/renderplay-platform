@@ -31,12 +31,11 @@ const ContestCard = (props) => {
 
 
 	const ConfirmModalOpen = () => {
-		const userId = localStorage.getItem("userId")
+		const accessToken = localStorage.getItem("accessToken")
 		const walletAddress = localStorage.getItem("metaMaskWalletAddress")
-		if (userId !== null) {
+		if (accessToken !== null) {
 			const data = {
 				contestId: props._id,
-				userId: userId,
 				walletAddress: walletAddress,
 				request: true
 			}
@@ -62,11 +61,9 @@ const ContestCard = (props) => {
 	const ConfirmModalClose = () => setConfirmModal(false);
 
 	const enterContestAction = () => {
-		const userId = localStorage.getItem("userId")
 		const walletAddress = localStorage.getItem("metaMaskWalletAddress")
 		const data = {
 			contestId: props._id,
-			userId: userId,
 			walletAddress: walletAddress,
 			request: false
 		}

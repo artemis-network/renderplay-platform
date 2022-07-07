@@ -6,70 +6,82 @@ import { useEffect, useState } from 'react'
 import { getContestantStatus } from '../../service/rendles.service'
 import { ClockIcon } from "@heroicons/react/outline";
 import Alaram from '../../assets/rendle/rendle/alram.webp'
-import ProcessPng from '../../assets/rendle/rendle/process.png'
+import ProcessPng from '../../assets/rendle/rendle/process.webp'
+import { useParams } from 'react-router'
+
+import Dialog from '../common/dialog/Dialog'
+
+const timerFormatter = (time) => {
+	time = String(time)
+	if (time.length === 1)
+		time = "0" + time
+	return time
+}
 
 export const RendleLobby = () => {
 
 	const history = useHistory();
+	const params = useParams();
 
-	const data = JSON.parse(localStorage.getItem("gameConfig"));
-	const userId = localStorage.getItem("userId")
+	const [unAuth, setUnAuth] = useState(false)
 
-	const [expiresAt, setExpiresAt] = useState(new Date(new Date().getTime() + (1000 * 60 * 1)))
+	const [expiresAt, setExpiresAt] = useState(new Date().getTime() + (1000 * 60 * 60 * 1))
+	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
 
 	function init() {
-		getContestantStatus({ userId: userId, contestId: data._id })
+		getContestantStatus({ contestId: params.contestId })
 			.then((res) => {
-				console.log(res.data)
-				if (res.data.isGameCompleted) return history.push("/game")
-				setExpiresAt(new Date(res.data.opensAt))
-			}).catch(err => console.log(err))
+
+				if (!res.data.isValidGameEntry)
+					setUnAuth(true)
+
+				setExpiresAt(res.data.opensAt)
+				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game/" + params.contestId)
+			}).catch(err => {
+				return history.push("/")
+			})
 	}
-
-
-	const timerFormatter = (time) => {
-		time = String(time)
-		if (time.length === 1)
-			time = "0" + time
-		return time
-	}
-
-	const [days, hours, minutes, seconds, isFinished] = useCountdown(expiresAt);
 
 	useEffect(() => {
 		init()
-		if (isFinished) return history.push("/game")
+		if (isFinished === true) return history.push("/game/" + params.contestId)
 	}, [isFinished])
 
 
 	const Counter = () => {
 
+		const count = (minutes === 0 && seconds < 0) || (hours === 1)
+
 		return <div className="contest__card__header" style={{ alignItems: "center", margin: "0 4rem" }}>
-			<div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
-				<div style={{ fontSize: "1.25rem" }}>
-					Game starts in
-					<span style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0 1rem" }}>
-						{timerFormatter(minutes)}
-					</span>
-					<span>minutes</span>
-					<span style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0 1rem" }}>
-						{timerFormatter(seconds)}
-					</span>
-					<span>seconds</span>
+			{!count ?
+				<div style={{ color: "#ffffff", display: "flex", columnGap: "1.5rem" }}>
+					<div style={{ fontSize: "1.25rem" }}>
+						Game starts in
+						<span style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0 1rem" }}>
+							{timerFormatter(minutes)}
+						</span>
+						<span>minutes</span>
+						<span style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0 1rem" }}>
+							{timerFormatter(seconds)}
+						</span>
+						<span>seconds</span>
+					</div>
 				</div>
-			</div>
+				:
+				<div style={{ color: "white", fontSize: "1.25rem", fontWeight: "bold" }}>Please    wait    while    loading...</div>
+			}
 		</div >
 	}
 
 
-	return (<div style={{ background: "#321e43" }}>
+	return (<div style={{ background: "#321e43", minHeight: "100vh" }}>
 		<Bar />
-		<div style={{ display: "flex", justifyContent: "center", margin: "5rem 0" }}>
-
+		{!unAuth ? <div className="rendle_lobby" style={{ display: "flex", justifyContent: "center", margin: "5rem 0" }}>
 			<div style={{
 				borderRadius: "3.8vh",
 				border: "6px solid gray",
-				position: "relative"
+				position: "relative",
+				minWidth: "30vw"
 			}}>
 				<img src={Alaram} style={{ position: "absolute", right: "-4rem", bottom: "-4rem", }} width="150" alt="alram" />
 				<img src={ProcessPng} style={{ position: "absolute", left: "-8rem", top: "-6rem" }} width="300" alt="alram" />
@@ -87,10 +99,13 @@ export const RendleLobby = () => {
 					</div>
 				</div>
 			</div>
+		</div> : null}
 
-
-		</div>
-
+		<Dialog
+			show={unAuth} close={() => history.push("/")} action={() => history.push("/")}
+			message={`Unauthorized Access!`}
+			header="Warning" buttonText="Close"
+		/>
 	</div >)
 
 }

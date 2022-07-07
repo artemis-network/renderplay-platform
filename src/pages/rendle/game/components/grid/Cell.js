@@ -1,16 +1,10 @@
 import classnames from 'classnames'
-import { REVEAL_TIME_MS } from '../../constants/settings'
 
-export const Cell = ({
-  value,
-  status,
-  isRevealing,
-  isCompleted,
-  position = 0,
-}) => {
+export const Cell = ({ value, status, isRevealing, isCompleted, position = 1, }) => {
+
   const isFilled = value && !isCompleted
   const shouldReveal = isRevealing && isCompleted
-  const animationDelay = `${position * REVEAL_TIME_MS}ms`
+  const animationDelay = `${position * 350}ms`
   const isHighContrast = false
 
   const classes = classnames(

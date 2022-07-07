@@ -1,5 +1,3 @@
-/* eslint-disable */
-/* eslint-disable react/no-direct-mutation-state */
 import { useEffect, useState } from "react";
 
 import { Link, NavLink } from 'react-router-dom';
@@ -40,18 +38,16 @@ const Bar = (props) => {
 	})
 
 	const [img, setImg] = useState(Random)
-	let gameConfig = localStorage.getItem("gameConfig")
+
+	let topBarImg = localStorage.getItem("topBarImg")
+
 	useEffect(() => {
-		if (gameConfig !== null) {
-			gameConfig = JSON.parse(gameConfig)
-			return setImg(gameConfig.banner)
-		}
-		return setImg(Random)
+		setImg(topBarImg)
 	}, [])
 
-	const data = { userId: localStorage.getItem("userId") }
+	const data = { token: localStorage.getItem("accessToken") }
 	useEffect(() => {
-		if (data.userId !== null) {
+		if (data.token !== null) {
 			getWallet(data)
 				.then((res) => {
 					setWallet({
@@ -61,11 +57,6 @@ const Bar = (props) => {
 				}).catch(err => console.log(err))
 		}
 	}, [])
-
-	const logout = () => {
-		localStorage.clear()
-		window.location.reload()
-	}
 
 	const toggleNav = () => {
 		if (toggle) setToggleClass({
@@ -121,7 +112,7 @@ const Bar = (props) => {
 
 			<div style={{ display: "flex", justifyContent: "flex-end", columnGap: "2rem", alignItems: "center" }} >
 				<Wallet />
-				{localStorage.getItem("username") !== null ?
+				{localStorage.getItem("accessToken") !== null ?
 					<DropDown /> : <NavLink to={"/login"} className="neu neu_end no_border" activeClassName='neu_active'>Login</NavLink>
 				}
 			</div>
@@ -143,7 +134,7 @@ const Bar = (props) => {
 			</div>
 		</div>
 
-		{localStorage.getItem("username") && !props.isGame && !props.is_in_raffle ?
+		{localStorage.getItem("accessToken") && !props.isGame && !props.is_in_raffle ?
 			<div style={{ position: "absolute", right: 0 }} className="balance">
 				<div style={{ display: "flex", justifyContent: "flex-end", padding: "1rem 2rem", }}>
 					<div className='username' style={{ display: "flex", justifyContent: "flex-end", color: "#fbd6d2", fontWeight: "bold", padding: "1rem", borderRadius: "1vh", alignItems: "center" }}>

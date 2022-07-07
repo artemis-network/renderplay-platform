@@ -10,66 +10,60 @@ import Logo from '../../assets/logo.webp'
 
 const Bar = lazy(() => import("../common/bar/Bar"));
 
-import { UserCircleIcon, LockClosedIcon } from '@heroicons/react/outline'
+import { UserCircleIcon, LockClosedIcon, EyeIcon } from '@heroicons/react/outline'
 import './Form.css'
+import { EyeOffIcon } from "@heroicons/react/solid";
 
 const Login = () => {
 
   const history = useHistory()
 
-  const [status, setStatus] = useState({
-    status: null,
-    message: "",
-    errorType: "",
-    error: false,
-  });
+  const [status, setStatus] = useState({ message: "", errorType: "", error: false });
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSuccess = (data) => {
-    const data_c = {
-      token: data.tokenId,
-    }
-    loginGoogle(data_c).then((res => {
-      createSession(res.data);
-      history.push("/")
+    const tokenData = { token: data.tokenId }
+    loginGoogle(tokenData).then((res => {
+      console.log(res.data)
+      setStatus({ error: res.data.error, message: res.data.message });
+      if (!res.data.error) {
+        createSession(res.data);
+        history.push("/")
+      }
     })).catch(err => console.log(err))
-
+    setTimeout(() => {
+      setStatus({});
+    }, 5000);
   };
 
-  const handleFailure = (data) => {
-    console.log(data);
-  };
+  const handleLoginSuccess = (data) => {
+    createSession(data);
+    if (data.error)
+      setStatus({ error: data.error, message: data.message });
+    else {
+      createSession(data)
+      history.push("/");
+    }
+    setTimeout(() => {
+      setStatus({});
+    }, 5000);
+
+  }
+
+  const handleLoginFailure = () =>
+    setStatus({ error: true, message: "Internal Server Errror" });
+
 
   const form = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
+    initialValues: { username: "", password: "" },
     onSubmit: (values) => {
+
       login(values)
-        .then((res) => {
-          createSession(res.data);
-          if (res.data.error) {
-            setStatus({
-              status: res.data.status,
-              error: res.data.error,
-              message: res.data.message,
-            });
-          } else {
-            history.push("/");
-            window.location.reload();
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-          setStatus({
-            status: 500,
-            error: true,
-            message: "",
-          });
-        });
-      setTimeout(() => {
-        setStatus({});
-      }, 5000);
+        .then((res) => handleLoginSuccess(res.data))
+        .catch((err) => handleLoginFailure());
+
+
+
     },
   });
 
@@ -82,20 +76,18 @@ const Login = () => {
         <div className="content">
           <img src={Logo} alt="logo" />
           <form action="#">
-            {status.status ? (
+            <div>
               <div>
-                <div>
-                  {!status.error ? (
-                    <div className="alert alert-success">{status.message}</div>
-                  ) : null}
-                </div>
-                <div>
-                  {status.error ? (
-                    <div className="alert alert-danger">{status.message}</div>
-                  ) : null}
-                </div>
+                {!status.error && status.errorType === "NONE" ? (
+                  <div className="alert alert-success">{status.message}</div>
+                ) : null}
               </div>
-            ) : null}
+              <div>
+                {status.error ? (
+                  <div className="alert alert-danger">{status.message}</div>
+                ) : null}
+              </div>
+            </div>
 
             <div className="field">
               <span>
@@ -111,19 +103,44 @@ const Login = () => {
                 autoComplete="off"
               />
             </div>
-            <div className="field">
-              <span>
-                <LockClosedIcon className="h-6 w-6" color="white" />
-              </span>
-              <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                value={form.values.password}
-                onChange={form.handleChange}
-                autoComplete="off"
-              />
-            </div>
+
+            {
+              !showPassword ?
+                <div className="field" style={{ position: "relative" }}>
+                  <span>
+                    <LockClosedIcon className="h-6 w-6" color="white" />
+                  </span>
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    value={form.values.password}
+                    onChange={form.handleChange}
+                    autoComplete="off"
+                  />
+                  <div style={{ position: "absolute", right: "1%", top: "30%", }}>
+                    <EyeIcon onClick={() => setShowPassword(true)} className="h-6 w-6 cursor-pointer" color="white" />
+                  </div >
+                </div>
+                :
+                <div className="field" style={{ position: "relative" }}>
+                  <span>
+                    <LockClosedIcon className="h-6 w-6" color="white" />
+                  </span>
+                  <input
+                    type="text"
+                    id="password"
+                    placeholder="Password"
+                    value={form.values.password}
+                    onChange={form.handleChange}
+                    autoComplete="off"
+                  />
+                  <div style={{ position: "absolute", right: "1%", top: "30%", }}>
+                    <EyeOffIcon onClick={() => setShowPassword(false)} className="h-6 w-6 cursor-pointer" color="white" />
+                  </div >
+                </div>
+            }
+
 
             <div style={{ padding: "2rem 0 0 0" }} className="d-flex justify-content-between">
               <div className="mb-3">
@@ -142,11 +159,13 @@ const Login = () => {
                   </label>
                 </div>
               </div>
-              <small className="forgot-pass text-light mb-0">
-                <div className="text-light fw-medium">
-                  Forgot password ?
-                </div>
-              </small>
+              <Link to="/forgot-password">
+                <small className="forgot-pass text-light mb-0">
+                  <div className="text-light fw-medium">
+                    Forgot password ?
+                  </div>
+                </small>
+              </Link>
             </div>
 
             <button
@@ -161,7 +180,7 @@ const Login = () => {
             <div style={{ display: "flex", justifyContent: "center", }}>
               <GoogleLogin
                 clientId={"461311621504-7qc2ioaio08dvv3f2q2f5l25rm0ct0to.apps.googleusercontent.com"}
-                onFailure={handleFailure}
+                onFailure={() => { }}
                 onSuccess={handleSuccess}
                 color="#FFFFFF"
                 theme="dark"

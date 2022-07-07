@@ -12,9 +12,7 @@ const walletPrefix = URL + "/renderplay/v1/wallets"
 
 const headers = () => {
 	return {
-		headers: {
-			Authorization: localStorage.getItem("accessToken")
-		}
+		headers: { Authorization: localStorage.getItem("accessToken") }
 	}
 };
 

@@ -1,20 +1,13 @@
 import axios from 'axios'
 import { rendlePrefix, headers } from '../config';
 
-import FiveRendleImg from '../assets/rendle/rendle/5rendle.webp'
-import SixRendleImg from '../assets/rendle/rendle/6rendle.webp'
-import SevenRendleImg from '../assets/rendle/rendle/7rendle.webp'
 import Line1Img from '../assets/rendle/rendle/line1.webp'
 import Line2Img from '../assets/rendle/rendle/line2.webp'
-import RendleFive from '../assets/rendle/rendle/rendle_5.webp'
-import RendleSix from '../assets/rendle/rendle/rendle_6.webp'
-import RendleSeven from '../assets/rendle/rendle/rendle_7.webp'
 
-export const enterContest = async (data) => await axios.post(`${rendlePrefix}/enter`, data, headers)
-export const saveRendleGame = async (data) => await axios.post(`${rendlePrefix}/save`, data, headers)
-export const getContestantStatus = async (data) => await axios.post(`${rendlePrefix}/status`, data, headers)
-export const updateGuesses = async (data) => await axios.post(`${rendlePrefix}/words/update`, data, headers)
-export const getGuesses = async (data) => await axios.post(`${rendlePrefix}/words`, data, headers)
+export const enterContest = async (data) => await axios.post(`${rendlePrefix}/enter`, data, headers())
+export const saveRendleGame = async (data) => await axios.post(`${rendlePrefix}/save`, data, headers())
+export const getContestantStatus = async (data) => await axios.post(`${rendlePrefix}/game/status`, data, headers())
+export const validateUpdateGuess = async (data) => await axios.post(`${rendlePrefix}/game/word/validate`, data, headers())
 
 const rendleGameTypesApi = async () => await axios.get(`${rendlePrefix}`)
 
@@ -30,22 +23,14 @@ export const loadRendleGames = async () => {
 		let temp = []
 		let temp_m = []
 
-		data[0].img = FiveRendleImg
 		data[0].line = Line2Img
-		data[0].banner = RendleFive
-
-		data[1].img = SixRendleImg
 		data[1].line = Line1Img
-		data[1].banner = RendleSix
-
-		data[2].img = SevenRendleImg
 		data[2].line = Line2Img
-		data[2].banner = RendleSeven
 
 		const nonExpiredRendles = []
 
 		for (let i = 0; i < data.length; i++) {
-			if (data[i].expiresAt === null) {
+			if (data[i].isExpired === true) {
 				temp[0] = data[i]
 				temp[0].css = "_fade"
 				temp_m[2] = data[i]
@@ -54,7 +39,6 @@ export const loadRendleGames = async () => {
 				nonExpiredRendles.push(data[i])
 			}
 		}
-
 
 		const rendle1Expiration = calculateExpirationTime(now, nonExpiredRendles[0].expiresAt)
 		const rendle2Expiration = calculateExpirationTime(now, nonExpiredRendles[1].expiresAt)
@@ -82,9 +66,6 @@ export const loadRendleGames = async () => {
 				temp_m[1] = nonExpiredRendles[1]
 				temp_m[1].css = "_fade"
 			}
-
-			console.log(temp)
-
 		} else {
 			if (rendle1Expiration > 0) {
 				temp[1] = nonExpiredRendles[0]

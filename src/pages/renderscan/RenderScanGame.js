@@ -32,7 +32,6 @@ import { ConfirmSaveModal } from "./components/modals/ConfirmSaveModal";
 
 import { useCountdown } from "../common/timer/useCountDown";
 
-import "./RenderScanGame.css";
 import { useMediaQuery } from 'react-responsive'
 import { ArrowLeftIcon } from "@chakra-ui/icons";
 

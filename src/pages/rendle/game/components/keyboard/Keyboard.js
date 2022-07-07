@@ -1,7 +1,6 @@
 import { getStatuses } from '../../lib/statuses'
 import { Key } from './Key'
 import { useEffect } from 'react'
-import { ENTER_TEXT, DELETE_TEXT } from '../../constants/strings'
 import { localeAwareUpperCase } from '../../lib/words'
 
 export const Keyboard = ({
@@ -70,7 +69,7 @@ export const Keyboard = ({
       </div>
       <div className="flex justify-center">
         <Key MAX_WORD_LENGTH={MAX_WORD_LENGTH} width={65.4} value="DELETE" onClick={onClick}>
-          {DELETE_TEXT}
+          {"DELETE"}
         </Key>
         {['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map((key) => (
           <Key
@@ -83,7 +82,7 @@ export const Keyboard = ({
           />
         ))}
         <Key MAX_WORD_LENGTH={MAX_WORD_LENGTH} width={65.4} value="ENTER" onClick={onClick}>
-          {ENTER_TEXT}
+          {"ENTER"}
         </Key>
 
       </div>

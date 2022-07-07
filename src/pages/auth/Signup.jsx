@@ -11,6 +11,7 @@ import PasswordStrengthBar from "react-password-strength-bar";
 
 import Logo from "../../assets/logo.webp";
 import { LockClosedIcon, UserCircleIcon } from "@heroicons/react/outline";
+import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
 
 const isValidUsername = (username) => /^[a-z0-9]{6}$/.test(username);
 
@@ -48,6 +49,20 @@ const validate = (values) => {
 const Signup = () => {
   const history = useHistory();
 
+  const handleRequest = (data) => {
+    setStatus({
+      error: data.error,
+      message: data.message,
+      errorType: data.errorType,
+    });
+    if (!data.error) {
+      form.resetForm();
+      setTimeout(() => {
+        history.push("/login");
+      }, 3500);
+    }
+  };
+
   const form = useFormik({
     initialValues: {
       name: "",
@@ -61,47 +76,20 @@ const Signup = () => {
     enableReinitialize: true,
     onSubmit: (values) => {
       register(values)
-        .then((res) => {
-          if (res.data.errorType === "USER_ALREADY_EXIST") {
-            setStatus({
-              status: res.data.status,
-              error: res.data.error,
-              message: res.data.message,
-            });
-          }
-
-          if (res.data.errorType === "NONE") {
-            setStatus({
-              status: res.data.status,
-              error: res.data.error,
-              message:
-                "user registration successful, verification email has been sent",
-            });
-            form.resetForm();
-            setTimeout(() => {
-              setStatus({});
-              history.push("/login");
-            }, 2000);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setStatus({
-            status: 500,
-            error: true,
-            message: "Internal Server Errror",
-          });
-        });
+        .then((res) => handleRequest(res.data))
+        .catch((err) =>
+          setStatus({ error: true, message: "Internal Server Errror" })
+        );
     },
   });
 
   const [status, setStatus] = useState({
-    status: null,
     message: "",
     errorType: "",
     error: false,
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div style={{ background: "#321E43" }}>
       <Bar />
@@ -115,20 +103,18 @@ const Signup = () => {
         <div className="content">
           <img src={Logo} alt="logo" />
           <form action="#">
-            {status.status ? (
+            <div>
               <div>
-                <div>
-                  {!status.error ? (
-                    <div className="alert alert-success">{status.message}</div>
-                  ) : null}
-                </div>
-                <div>
-                  {status.error ? (
-                    <div className="alert alert-danger">{status.message}</div>
-                  ) : null}
-                </div>
+                {status.errorType === "NONE" ? (
+                  <div className="alert alert-success">{status.message}</div>
+                ) : null}
               </div>
-            ) : null}
+              <div>
+                {status.error ? (
+                  <div className="alert alert-danger">{status.message}</div>
+                ) : null}
+              </div>
+            </div>
 
             <div className="field">
               <span>
@@ -184,24 +170,55 @@ const Signup = () => {
                 <div> </div>
               )}
             </div>
-            <div className="field">
-              <span>
-                <LockClosedIcon className="h-7 w-7" color="white" />
-              </span>
-              <input
-                id="password"
-                type="password"
-                placeholder="Password"
-                value={form.values.password}
-                onChange={form.handleChange}
-                onFocus={form.handleChange}
-                autoComplete="off"
-              />
-              {form.touched.password || form.errors.password ? (
-                <div style={error}> {form.errors.password} </div>
-              ) : null}
-            </div>
-
+            {!showPassword ? (
+              <div className="field" style={{ position: "relative" }}>
+                <span>
+                  <LockClosedIcon className="h-6 w-6" color="white" />
+                </span>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Password"
+                  value={form.values.password}
+                  onChange={form.handleChange}
+                  autoComplete="off"
+                />
+                <div style={{ position: "absolute", right: "1%", top: "30%" }}>
+                  <EyeIcon
+                    onClick={() => setShowPassword(true)}
+                    className="h-6 w-6 cursor-pointer"
+                    color="white"
+                  />
+                </div>
+                {form.touched.password || form.errors.password ? (
+                  <div style={error}> {form.errors.password} </div>
+                ) : null}
+              </div>
+            ) : (
+              <div className="field" style={{ position: "relative" }}>
+                <span>
+                  <LockClosedIcon className="h-6 w-6" color="white" />
+                </span>
+                <input
+                  type="text"
+                  id="password"
+                  placeholder="Password"
+                  value={form.values.password}
+                  onChange={form.handleChange}
+                  autoComplete="off"
+                />
+                <div style={{ position: "absolute", right: "1%", top: "30%" }}>
+                  <EyeOffIcon
+                    onClick={() => setShowPassword(false)}
+                    className="h-6 w-6 cursor-pointer"
+                    color="white"
+                  />
+                </div>
+                {form.touched.password || form.errors.password ? (
+                  <div style={error}> {form.errors.password} </div>
+                ) : null}
+              </div>
+            )}
             <PasswordStrengthBar password={form.values.password} />
             <div className="field">
               <span>
