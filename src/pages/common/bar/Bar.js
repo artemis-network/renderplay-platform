@@ -109,7 +109,7 @@ const Bar = (props) => {
 									Render Hunt
 								</div>
 								<div style={{ fontSize: ".5rem", fontWeight: "bold" }}>
-									comming soon
+									(coming soon)
 								</div>
 							</div>
 						</div>
