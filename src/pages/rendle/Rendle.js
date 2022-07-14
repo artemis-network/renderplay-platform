@@ -9,6 +9,7 @@ const Bar = lazy(() => import("../common/bar/Bar"))
 const Footer = lazy(() => import("../common/footer/Footer"))
 
 
+
 const Wordle = () => {
 
 	const [rendleGameTypes, setRendleGameTypes] = useState({

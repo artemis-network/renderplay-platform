@@ -12,6 +12,8 @@
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
     "@metamask/jazzicon": "^2.0.0",
+    "@splinetool/react-spline": "^2.2.1",
+    "@splinetool/runtime": "^0.9.78",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
