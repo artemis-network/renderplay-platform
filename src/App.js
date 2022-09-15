@@ -9,6 +9,7 @@ import "./App.css";
 import { RendleLobby } from './pages/rendle/RendleLobby'
 import { RenderScanLobby } from './pages/renderscan/RenderScanLobby'
 import Loader from "react-js-loader";
+import CrosswordComp from './pages/crossword/crossword';
 
 
 const Rendle = lazy(() => import('./pages/rendle/Rendle'));
@@ -22,6 +23,7 @@ const EmailVerification = lazy(() => import('./pages/auth/EmailVerification'));
 
 const Raffle = lazy(() => import('./pages/raffle/Raffle'));
 const HangMan = lazy(() => import('./pages/hangman/HangMan'));
+
 
 const App = () => {
 
@@ -47,14 +49,18 @@ const App = () => {
     <div>
       <Suspense fallback={
         <div style={{ height: "100vh", width: "100%", display: "flex", justifyContent: "center", alignItems: "center", background: "#321e43" }}>
-          <Loader type="bubble-scale" bgColor={"#F3CCD0"} color={"#F3CCD0"} title={"Loading..."} size={100} />
+          <Loader type="bubble-scale"
+            bgColor={"#F3CCD0"}
+            color={"#F3CCD0"} title={"Loading..."} size={100} />
         </div>
       }>
         <Router>
 
+
           <Route exact component={Rendle} path="/" />
           <Route exact component={RendleGame} path="/game/:contestId" />
           <Route exact component={RendleLobby} path="/lobby/:contestId" />
+          <Route exact component={CrosswordComp} path="/crossword" />
 
           <Route exact component={RenderScan} path="/renderscan" />
           <Route exact component={RenderScanGame} path="/renderscan/game" />

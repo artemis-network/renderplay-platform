@@ -16,6 +16,8 @@ import MobileDropDown from "../drop_down/MobileDropDown";
 
 import { getWallet } from '../../../service/user.service'
 
+
+
 import './Bar.css'
 
 const Bar = (props) => {
@@ -46,6 +48,7 @@ const Bar = (props) => {
 	}, [])
 
 	const data = { token: localStorage.getItem("accessToken") }
+
 	useEffect(() => {
 		if (data.token !== null) {
 			getWallet(data)
@@ -103,16 +106,7 @@ const Bar = (props) => {
 				!props.isGame ?
 					<div className='neu' style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }}>
 						<NavLink className="neu_link" exact strict activeClassName='neu_link__active' to={"/"} >Rendle</NavLink>
-						< div className="" style={{ color: "#FBD6D2", fontWeight: "bold", fontSize: "1.25rem" }} exact strict activeClassName='' to={"/renderscan"} >
-							<div style={{ display: 'flex', flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-								<div>
-									Render Hunt
-								</div>
-								<div style={{ fontSize: ".5rem", fontWeight: "bold" }}>
-									(coming soon)
-								</div>
-							</div>
-						</div>
+						<NavLink className="neu_link" exact strict activeClassName='neu_link__active' to={"/crossword"} >Crossword</NavLink>
 						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/raffle"} >Raffle</NavLink>
 					</div> : <div style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }} >
 						<img src={img} alt="img" width={"350px"} height="250px" style={{ display: "flex", alignSelf: "center" }} />
