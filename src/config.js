@@ -1,5 +1,5 @@
 
-let SERVER = "PROD";
+let SERVER = "DEV";
 let URL = "";
 
 if (SERVER === "DEV") URL = "http://localhost:5001";

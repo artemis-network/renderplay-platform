@@ -20,79 +20,79 @@ export const loadRendleGames = async () => {
 		let data = rendles.data.rendleContests
 		const now = new Date(rendles.data.currentTime)
 
-		let temp = []
-		let temp_m = []
-
 		data[0].line = Line2Img
 		data[1].line = Line1Img
 		data[2].line = Line2Img
 
-		const nonExpiredRendles = []
+		// uncomment this code and pass temp, temp_m as out
+		// const nonExpiredRendles = []
+		// let temp = []
+		// let temp_m = []
 
-		for (let i = 0; i < data.length; i++) {
-			if (data[i].isExpired === true) {
-				temp[0] = data[i]
-				temp[0].css = "_fade"
-				temp_m[2] = data[i]
-				temp_m[2].css = "_fade"
-			} else {
-				nonExpiredRendles.push(data[i])
-			}
-		}
+		// for (let i = 0; i < data.length; i++) {
+		// 	if (data[i].isExpired === true) {
+		// 		temp[0] = data[i]
+		// 		temp[0].css = "_fade"
+		// 		temp_m[2] = data[i]
+		// 		temp_m[2].css = "_fade"
+		// 	} else {
+		// 		nonExpiredRendles.push(data[i])
+		// 	}
+		// }
 
-		const rendle1Expiration = calculateExpirationTime(now, nonExpiredRendles[0].expiresAt)
-		const rendle2Expiration = calculateExpirationTime(now, nonExpiredRendles[1].expiresAt)
+		// const rendle1Expiration = calculateExpirationTime(now, nonExpiredRendles[0].expiresAt)
+		// const rendle2Expiration = calculateExpirationTime(now, nonExpiredRendles[1].expiresAt)
 
-		if (rendle1Expiration > 0 && rendle2Expiration > 0) {
+		// if (rendle1Expiration > 0 && rendle2Expiration > 0) {
 
-			if (rendle1Expiration > rendle2Expiration) {
-				temp[1] = nonExpiredRendles[1]
-				temp[1].css = "_scale"
-				temp_m[0] = nonExpiredRendles[1]
-				temp_m[0].css = "_scale"
+		// 	if (rendle1Expiration > rendle2Expiration) {
+		// 		temp[1] = nonExpiredRendles[1]
+		// 		temp[1].css = "_scale"
+		// 		temp_m[0] = nonExpiredRendles[1]
+		// 		temp_m[0].css = "_scale"
 
-				temp[2] = nonExpiredRendles[0]
-				temp[2].css = "_fade"
-				temp_m[1] = nonExpiredRendles[0]
-				temp_m[1].css = "_fade"
-			} else {
-				temp[1] = nonExpiredRendles[0]
-				temp[1].css = "_scale"
-				temp_m[0] = nonExpiredRendles[0]
-				temp_m[0].css = "_scale"
+		// 		temp[2] = nonExpiredRendles[0]
+		// 		temp[2].css = "_fade"
+		// 		temp_m[1] = nonExpiredRendles[0]
+		// 		temp_m[1].css = "_fade"
+		// 	} else {
+		// 		temp[1] = nonExpiredRendles[0]
+		// 		temp[1].css = "_scale"
+		// 		temp_m[0] = nonExpiredRendles[0]
+		// 		temp_m[0].css = "_scale"
 
-				temp[2] = nonExpiredRendles[1]
-				temp[2].css = "_fade"
-				temp_m[1] = nonExpiredRendles[1]
-				temp_m[1].css = "_fade"
-			}
-		} else {
-			if (rendle1Expiration > 0) {
-				temp[1] = nonExpiredRendles[0]
-				temp[1].css = "_scale"
-				temp_m[0] = nonExpiredRendles[0]
-				temp_m[0].css = "_scale"
+		// 		temp[2] = nonExpiredRendles[1]
+		// 		temp[2].css = "_fade"
+		// 		temp_m[1] = nonExpiredRendles[1]
+		// 		temp_m[1].css = "_fade"
+		// 	}
+		// } else {
+		// 	if (rendle1Expiration > 0) {
+		// 		temp[1] = nonExpiredRendles[0]
+		// 		temp[1].css = "_scale"
+		// 		temp_m[0] = nonExpiredRendles[0]
+		// 		temp_m[0].css = "_scale"
 
-				temp[2] = nonExpiredRendles[1]
-				temp[2].css = "_fade"
-				temp_m[1] = nonExpiredRendles[1]
-				temp_m[1].css = "_fade"
+		// 		temp[2] = nonExpiredRendles[1]
+		// 		temp[2].css = "_fade"
+		// 		temp_m[1] = nonExpiredRendles[1]
+		// 		temp_m[1].css = "_fade"
 
-			} else {
-				temp[1] = nonExpiredRendles[1]
-				temp[1].css = "_scale"
-				temp_m[0] = nonExpiredRendles[1]
-				temp_m[0].css = "_scale"
+		// 	} else {
+		// 		temp[1] = nonExpiredRendles[1]
+		// 		temp[1].css = "_scale"
+		// 		temp_m[0] = nonExpiredRendles[1]
+		// 		temp_m[0].css = "_scale"
 
-				temp[2] = nonExpiredRendles[0]
-				temp[2].css = "_fade"
-				temp_m[1] = nonExpiredRendles[0]
-				temp_m[1].css = "_fade"
-			}
-		}
+		// 		temp[2] = nonExpiredRendles[0]
+		// 		temp[2].css = "_fade"
+		// 		temp_m[1] = nonExpiredRendles[0]
+		// 		temp_m[1].css = "_fade"
+		// 	}
+		// }
 
 		return {
-			rendles: temp, mobileViewRendles: temp_m
+			rendles: data, mobileViewRendles: data
 		}
 
 
