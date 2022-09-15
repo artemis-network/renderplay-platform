@@ -1,6 +1,4 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Renderplay is a react based play to earn application built on blockchain. On rederplay you can play games like Wordle, Quizes and earn attractive prizes
 
 ## Available Scripts
 
