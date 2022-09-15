@@ -6,15 +6,14 @@ import RendleGame from './pages/rendle/game/RendleGame'
 
 import "./App.css";
 
-const Rendle = lazy(() => import('./pages/rendle/Rendle'));
 import { RendleLobby } from './pages/rendle/RendleLobby'
+import { RenderScanLobby } from './pages/renderscan/RenderScanLobby'
+import Loader from "react-js-loader";
 
+
+const Rendle = lazy(() => import('./pages/rendle/Rendle'));
 const RenderScan = lazy(() => import("./pages/renderscan/RenderScan"))
 const RenderScanGame = lazy(() => import("./pages/renderscan/RenderScanGame"))
-import { RenderScanLobby } from './pages/renderscan/RenderScanLobby'
-
-
-
 const Signup = lazy(() => import('./pages/auth/Signup'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
@@ -23,10 +22,6 @@ const EmailVerification = lazy(() => import('./pages/auth/EmailVerification'));
 
 const Raffle = lazy(() => import('./pages/raffle/Raffle'));
 const HangMan = lazy(() => import('./pages/hangman/HangMan'));
-
-
-import Loader from "react-js-loader";
-
 
 const App = () => {
 

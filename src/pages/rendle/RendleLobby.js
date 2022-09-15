@@ -31,12 +31,14 @@ export const RendleLobby = () => {
 	function init() {
 		getContestantStatus({ contestId: params.contestId })
 			.then((res) => {
+				console.log(res)
 
-				if (!res.data.isValidGameEntry)
-					setUnAuth(true)
+				// if (!res.data.isValidGameEntry)
+				// 	setUnAuth(true)
 
-				setExpiresAt(res.data.opensAt)
-				if (res.data.isOpened || res.data.isGameCompleted) return history.push("/game/" + params.contestId)
+				// setExpiresAt(res.data.opensAt)
+				// if (res.data.isOpened || res.data.isGameCompleted) 
+				return history.push("/game/" + params.contestId)
 			}).catch(err => {
 				return history.push("/")
 			})

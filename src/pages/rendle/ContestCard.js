@@ -63,9 +63,9 @@ const ContestCard = (props) => {
 				if (res.data.isContestOpened === false) {
 					return setContestOpenModal(true)
 				}
-				if (res.data.isLobbyClosed) {
-					setWarningModal(true)
-				}
+				// if (res.data.isLobbyClosed) {
+				// 	setWarningModal(true)
+				// }
 				// if user already in contest [ALREADY_IN_CONTEST]
 				if (res.data.status === "[ALREADY_IN_CONTEST]") {
 					return history.push("/lobby/" + props._id)
@@ -76,6 +76,7 @@ const ContestCard = (props) => {
 					return setInsufficentModal(true)
 				}
 				// if user cleared all criteriea [APPROVED]
+				console.log(res)
 				if (res.data.status === "[APPROVED]") {
 					setConfirmModal(true)
 				}
@@ -144,7 +145,7 @@ const ContestCard = (props) => {
 			</div >
 		}
 		else if (startTime && !endTime)
-			return <div>Game Closed</div>
+			return <div>Live Now</div>
 
 		return <div className="contest__card__header">
 			<ClockIcon

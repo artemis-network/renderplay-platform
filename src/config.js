@@ -1,8 +1,8 @@
 
-let SERVER = "PROD";
+let SERVER = "DEV";
 let URL = "";
 
-if (SERVER === "DEV") URL = "http://localhost:5000";
+if (SERVER === "DEV") URL = "http://localhost:5001";
 if (SERVER === "PROD") URL = "https://api.renderverse.io";
 
 const rendlePrefix = URL + "/renderplay/v1/rendles"

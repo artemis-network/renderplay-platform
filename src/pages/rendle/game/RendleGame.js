@@ -63,6 +63,7 @@ const RendleGame = () => {
     if (token) {
       getContestantStatus({ contestId: params.contestId })
         .then(res => {
+          console.log(res)
           setIsGameCompleted(res.data.isGameCompleted)
           SET_MAX(res.data.gameType)
           SET_MAX_CHALLENGES(res.data.gameType)
@@ -197,19 +198,19 @@ const RendleGame = () => {
   }
 
   const isFinishedUpdate = () => {
-    const gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
-    const data = {
-      completedIn: new Date(),
-      chances: guesses.length,
-      gameType: gameConfig.gameType,
-      contestId: params.contestId,
-      isWon: false
-    }
-    saveRendleGame(data).then(res => {
-      setIsGameModalOpen(true)
-      localStorage.removeItem("gameStateId")
-      return setIsGameLost(true)
-    }).catch(err => console.log(err))
+    // const gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
+    // const data = {
+    //   completedIn: new Date(),
+    //   chances: guesses.length,
+    //   gameType: gameConfig.gameType,
+    //   contestId: params.contestId,
+    //   isWon: false
+    // }
+    // saveRendleGame(data).then(res => {
+    //   setIsGameModalOpen(true)
+    //   localStorage.removeItem("gameStateId")
+    //   return setIsGameLost(true)
+    // }).catch(err => console.log(err))
   }
 
 
@@ -269,7 +270,7 @@ const RendleGame = () => {
       <div style={{ position: 'relative', zIndex: 4, padding: "4rem 0", }}>
         {!isGameCompleted ?
           <div>
-            <div className='rendle_timer_ipad'>
+            {/* <div className='rendle_timer_ipad'>
               <div className='username' style={{ padding: "1rem 2rem", display: "flex", flexDirection: "row", columnGap: "2rem", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
                 <InformationCircleIcon
                   color='white'
@@ -279,9 +280,9 @@ const RendleGame = () => {
                 <div style={{ color: "white", fontWeight: "bold", fontSize: "1.25rem" }}>Game ends in</div>
                 <Counter />
               </div>
-            </div>
+            </div> */}
 
-            <div style={{ padding: "1rem", width: "12vw", borderRadius: "2vh", position: "absolute", left: "5rem" }} className="username rendle_timer_desktop">
+            {/* <div style={{ padding: "1rem", width: "12vw", borderRadius: "2vh", position: "absolute", left: "5rem" }} className="username rendle_timer_desktop">
               <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
                 <InformationCircleIcon
                   color='white'
@@ -295,7 +296,7 @@ const RendleGame = () => {
                   options={defaultOptions_Timer}
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow" style={{ width: "90%", zIndex: 5 }}>
               <div className="grow_keyboard">
