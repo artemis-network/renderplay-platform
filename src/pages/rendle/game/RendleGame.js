@@ -198,6 +198,7 @@ const RendleGame = () => {
   }
 
   const isFinishedUpdate = () => {
+    // uncomment this code later
     // const gameConfig = JSON.parse(localStorage.getItem("gameConfig"))
     // const data = {
     //   completedIn: new Date(),
@@ -270,6 +271,7 @@ const RendleGame = () => {
       <div style={{ position: 'relative', zIndex: 4, padding: "4rem 0", }}>
         {!isGameCompleted ?
           <div>
+            {/* uncomment this code later */}
             {/* <div className='rendle_timer_ipad'>
               <div className='username' style={{ padding: "1rem 2rem", display: "flex", flexDirection: "row", columnGap: "2rem", justifyContent: "center", alignItems: 'center', position: "relative", rowGap: "1rem" }}>
                 <InformationCircleIcon

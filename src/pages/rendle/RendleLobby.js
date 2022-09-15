@@ -33,11 +33,14 @@ export const RendleLobby = () => {
 			.then((res) => {
 				console.log(res)
 
+				// uncomment this code later
 				// if (!res.data.isValidGameEntry)
 				// 	setUnAuth(true)
-
 				// setExpiresAt(res.data.opensAt)
 				// if (res.data.isOpened || res.data.isGameCompleted) 
+				// return history.push("/game/" + params.contestId)
+
+				// remove the below line after uncommenting
 				return history.push("/game/" + params.contestId)
 			}).catch(err => {
 				return history.push("/")

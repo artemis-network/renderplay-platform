@@ -63,19 +63,27 @@ const ContestCard = (props) => {
 				if (res.data.isContestOpened === false) {
 					return setContestOpenModal(true)
 				}
+				// uncomment this code later
 				// if (res.data.isLobbyClosed) {
 				// 	setWarningModal(true)
 				// }
 				// if user already in contest [ALREADY_IN_CONTEST]
+				// if (res.data.status === "[ALREADY_IN_CONTEST]") {
+				// 	return history.push("/lobby/" + props._id)
+				// }
+
+				// remove this block after uncommenting
+				// from here to
 				if (res.data.status === "[ALREADY_IN_CONTEST]") {
 					return history.push("/lobby/" + props._id)
 				}
+				// remove till here
 
 				// if user has insufficient  [INSUFFICIENT_FUNDS]
 				if (res.data.status === "[INSUFFICENT_FUNDS]") {
 					return setInsufficentModal(true)
 				}
-				// if user cleared all criteriea [APPROVED]
+				// if user cleared all cri"here"teriea [APPROVED]
 				console.log(res)
 				if (res.data.status === "[APPROVED]") {
 					setConfirmModal(true)
