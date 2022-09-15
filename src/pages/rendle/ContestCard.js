@@ -22,6 +22,8 @@ const ContestCard = (props) => {
 	const [metaMaskModal, setMetaMaskModal] = useState(false)
 	const [warningModal, setWarningModal] = useState(false)
 	const [contestOpenModal, setContestOpenModal] = useState(false)
+	const [hasGameState, setHasGameState] = useState(false)
+
 
 	const [days, hours, minutes, seconds, isFinished] = useCountdown(new Date(props.startsOn))
 
@@ -71,6 +73,9 @@ const ContestCard = (props) => {
 				// if (res.data.status === "[ALREADY_IN_CONTEST]") {
 				// 	return history.push("/lobby/" + props._id)
 				// }
+				if (res.data.status === "[USER_HAS_GAME_STATE]") {
+					return setHasGameState(true)
+				}
 
 				// remove this block after uncommenting
 				// from here to
@@ -180,6 +185,13 @@ const ContestCard = (props) => {
 	}
 	return (
 		<div style={{ background: `#321E43` }} className={"c-mobile-view "}>
+			<Dialog
+				buttonColor="red"
+				justifyButton="center"
+				show={hasGameState} close={() => setHasGameState(false)} action={() => setHasGameState(false)}
+				message={`Your are already in game, complete it and try again`}
+				header="Warning!" buttonText="Close"
+			/>
 			<Dialog
 				buttonColor="green"
 				justifyButton="center"
