@@ -31,7 +31,7 @@ const Home = () => {
 	}
 	return <div style={{ background: "#4C0033", fontFamily: "quicksand", padding: "5rem" }}>
 		<Box bgColor={"#790252"} display={"flex"} p={"8"} rowGap={"2rem"} flexDirection="column" borderRadius={"2xl"} color="#fbd6d2" >
-			<Flex flexDirection={"column"} p="12">
+			<Flex flexDirection={"column"} py="4">
 				<Text fontSize={"3xl"} fontWeight="bold">Welcome to Renderverse</Text>
 				<Text fontWeight={"bold"}>Web3 Games, NFT, Community & Earnings</Text>
 			</Flex>
