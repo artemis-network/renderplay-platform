@@ -1,0 +1,22 @@
+.clues,
+.grid {
+  font-weight: bold;
+  font-family: "Quicksand", sans-serif;
+}
+
+.clues {
+  color: #fbd6d2;
+}
+
+.grid {
+  min-width: 35vw;
+}
+
+.clues {
+  min-width: 40vw;
+}
+
+.direction .header {
+  font-size: 2rem;
+  font-weight: bold;
+}
