@@ -36,10 +36,10 @@ const Home = () => {
 				<Text fontWeight={"bold"}>Web3 Games, NFT, Community & Earnings</Text>
 			</Flex>
 			<Flex flexDirection={"column"}>
-				<Box bgColor={"#AF0171"} fontWeight="bold" p="3" borderTopRadius={"2xl"} width={"15%"} textAlign="center">
+				<Box bgColor={"#4C0033"} fontWeight="bold" p="3" borderTopRadius={"2xl"} width={"15%"} textAlign="center">
 					<Text>Gameinfinity Web3 Games</Text>
 				</Box>
-				<Box bgColor={"#AF0171"} p="12" borderBottomRadius={"2xl"} borderTopRightRadius={"2xl"}>
+				<Box bgColor={"#4C0033"} p="12" borderBottomRadius={"2xl"} borderTopRightRadius={"2xl"}>
 					<Grid templateColumns='repeat(5, 1fr)' gap={6}>
 						{gridItems.map((grid, index) =>
 							<GridItem onClick={() => goToPage(grid, index)} position={"relative"} key={index} w='100%' h='64' bg='#790252' borderRadius={"2xl"}>
