@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import { lazy, Suspense, useEffect } from 'react'
-import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
+import { Route, BrowserRouter as Router, } from 'react-router-dom'
 
 import RendleGame from './pages/rendle/game/RendleGame'
 
@@ -10,6 +10,7 @@ import { RendleLobby } from './pages/rendle/RendleLobby'
 import { RenderScanLobby } from './pages/renderscan/RenderScanLobby'
 import Loader from "react-js-loader";
 import CrosswordComp from './pages/crossword/crossword';
+import Home from './pages/home/Home';
 
 
 const Rendle = lazy(() => import('./pages/rendle/Rendle'));
@@ -48,7 +49,7 @@ const App = () => {
   return (
     <div>
       <Suspense fallback={
-        <div style={{ height: "100vh", width: "100%", display: "flex", justifyContent: "center", alignItems: "center", background: "#321e43" }}>
+        <div style={{ height: "100vh", width: "100%", display: "flex", justifyContent: "center", alignItems: "center", }}>
           <Loader type="bubble-scale"
             bgColor={"#F3CCD0"}
             color={"#F3CCD0"} title={"Loading..."} size={100} />
@@ -57,7 +58,8 @@ const App = () => {
         <Router>
 
 
-          <Route exact component={Rendle} path="/" />
+          <Route exact component={Home} path="/" />
+          <Route exact component={Rendle} path="/rendle" />
           <Route exact component={RendleGame} path="/game/:contestId" />
           <Route exact component={RendleLobby} path="/lobby/:contestId" />
           <Route exact component={CrosswordComp} path="/crossword" />

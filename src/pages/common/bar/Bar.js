@@ -105,7 +105,7 @@ const Bar = (props) => {
 			{
 				!props.isGame ?
 					<div className='neu' style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }}>
-						<NavLink className="neu_link" exact strict activeClassName='neu_link__active' to={"/"} >Rendle</NavLink>
+						<NavLink className="neu_link" exact strict activeClassName='neu_link__active' to={"/rendle"} >Rendle</NavLink>
 						<NavLink className="neu_link" exact strict activeClassName='neu_link__active' to={"/crossword"} >Crossword</NavLink>
 						<NavLink className="neu_link" activeClassName='neu_link__active' to={"/raffle"} >Raffle</NavLink>
 					</div> : <div style={{ display: "flex", justifyContent: "center", alignItems: 'center', width: "auto", margin: "auto", columnGap: "3rem" }} >
