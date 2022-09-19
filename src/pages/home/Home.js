@@ -1,6 +1,25 @@
 import { Box, Flex, Grid, Text, GridItem } from '@chakra-ui/react'
 import { useHistory } from 'react-router'
 
+import Wordle from '../../assets/game_thumbs/wordle.png'
+import Quardle from '../../assets/game_thumbs/quordle.webp'
+import Hurdle from '../../assets/game_thumbs/hurdle.png'
+import AntiWordle from '../../assets/game_thumbs/antiwordle.png'
+import Lewdle from '../../assets/game_thumbs/lewdle.png'
+import CrossWordle from '../../assets/game_thumbs/crosswordle.jpeg'
+import Nerdle from '../../assets/game_thumbs/nerdle.png'
+import Absurdle from '../../assets/game_thumbs/absurdle.png'
+import Heardle from '../../assets/game_thumbs/heardle.png'
+import Lookdle from '../../assets/game_thumbs/lookdle.jpeg'
+import Framed from '../../assets/game_thumbs/framed.jpeg'
+import Semantle from '../../assets/game_thumbs/semantle.jpeg'
+import Redactle from '../../assets/game_thumbs/redactle.jpeg'
+import Spellbound from '../../assets/game_thumbs/spellbound.jpeg'
+import Primel from '../../assets/game_thumbs/primel.png'
+import Waffle from '../../assets/game_thumbs/waffle.jpeg'
+import CrossWord from '../../assets/game_thumbs/crossword.jpeg'
+import WordScramble from '../../assets/game_thumbs/wordscramble.jpeg'
+
 const Home = () => {
 
 	const history = useHistory();
@@ -14,12 +33,19 @@ const Home = () => {
 	]
 
 	const gridGames = [
-		"Rendles", "CrossWord", "2048", "Hetrix",
-		"Snake", "Bubble Shoot", "	Tetris", "Tennis",
-		"Brick Breaker", "Carrom", "8 Ball Pool", "Football",
-		"Ninja Hands", "Cricket", "Slash", "Royale",
-		"Maze", "Discover", "Zombie", "Drag Race",
+		"Wordles 5", "Wordle 6", "Wordle 7", "Quordle", "Hurdle",
+		"Anti Wordle", "Lewdle", "Cross Wordle", "Nerdle", "Absurdle",
+		"Heardle", "Lookdle", "Framed", "Semantle", "Redactle",
+		"Spelle (Spell Bound)", "Primel", "Waffle", "Cross Word", "Word Scramble",
 	]
+
+	const images = [
+		Wordle, Wordle, Wordle, Quardle, Hurdle,
+		AntiWordle, Lewdle, CrossWordle, Nerdle, Absurdle,
+		Heardle, Lookdle, Framed, Semantle, Redactle,
+		Spellbound, Primel, Waffle, CrossWord, WordScramble,
+	]
+
 	function goToPage(item, index) {
 		console.log(item, index)
 		if (item == 1) {
@@ -44,10 +70,12 @@ const Home = () => {
 				<Box bgColor={"#321e43"} p="12" borderBottomRadius={"2xl"} borderTopRightRadius={"2xl"}>
 					<Grid templateColumns='repeat(5, 1fr)' gap={6}>
 						{gridItems.map((grid, index) =>
-							<GridItem onClick={() => goToPage(grid, index)} position={"relative"} key={index} w='100%' h='64' bg='#6d1daf' borderRadius={"2xl"}>
+							<GridItem onClick={() => goToPage(grid, index)} position={"relative"} key={index} w='100%' h='52' backgroundSize={"cover"} backgroundRepeat={"no-repeat"} backgroundImage={images[index]} borderRadius={"2xl"}>
 								{
 									gridGames[index] !== "" ? <Box display={"flex"} justifySelf="center" alignSelf={"center"}>
-										<Text fontWeight={"bold"} fontSize="3xl" p="4">{gridGames[index]}</Text>
+										<Box p="2" m="2" bg="#321e43" borderRadius={"2xl"}>
+											<Text fontWeight={"bold"} fontSize="medium"  >{gridGames[index]}</Text>
+										</Box>
 									</Box> : null
 								}
 								{grid == 0 ?
